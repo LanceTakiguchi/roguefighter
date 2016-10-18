@@ -1,7 +1,7 @@
 /**
  * Created by Weizguy on 10/17/2016.
- * Prototype to show proof of adding a foreground
- * ie. added Deathstar moving across screen
+ * Prototype to show proof of adding an enemy to the screen
+ * ie. added two tie fighters to static positions
  */
 
 // declaration of game engine
@@ -114,6 +114,8 @@ var StarWarsGame = function () {
     this.weapons = [];
     this.currentWeapon = 0;
     this.weaponName = null;
+
+    this.tieFighter = null;
 };
 
 // initialize the game
@@ -135,6 +137,7 @@ StarWarsGame.prototype = {
         this.load.image('background', 'back.png');
         this.load.image('foreground', 'deathstar.png');
         this.load.image('player', 'xwing.png');
+        this.load.image('tieFighter', 'tie.png');
 
         // future loop for adding power up bullets
         for (var i = 1; i <= 1; i++)
@@ -143,7 +146,7 @@ StarWarsGame.prototype = {
         }
     },
 
-    // Create the background
+    // Create everything
     create: function () {
 
         this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
@@ -164,6 +167,13 @@ StarWarsGame.prototype = {
         {
             this.weapons[i].visible = false;
         }
+        // position the enemy on the game field
+        this.tieFighter = this.add.sprite(200, 40, 'tieFighter');
+        this.tieFighter = this.add.sprite(350, 160, 'tieFighter');
+
+        this.physics.arcade.enable(this.tieFighter);
+
+        this.tieFighter.body.collideWorldBounds = true;
 
         // position the player on the game field
         this.player = this.add.sprite(265, 600, 'player');
