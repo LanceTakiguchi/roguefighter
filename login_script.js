@@ -16,7 +16,7 @@ function makeAjaxCall() {
         data: dataToSend,
         cache: false,
         method: "POST",
-        datatype: "JSON",
+        dataType: "JSON",
         success: function (response) {
             console.log(response);
             var responseObj = JSON.parse(response);
