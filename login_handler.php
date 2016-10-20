@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('mysql_connect.php');
-$test_password = '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8';
+/*$test_password = '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8';
 $user_email = $_POST['userEmail'];
 $received_password = sha1($_POST['password']);
 $output = ['success' => false];
@@ -24,5 +24,6 @@ if (isset($received_password, $user_email)){
     $output['message'] = "USERNAME OR PASSWORD INCORRECT";
 }
 $json_output = json_encode($output);
-print_r($json_output);
+print_r($json_output);*/
+print_r($_POST);
 ?>
