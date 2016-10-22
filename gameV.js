@@ -215,7 +215,7 @@ function launchTieFighter() {
 
 
     //  Send another enemy soon
-    // game.time.events.add(game.rnd.integerInRange(MIN_ENEMY_SPACING, MAX_ENEMY_SPACING), launchTieFighter);
+    //game.time.events.add(game.rnd.integerInRange(MIN_ENEMY_SPACING, MAX_ENEMY_SPACING), launchTieFighter);
     game.time.events.add(1000, launchTieFighter);
 
 
