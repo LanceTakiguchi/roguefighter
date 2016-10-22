@@ -1,255 +1,222 @@
 /**
- * Created by Weizguy on 10/17/2016.
- * Prototype to show proof of adding an enemy to the screen
- * ie. added two tie fighters to static positions
+ * Created by Weizguy on 10/18/2016.
+ * Prototype to show proof of enemy movement
+ * also added bullet sounds and explosion sounds
  */
 
 // declaration of game engine
     // this is where you can change the board size
-var game = new Phaser.Game(600, 900, Phaser.AUTO, 'game');
+var game = new Phaser.Game(600, 900, Phaser.AUTO, 'C10_game', { preload: preload, create: create, update: update });
+
+    // declare all globals
+    var background = null;
+    var foreground = null;
+    var cursors = null;
+    var speed = 300;
+    var xwing;
+    var tieFighters;
+    var blaster;
+    var bullets;
+    var bulletTime = 0;
+    var bullet;
+    var explosions;
+    var explode;
+
+function preload() {
+
+    // add the images/audio to the game
+    game.load.image('background', 'back.png');
+    game.load.image('foreground', 'deathstar.png');
+    game.load.image('xwing', 'xwing.png');
+    game.load.image('tieFighter', 'tie.png');
+    game.load.image('bullet', 'bullet0.png');
+    game.load.spritesheet('kaboom', 'explode.png', 128, 128);
+    game.load.audio('blaster', 'blaster.mp3');
+    game.load.audio('explode', 'explosion.mp3');
+
+}
 
 
-//  Create bullet used by the weapon class
-var Bullet = function (game, key) {
+function create() {
 
-    Phaser.Sprite.call(this, game, 0, 0, key);
+    background = game.add.tileSprite(0, 0, game.width, game.height, 'background');
+    // this is where you set the speed of the scroll (and the direction)
+    background.autoScroll(0, 60);
 
-    this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+    // the image is set super wide to not show up over and over again
+    foreground = game.add.tileSprite(0, 0, 1600, 250, 'foreground');
+    // here it is set to scroll left
+    foreground.autoScroll(-20, 0);
 
-    this.anchor.set(0.5);
+    // create the tieFighter group
+    tieFighters = game.add.group();
+    tieFighters.enableBody = true;
+    tieFighters.physicsBodyType = Phaser.Physics.ARCADE;
+    tieFighters.createMultiple(50, 'tieFighter');
+    tieFighters.setAll('anchor.x', 0.5);
+    tieFighters.setAll('anchor.y', 0.5);
+    tieFighters.setAll('scale.x', 0.5);
+    tieFighters.setAll('scale.y', 0.5);
+    tieFighters.setAll('angle', 180);
+    tieFighters.setAll('outOfBoundsKill', false);
+    tieFighters.setAll('checkWorldBounds', true);
 
-    this.checkWorldBounds = true;
-    this.outOfBoundsKill = true;
-    this.exists = false;
+    launchTieFighter();
 
-    this.tracking = false;
-    this.scaleSpeed = 0;
+    xwing = game.add.group();
+    xwing.enableBody = true;
+    xwing.physicsBodyType = Phaser.Physics.ARCADE;
 
-};
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-Bullet.prototype = Object.create(Phaser.Sprite.prototype);
-Bullet.prototype.constructor = Bullet;
+    // Add sounds
+    game.explode = game.add.audio('explode');
+    game.blaster = game.add.audio('blaster');
 
-Bullet.prototype.fire = function (x, y, angle, speed, gx, gy) {
 
-    gx = gx || 0;
-    gy = gy || 0;
-
-    this.reset(x, y);
-    this.scale.set(1);
-
-    this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
-
-    this.angle = angle;
-
-    this.body.gravity.set(gx, gy);
-
-};
-
-Bullet.prototype.update = function () {
-
-    if (this.tracking)
+    for (var i = 0; i < 20; i++)
     {
-        this.rotation = Math.atan2(this.body.velocity.y, this.body.velocity.x);
+        var b = bullets.create(40, 0, 'bullet');
+        b.name = 'bullet' + i;
+        b.exists = false;
+        b.visible = false;
+        b.checkWorldBounds = true;
+        b.events.onOutOfBounds.add(resetBullet, this);
     }
 
-    if (this.scaleSpeed > 0)
+    // create the xwing
+    xwing = game.add.sprite(250, 750, 'xwing');
+    game.physics.enable(xwing, Phaser.Physics.ARCADE);
+    xwing.body.collideWorldBounds = true;
+
+    //  An explosion pool
+    explosions = game.add.group();
+    explosions.createMultiple(30, 'kaboom');
+    explosions.forEach(setupExplosions, this);
+
+    cursors = game.input.keyboard.createCursorKeys();
+    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+
+}
+
+// add explosions
+function setupExplosions (explode) {
+
+    explode.animations.add('kaboom');
+}
+
+
+function update() {
+
+    // add the collision handlers
+    game.physics.arcade.collide(bullets, tieFighters, collisionHandler, null, this);
+    game.physics.arcade.collide(xwing, tieFighters, enemyKillPlayer, null, this);
+
+    // tieFighters.forEach(checkPos, this);
+
+    // make the xwing controllable
+    xwing.body.velocity.x = 0;
+    xwing.body.velocity.y = 0;
+
+    if (cursors.left.isDown)
     {
-        this.scale.x += this.scaleSpeed;
-        this.scale.y += this.scaleSpeed;
+        xwing.body.velocity.x = -speed;
     }
-
-};
-
-
-var Weapon = {};
-
-////////////////////////////////////////////////////
-//  A single bullet is fired in front of the XWing //
-////////////////////////////////////////////////////
-
-Weapon.SingleBullet = function (game) {
-
-    Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
-
-    this.nextFire = 0;
-    this.bulletSpeed = 600;
-    this.fireRate = 100;
-
-    for (var i = 0; i < 64; i++)
+    else if (cursors.right.isDown)
     {
-        this.add(new Bullet(game, 'bullet1'), true);
+        xwing.body.velocity.x = speed;
+    }
+    else if (cursors.up.isDown)
+    {
+        xwing.body.velocity.y = -speed;
+    }
+    else if (cursors.down.isDown)
+    {
+        xwing.body.velocity.y = speed;
     }
 
-    return this;
+    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+    {
+        fireBullet();
 
-};
+    }
+}
 
-Weapon.SingleBullet.prototype = Object.create(Phaser.Group.prototype);
-Weapon.SingleBullet.prototype.constructor = Weapon.SingleBullet;
+function fireBullet () {
 
-Weapon.SingleBullet.prototype.fire = function (source) {
+    if (game.time.now > bulletTime)
+    {
+        bullet = bullets.getFirstExists(false);
 
-    if (this.game.time.time < this.nextFire) { return; }
-    // set bullet in relation to xwing
-    var x = source.x + 38;
-    var y = source.y + 0;
-
-    this.getFirstExists(false).fire(x, y, 270, this.bulletSpeed, 0, 0);
-
-    this.nextFire = this.game.time.time + this.fireRate;
-
-};
-
-//  The core game loop
-var StarWarsGame = function () {
-
-    this.background = null;
-    this.foreground = null;
-
-    this.player = null;
-    this.cursors = null;
-    this.speed = 300;
-
-    this.weapons = [];
-    this.currentWeapon = 0;
-    this.weaponName = null;
-
-    this.tieFighter = null;
-};
-
-// initialize the game
-StarWarsGame.prototype = {
-
-    init: function () {
-
-        this.game.renderer.renderSession.roundPixels = true;
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-
-    },
-
-    // preload the assets
-    preload: function () {
-
-        // this will be needed for any json activities for cross browser support
-        this.load.crossOrigin = 'anonymous';
-        // add the images to the game
-        this.load.image('background', 'back.png');
-        this.load.image('foreground', 'deathstar.png');
-        this.load.image('player', 'xwing.png');
-        this.load.image('tieFighter', 'tie.png');
-
-        // future loop for adding power up bullets
-        for (var i = 1; i <= 1; i++)
+        if (bullet)
         {
-            this.load.image('bullet' + i, 'bullet' + i + '.png');
+            bullet.reset(xwing.x +  30, xwing.y - 5);
+            bullet.body.velocity.y = -300;
+            bulletTime = game.time.now + 150;
+            game.blaster.play();
         }
-    },
+    }
 
-    // Create everything
-    create: function () {
+}
 
-        this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
-        // this is where you set the speed of the scroll (and the direction)
-        this.background.autoScroll(0, 60);
+//  Called if the bullet goes out of the screen
+function resetBullet (bullet) {
 
-        // the image is set super wide to not show up over and over again
-        this.foreground = this.add.tileSprite(0, 0, 1600, 250, 'foreground');
-        // here it is set to scroll left
-        this.foreground.autoScroll(-20, 0);
+    bullet.kill();
 
-        this.weapons.push(new Weapon.SingleBullet(this.game));
+}
 
-        this.currentWeapon = 0;
+// called if enemy and player collide
+function enemyKillPlayer (player, enemy) {
 
-        // this is for if we add powerups
-        for (var i = 1; i < this.weapons.length; i++)
-        {
-            this.weapons[i].visible = false;
-        }
-        // position the enemy on the game field
-        this.tieFighter = this.add.sprite(200, 40, 'tieFighter');
-        this.tieFighter = this.add.sprite(350, 160, 'tieFighter');
+    player.kill();
+    enemy.kill();
 
-        this.physics.arcade.enable(this.tieFighter);
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x, player.body.y);
+    explosion.play('kaboom', 30, false, true);
+    game.explode.play();
 
-        this.tieFighter.body.collideWorldBounds = true;
 
-        // position the player on the game field
-        this.player = this.add.sprite(265, 600, 'player');
+    player.reset(250, 750);
+}
 
-        this.physics.arcade.enable(this.player);
+//  Called if the bullet hits one of the enemies
+function collisionHandler (bullet, enemy) {
 
-        this.player.body.collideWorldBounds = true;
+    bullet.kill();
+    enemy.kill();
 
-        //  Cursor keys to fly
-        this.cursors = this.input.keyboard.createCursorKeys();
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(enemy.body.x, enemy.body.y);
+    explosion.play('kaboom', 30, false, true);
+    game.explode.play();
+}
 
-        this.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+function launchTieFighter() {
+    var MIN_ENEMY_SPACING = 300;
+    var MAX_ENEMY_SPACING = 3000;
+    var ENEMY_SPEED = 300;
 
-        var changeKey = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        changeKey.onDown.add(this.nextWeapon, this);
-    },
-    // more of a function for if we add more power up weapons
-    nextWeapon: function () {
-
-        //  Tidy-up the current weapon
-        if (this.currentWeapon > 9)
-        {
-            this.weapons[this.currentWeapon].reset();
-        }
-        else
-        {
-            this.weapons[this.currentWeapon].visible = false;
-            this.weapons[this.currentWeapon].callAll('reset', null, 0, 0);
-            this.weapons[this.currentWeapon].setAll('exists', false);
-        }
-
-        //  Activate the new one
-        this.currentWeapon++;
-
-        if (this.currentWeapon === this.weapons.length)
-        {
-            this.currentWeapon = 0;
-        }
-
-        this.weapons[this.currentWeapon].visible = true;
-
-        this.weaponName.text = this.weapons[this.currentWeapon].name;
-
-    },
-
-    // function added to work with player movement
-    update: function () {
-
-        this.player.body.velocity.set(0);
-
-        if (this.cursors.left.isDown)
-        {
-            this.player.body.velocity.x = -this.speed;
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.body.velocity.x = this.speed;
-        }
-
-        if (this.cursors.up.isDown)
-        {
-            this.player.body.velocity.y = -this.speed;
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.player.body.velocity.y = this.speed;
-        }
-
-        if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
-        {
-            this.weapons[this.currentWeapon].fire(this.player);
-        }
-
+    var enemy = tieFighters.getFirstExists(false);
+    if (enemy) {
+        enemy.reset(game.rnd.integerInRange(0, game.width), -20);
+        enemy.body.velocity.x = game.rnd.integerInRange(-300, 300);
+        enemy.body.velocity.y = ENEMY_SPEED;
+        enemy.body.drag.x = 100;
+    }
+    enemy.update = function () {
+        enemy.angle = 180 - game.math.radToDeg(Math.atan2(enemy.body.velocity.x, enemy.body.velocity.y));
     }
 
 
-};
-    //start the game
-    game.state.add('Game', StarWarsGame, true);
+    //  Send another enemy soon
+    //game.time.events.add(game.rnd.integerInRange(MIN_ENEMY_SPACING, MAX_ENEMY_SPACING), launchTieFighter);
+    game.time.events.add(1000, launchTieFighter);
+
+
+}
