@@ -6,7 +6,10 @@
 
 // declaration of game engine
     // this is where you can change the board size
-var game = new Phaser.Game(600, 900, Phaser.AUTO, 'C10_game', { preload: preload, create: create, update: update });
+//game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
+var gameWidth = (window.innerWidth * window.devicePixelRatio) * .25;
+var gameHeight = (window.innerHeight * window.devicePixelRatio) * .6;
+var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'C10_game', { preload: preload, create: create, update: update });
 
     // declare all globals
     var background = null;
@@ -44,21 +47,21 @@ function create() {
     background.autoScroll(0, 60);
 
     // the image is set super wide to not show up over and over again
-    foreground = game.add.tileSprite(0, 0, 1600, 250, 'foreground');
+    foreground = game.add.tileSprite(0, 0, game.width, 250, 'foreground');
     // here it is set to scroll left
-    foreground.autoScroll(-20, 0);
+    foreground.autoScroll(-10, 0);
 
     // create the tieFighter group
     tieFighters = game.add.group();
     tieFighters.enableBody = true;
     tieFighters.physicsBodyType = Phaser.Physics.ARCADE;
-    tieFighters.createMultiple(50, 'tieFighter');
+    tieFighters.createMultiple(10, 'tieFighter');
     tieFighters.setAll('anchor.x', 0.5);
     tieFighters.setAll('anchor.y', 0.5);
     tieFighters.setAll('scale.x', 0.5);
     tieFighters.setAll('scale.y', 0.5);
     tieFighters.setAll('angle', 180);
-    tieFighters.setAll('outOfBoundsKill', false);
+    tieFighters.setAll('outOfBoundsKill', true);
     tieFighters.setAll('checkWorldBounds', true);
 
     launchTieFighter();
@@ -87,7 +90,7 @@ function create() {
     }
 
     // create the xwing
-    xwing = game.add.sprite(250, 750, 'xwing');
+    xwing = game.add.sprite(game.width/2, game.height/2, 'xwing');
     game.physics.enable(xwing, Phaser.Physics.ARCADE);
     xwing.body.collideWorldBounds = true;
 
