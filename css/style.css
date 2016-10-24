@@ -1,0 +1,131 @@
+body{
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+#background_slice{
+    width: 100%;
+    height: 30vh;
+    background: url("../imgs/rogue-fighter-cover.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+#brand img{
+    width: 30vw;
+    margin-top: 1%;
+}
+
+#navigation {
+    width: 100%;
+    background-color: #0a0a0a;
+}
+
+#navigation ul{
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    text-align: center;
+}
+
+#navigation ul li{
+     display: inline-block;
+     list-style-type: none;
+     vertical-align: middle;
+     font-size: 25px;
+     line-height: 25px;
+     border-right: solid 1px #4D4D4D;
+     padding: .75% 4% .75% 4%;
+     color: #4D4D4D;
+ }
+
+#navigation ul li:last-of-type{
+    border-right: none;
+    color: #4D4D4D;
+}
+
+#navigation ul li:hover{
+    background-color: #3c3c3c;
+    color: #1A1A1A;
+}
+
+#navigation ul li a{
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navigation ul li a{
+    color: #ffffff;
+}
+
+#navigation ul li a i{
+    padding: 10px 0;
+}
+
+#navigation ul li a i.fa-rebel{
+    color: #FF3A08;
+}
+
+#navigation ul li a i.fa-cogs{
+    color: #FF8105;
+}
+
+#navigation ul li a i.fa-keyboard-o{
+    color: #18CC92;
+}
+
+#navigation ul li a i.fa-newspaper-o{
+    color: #45FFF8;
+}
+
+#navigation ul li a p{
+    margin: 0;
+    padding: 0;
+}
+
+.main_content{
+    width: 100%;
+    height: 60vh;
+    background: url("../imgs/stars.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.main_content a {
+    padding-top: 10%;
+    font-family: 'Orbitron', sans-serif;
+    display: block;
+    font-size: 5em;
+    text-align: center;
+    text-decoration: none;
+    color: #eecd0a;
+}
+
+.play {
+    animation: play 2s linear infinite;
+}
+
+@keyframes play {
+    50% { opacity: 0; }
+}
+
+.volume{
+    position: absolute;
+    bottom: 10px;
+    right: 50px;
+    color: #ffffff;
+}
+
+.volume{
+    background: url("../imgs/volume-droid.png") 0 0;
+    width: 100px;
+    height: 111px;
+}
+
+.volume:hover{
+    background: url("../imgs/volume-droid.png") 0 111px;
+    width: 100px;
+    height: 111px;
+}
