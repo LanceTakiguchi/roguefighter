@@ -6,8 +6,6 @@
 // declaration of game engine
     // this is where you can change the board size
 //game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
-//var gameWidth = (window.innerWidth * window.devicePixelRatio) * .25;
-//var gameHeight = (window.innerHeight * window.devicePixelRatio) * .6;
 var game = new Phaser.Game(600, 900, Phaser.AUTO, 'C10_game', { preload: preload, create: create, update: update });
 
     // declare all globals
