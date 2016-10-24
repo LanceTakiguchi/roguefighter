@@ -5,30 +5,30 @@
 
 // declaration of game engine
     // this is where you can change the board size
-//game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
-//var gameWidth = (window.innerWidth * window.devicePixelRatio) * .25;
-//var gameHeight = (window.innerHeight * window.devicePixelRatio) * .6;
-var game = new Phaser.Game(600, 900, Phaser.AUTO, 'C10_game', { preload: preload, create: create, update: update });
+//var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
+var game = new Phaser.Game('gameArea'.width, 'gameArea'.height, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
 
-    // declare all globals
-    var background = null;
-    var foreground = null;
-    var cursors = null;
-    var speed = 300;
-    var xwing;
-    var tieFighters;
-    var blaster;
-    var bullets;
-    var bulletTime = 0;
-    var bullet;
-    var tieBullet;
-    var enemyBullets;
-    var explosions;
-    var explode;
+// declare all globals
+var background = null;
+var foreground = null;
+var cursors = null;
+var speed = 300;
+var xwing;
+var tieFighters;
+var blaster;
+var bullets;
+var bulletTime = 0;
+var bullet;
+var tieBullet;
+var enemyBullets;
+var explosions;
+var explode;
+var shields;
 
 function preload() {
 
     // add the images/audio to the game
+    game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.load.image('background', 'assets/back.png');
     game.load.image('foreground', 'assets/deathstar.png');
     game.load.image('xwing', 'assets/xwing.png');
@@ -107,6 +107,7 @@ function create() {
 
     // create the xwing
     xwing = game.add.sprite(game.width/2, game.height/2, 'xwing');
+    xwing.anchor.setTo(0.5, 0.5);
     game.physics.enable(xwing, Phaser.Physics.ARCADE);
     xwing.body.collideWorldBounds = true;
 
@@ -171,7 +172,7 @@ function fireBullet () {
 
         if (bullet)
         {
-            bullet.reset(xwing.x +  30, xwing.y - 5);
+            bullet.reset(xwing.x - 7, xwing.y - 40);
             bullet.body.velocity.y = -300;
             bulletTime = game.time.now + 150;
             game.blaster.play();
