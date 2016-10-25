@@ -21,7 +21,7 @@ if (isset($user_email)){
         }
     } else{
         $user_insert_query = "INSERT INTO `users`(`username`, `email`, `high_score`, `date_created`) VALUES ('$user_name','$user_email','0','NOW()')";
-        mysqli_query($conn, $grade_insert_query);
+        $insert_query_result = mysqli_query($conn, $user_insert_query);
     }
 } else {
     $output['message'] = "USERNAME OR PASSWORD INCORRECT";
