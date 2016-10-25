@@ -5,58 +5,61 @@ window.addEventListener('popstate', function() {
 
 document.addEventListener("DOMContentLoaded", function(event) { 
 // Get the package modal
-var modal = document.getElementById('myModal');
+var package_modal = document.getElementById('package_select');
 
 // Get the button that opens the package modal
-var btn = document.getElementById("myBtn");
+var purchase = document.getElementById("purchase");
 
 // Buttons that determine what rank of lives to buy
-var officer = document.getElementById("officer");
-var captain = document.getElementById("captain");
-var general = document.getElementById("general");
+var officer = $('#officer');
+var captain = $('#captain');
+var general = $('#general');
 
 // Get the <span> element that closes the package modal
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, display/open the package modal
-btn.onclick = function() {
-  modal.style.display = "block";
+purchase.onclick = function() {
+  package_modal.style.display = "block";
 }
-
+// Needed to call e.preventDefault() in the open_stripe function
+var eventObj = null;
 // Rank button purchase handler
-officer.onclick = function() {
+officer.on('click', function(e) {
     // Hide the package type modal
-    modal.style.display = "none";
-    // Open the Stripe modal
+    package_modal.style.display = "none";
+    eventObj = e;
+    // Open the Stripe modal (data_amount is in cents)
     open_stripe(199);
-  }
-  captain.onclick = function() {
-    modal.style.display = "none";
-    open_stripe(999);
-  }
-  general.onclick = function() {
-    modal.style.display = "none";
-    open_stripe(1999);
-  }
+  })
+captain.on('click', function(e) {
+  package_modal.style.display = "none";
+  eventObj = e;
+  open_stripe(999);
+})
+general.on('click', function(e) {
+  package_modal.style.display = "none";
+  eventObj = e;
+  open_stripe(1999);
+})
 // When the user clicks on <span> (x), close the package modal
 span.onclick = function() {
-  modal.style.display = "none";
+  package_modal.style.display = "none";
 }
-
 // When the user clicks anywhere outside of the package modal, close it
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  if (event.target == package_modal) {
+    package_modal.style.display = "none";
   }
 }
 
 // Stripe modal settings
 function open_stripe(data_amount){
   handler.open({
-    name: 'C10 | 8 Bit Bullet Hell',
+    name: 'Star Wars | Rogue Fighter',
     description: '2 widgets',
     amount: data_amount
   });
-  e.preventDefault();
+  eventObj.preventDefault();
 } 
 });
