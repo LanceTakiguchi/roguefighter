@@ -19,17 +19,18 @@
 <body>
   <div class="wrapper">
     <header>
-      <div id="background_slice">
+      <div id="background_slice"  class="originalHeight">
         <div id="brand">
-          <img src="imgs/rogue-fighter-logo.png">
+          <img class="brandIcon" src="imgs/rogue-fighter-logo.png">
         </div>
       </div>
       <div id="navigation">
         <ul>
-          <li><a href="index.html"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
-          <li><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
-          <li><a href="about.html"><i class="fa fa-keyboard-o" aria-hidden="true"></i><p>About</p></a></li>
-          <li><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
+          <li class="menuItem"><a href="index.html"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
+          <li class="menuItem"><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
+          <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
+          <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
+          <li class="signIn"><a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a></li>
           <li>
             <!-- In action insert the server side code -->
             <!-- Use any email, 4242424242424242 as the credit card for testing, any exp date and any 3 digit cvc -->
@@ -41,7 +42,7 @@
       </div>
     </header>
     <div class="main_content">
-      <audio loop class="audioDemo" preload="none">
+      <!--<audio loop class="audioDemo" preload="none">
        <source src="sound/intro-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
        </audio>
        <a class="play" href="#">- PLAY -</a>
@@ -49,24 +50,33 @@
         <div class="volume"></div>
       </footer>
     </div>
-    <!-- The Payment Modal -->
-    <div id="package_select" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="close">×</span>
-          <h2>Purchase a Rebel Package</h2>
-        </div>
-        <div class="modal-body">
-          <h3>Rebel Package Ranks</h3>
-          <p>Officer: 20 Lives - $1.99</p>
-          <p>Captain: 125 Lives - $9.99</p>
-          <p>General: 300 Lives - $19.99</p>
-          <button id="officer">Flight Officer</button>
-          <button id="captain">Captain</button>
-          <button id="general">General</button>
-        </div>
+  </audio>-->
+  <div>
+    <a class="play standard_padding" href="#">- PLAY -</a>
+  </div>
+  <!-- The Payment Modal -->
+  <div id="package_select" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">×</span>
+        <h2>Purchase a Rebel Package</h2>
+      </div>
+      <div class="modal-body">
+        <h3>Rebel Package Ranks</h3>
+        <p>Officer: 20 Lives - $1.99</p>
+        <p>Captain: 125 Lives - $9.99</p>
+        <p>General: 300 Lives - $19.99</p>
+        <button id="officer">Flight Officer</button>
+        <button id="captain">Captain</button>
+        <button id="general">General</button>
       </div>
     </div>
+  </div>
+  <footer>
+    <div class="volume"></div>
+  </footer>
+</div>
+</div>
 
-  </body>
-  </html>
+</body>
+</html>

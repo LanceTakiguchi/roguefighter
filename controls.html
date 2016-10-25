@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Controls | Rogue Fighter </title>
+  <title>Rogue Fighter | Controls</title>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html" charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,20 +13,20 @@
   <script src="js/visual.js"></script>
 </head>
 <body>
-
 <div class="wrapper">
   <header>
-    <div id="background_slice">
+    <div id="background_slice"  class="originalHeight">
       <div id="brand">
-        <img src="imgs/rogue-fighter-logo.png">
+        <img class="brandIcon" src="imgs/rogue-fighter-logo.png">
       </div>
     </div>
     <div id="navigation">
       <ul>
-        <li><a href="#"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
-        <li><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
-        <li><a href="about.html"><i class="fa fa-keyboard-o" aria-hidden="true"></i><p>About</p></a></li>
-        <li><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
+        <li class="menuItem"><a href="index.html"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
+        <li class="menuItem"><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
+        <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
+        <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
+        <li class="signIn"><a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a></li>
       </ul>
     </div>
   </header>
@@ -34,11 +34,14 @@
     <audio loop class="audioDemo" preload="none">
       <source src="sound/intro-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
     </audio>
-    <a class="play" href="#">- PLAY -</a>
+    <div>
+      <a class="play standard_padding" href="#">- PLAY -</a>
+    </div>
     <footer>
       <div class="volume"></div>
     </footer>
   </div>
+</div>
 
 </body>
 </html>

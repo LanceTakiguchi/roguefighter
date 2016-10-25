@@ -3,13 +3,29 @@ body{
     font-family: 'Ubuntu', sans-serif;
 }
 
+header{
+    width: 100%;
+}
+
 #background_slice{
     width: 100%;
-    height: 30vh;
     background: url("../imgs/rogue-fighter-cover.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+}
+
+.originalHeight{
+    min-height: 25vh;
+}
+
+.fixed{
+    position: fixed;
+    top:0;
+}
+
+.minHeight{
+    height: 10vh;
 }
 
 #brand img{
@@ -33,8 +49,8 @@ body{
      display: inline-block;
      list-style-type: none;
      vertical-align: middle;
-     font-size: 25px;
-     line-height: 25px;
+     font-size: 1vw;
+     line-height: 1vw;
      border-right: solid 1px #4D4D4D;
      padding: .75% 4% .75% 4%;
      color: #4D4D4D;
@@ -45,15 +61,23 @@ body{
     color: #4D4D4D;
 }
 
-#navigation ul li:hover{
+#navigation ul .menuItem:hover{
     background-color: #3c3c3c;
     color: #1A1A1A;
 }
 
-#navigation ul li a{
+#navigation ul .menuItem a{
     text-decoration: none;
-    margin: 0;
-    padding: 0;
+}
+
+#navigation ul .signIn a {
+    text-decoration: none;
+    padding-bottom: 1%;
+}
+
+#navigation ul .signIn a:hover {
+    border-bottom: 2px solid;
+    color: #0059ee;
 }
 
 #navigation ul li a{
@@ -61,7 +85,7 @@ body{
 }
 
 #navigation ul li a i{
-    padding: 10px 0;
+    padding: 0 0;
 }
 
 #navigation ul li a i.fa-rebel{
@@ -72,7 +96,7 @@ body{
     color: #FF8105;
 }
 
-#navigation ul li a i.fa-keyboard-o{
+#navigation ul li a i.fa-users{
     color: #18CC92;
 }
 
@@ -87,23 +111,27 @@ body{
 
 .main_content{
     width: 100%;
-    height: 60vh;
+    min-height: 67vh;
     background: url("../imgs/stars.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.main_content a {
+.standard_padding{
     padding-top: 10%;
+}
+
+.increased_padding{
+    padding-top: 30%;
+}
+
+.play {
     font-family: 'Orbitron', sans-serif;
     display: block;
     font-size: 5em;
     text-align: center;
     text-decoration: none;
     color: #eecd0a;
-}
-
-.play {
     animation: play 2s linear infinite;
 }
 
@@ -112,7 +140,7 @@ body{
 }
 
 .volume{
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     right: 50px;
     color: #ffffff;
@@ -120,12 +148,12 @@ body{
 
 .volume{
     background: url("../imgs/volume-droid.png") 0 0;
-    width: 100px;
-    height: 111px;
+    width: 200px;
+    height: 221px;
 }
 
 .volume:hover{
-    background: url("../imgs/volume-droid.png") 0 111px;
-    width: 100px;
-    height: 111px;
+    background: url("../imgs/volume-droid.png") 0 221px;
+    width: 200px;
+    height: 221px;
 }
