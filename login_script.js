@@ -37,7 +37,6 @@ function onSignIn(googleUser) {
     console.log('Email: ' + profile.getEmail());
     var dataToSend = {
         userEmail: profile.getEmail(),
-        password: 'password'
     };
     makeAjaxCall(dataToSend);
 }
