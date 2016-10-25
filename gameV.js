@@ -1,12 +1,14 @@
 /**
  * Created by Weizguy on 10/18/2016.
- * Prototype to show proof of enemy firing
+ * Prototype to for player health and shields
  */
 
 // declaration of game engine
 // this is where you can change the board size
 //var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
-var game = new Phaser.Game('gameArea'.width, 'gameArea'.height, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update });
+var gameWidth = 600;
+var gameHeight = 800;
+var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', { preload: preload, create: create, update: update, render: render });
 
 // declare all globals
 var background = null;
@@ -23,7 +25,13 @@ var tieBullet;
 var enemyBullets;
 var explosions;
 var explode;
-var shields;
+var playerDeath;
+var playerShield;
+var score = 0;
+var highScore;
+var numLives = 5;
+var maxHealth = 120;
+var playerHealth = maxHealth;
 
 function preload() {
 
@@ -38,18 +46,22 @@ function preload() {
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.audio('blaster', 'assets/blaster.mp3');
     game.load.audio('explode', 'assets/explosion.mp3');
+    game.load.image('shield0', 'assets/shield0.png');
+    game.load.image('shield1', 'assets/shield1.png');
+    game.load.image('shield2', 'assets/shield2.png');
+    game.load.image('shield3', 'assets/shield3.png');
+    game.load.image('lives', 'assets/lives.png');
 
 }
 
 
 function create() {
 
-    background = game.add.tileSprite(0, 0, game.width, game.height, 'background');
+    background = game.add.tileSprite(0, 0, gameWidth, gameHeight, 'background');
     // this is where you set the speed of the scroll (and the direction)
     background.autoScroll(0, 60);
 
-    // the image is set super wide to not show up over and over again
-    foreground = game.add.tileSprite(0, 0, game.width, 250, 'foreground');
+    foreground = game.add.tileSprite(0, 0, gameWidth, 250, 'foreground');
     // here it is set to scroll left
     foreground.autoScroll(-10, 0);
 
@@ -81,11 +93,22 @@ function create() {
     tieFightersBullets.setAll('checkWorldBounds', true);
     tieFightersBullets.forEach(function(enemy){
         enemy.body.setSize(20, 20);
+        enemy.body.setSize(enemy.width * 3 / 4, enemy.height * 3 / 4);
+        enemy.damageAmount = 20;
     });
 
     xwing = game.add.group();
     xwing.enableBody = true;
     xwing.physicsBodyType = Phaser.Physics.ARCADE;
+
+
+    function life(lives){
+        for(var i = 0; i < lives; i++){
+
+            pLife = game.add.sprite(60 + (i * 30), gameHeight - 50, 'lives');
+        }
+    }
+    life(numLives);
 
     bullets = game.add.group();
     bullets.enableBody = true;
@@ -106,7 +129,7 @@ function create() {
     }
 
     // create the xwing
-    xwing = game.add.sprite(game.width/2, game.height/2, 'xwing');
+    xwing = game.add.sprite(gameWidth/2, gameHeight-50, 'xwing');
     xwing.anchor.setTo(0.5, 0.5);
     game.physics.enable(xwing, Phaser.Physics.ARCADE);
     xwing.body.collideWorldBounds = true;
@@ -116,16 +139,50 @@ function create() {
     explosions.createMultiple(30, 'kaboom');
     explosions.forEach(setupExplosions, this);
 
+
+
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
-
+    playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
 }
 
+function shield(health){
+    var phealth = (health/maxHealth) * 100;
+
+    playerShield.reset();
+    if(phealth >= 75){
+        playerShield.kill();
+        playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');           }else if(phealth >= 50 && phealth < 75){
+            playerShield.kill();
+        playerShield = game.add.sprite(10, gameHeight - 50, 'shield1');
+    }else if(phealth >= 25 && phealth < 50){
+            playerShield.kill();
+        playerShield = game.add.sprite(10, gameHeight - 50, 'shield2');
+    }else if(phealth > 0 && phealth < 25) {
+           playerShield.kill();
+        playerShield = game.add.sprite(10, gameHeight - 50, 'shield3');
+    }else if(phealth <= 0) {
+        playerShield.kill();
+    }
+}
+
+function render(){
+
+}
 // add explosions
 function setupExplosions (explode) {
 
     explode.animations.add('kaboom');
 }
+
+// Player Explosion
+//
+// playerDeath = game.add.emitter(player.x, player.y);
+// playerDeath.width = 50;
+// playerDeath.height = 50;
+// playerDeath.makeParticles('explosion', [0,1,2,3,4,5,6,7], 10);
+// playerDeath.setAlpha(0.9, 0, 800);
+// playerDeath.setScale(0.1, 0.6, 0.1, 0.6, 1000, Phaser.Easing.Quintic.Out);
 
 
 function update() {
@@ -190,25 +247,31 @@ function resetBullet (bullet) {
 // called if enemy and player collide
 function enemyPlayerCollide (player, enemy) {
 
-    player.kill();
+
+    playerHealth -= 20;
+    shield(playerHealth);
     enemy.kill();
 
-    //  And create an explosion :)
-    var explosion = explosions.getFirstExists(false);
-    explosion.reset(player.body.x, player.body.y);
-    explosion.play('kaboom', 30, false, true);
-    game.explode.play();
-    explosion.reset(enemy.body.x, enemy.body.y);
-    explosion.play('kaboom', 30, false, true);
-    game.explode.play();
+    if (player.alive) {
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(player.body.x + player.body.halfWidth, player.body.y + player.body.halfHeight);
+        explosion.alpha = 0.7;
+        explosion.play('kaboom', 30, false, true);
+        game.explode.play();
+    } else {
+        playerDeath.x = player.x;
+        playerDeath.y = player.y;
+        playerDeath.start(false, 1000, 10, 10);
+    }
 
-    player.reset(250, 750);
 }
 
 // called if enemy bullet kills player
 function enemyBulletKillPlayer (player, enemyBullet) {
 
-    player.kill();
+    //player.kill();
+    playerHealth -= 20;
+    shield(playerHealth);
     enemyBullet.kill();
 
     //  And create an explosion :)
@@ -217,7 +280,11 @@ function enemyBulletKillPlayer (player, enemyBullet) {
     explosion.play('kaboom', 30, false, true);
     game.explode.play();
 
-    player.reset(250, 750);
+
+    if(playerHealth <= 0) {
+        player.reset(gameWidth / 2, gameHeight - 50);
+        playerShield.kill();
+    }
 }
 
 //  Called if the bullet hits one of the enemies
@@ -271,4 +338,33 @@ function launchTieFighter() {
 
     // Send another enemy soon
     game.time.events.add(game.rnd.integerInRange(min, max), launchTieFighter);
+}
+
+function restart () {
+    //  Reset the enemies
+    tieFighters.callAll('kill');
+    game.time.events.remove(tieFighterLaunchTimer);
+    game.time.events.add(1000, launchTieFighter);
+    //advancedTie.callAll('kill');
+    //advancedTieBullets.callAll('kill');
+    // game.time.events.remove(advancedTieLaunchTimer);
+    // starDestroyer.kill();
+    // game.time.events.remove(starDestroyerLaunchTimer);
+
+    // advancedTie.callAll('kill');
+    // game.time.events.remove(advancedTieLaunchTimer);
+    //  Revive the player
+    // player.weaponLevel = 1;
+    player.revive();
+    player.health = 100;
+    score = 0;
+
+    //  Hide the text
+    gameOver.visible = false;
+    $("#shieldHUD").html(" ");
+    $("#lifeHUD").html(" ");
+    //  Reset pacing
+    tieFighterSpacing = 1000;
+    // advancedTieLaunched = false;
+    // starDestroyerLaunched = false;
 }
