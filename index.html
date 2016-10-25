@@ -10,10 +10,15 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="js/visual.js"></script>
+  <script src="js/stripe_api.js"></script>
+  <script src="js/stripe_gen.js"></script>
 </head>
 <body>
-
   <div class="wrapper">
     <header>
       <div id="background_slice">
@@ -30,17 +35,10 @@
           <li>
             <!-- In action insert the server side code -->
             <!-- Use any email, 4242424242424242 as the credit card for testing, any exp date and any 3 digit cvc -->
-            <form action="payment_confirmation.html" method="POST">
-              <script
-              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="pk_test_FdGFoKV6xdSErG0cg7GNrKz3"
-              data-amount="999"
-              data-name="C10 | 8 Bit Bullet Hell"
-              data-description="Widget"
-              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-              data-locale="auto">
-              </script>
-            </form>
+            <div id="dialog-confirm" title="Purchase Lives">
+              <p><span class="" style="float:left; margin:12px 12px 20px 0;"></span>Select a package<br>Rebel: $2.99 - 30 lives<br>General: $19.99 - 250 lives</p>
+            </div>
+            <button id="customButton">Purchase</button>
           </li>
         </ul>
       </div>
