@@ -1,10 +1,16 @@
 <?php
-session_start();
+//session_start();
 require_once('mysql_connect.php');
+$output = ['success' => false];
+if(!$conn){
+    $output['message'] = "Fatal Error: could not reach database";
+    $fatal_error = json_encode($output);
+    print_r($fatal_error);
+    exit();
+}
 $test_password = '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8';
 $user_email = $_POST['userEmail'];
 $received_password = sha1($_POST['password']);
-$output = ['success' => false];
 $query_string = "SELECT `username`, `high_score` FROM `users` WHERE `email`='$user_email'";
 if (isset($received_password, $user_email)){
     $query_result = mysqli_query($conn, $query_string);
@@ -25,4 +31,5 @@ if (isset($received_password, $user_email)){
 }
 $json_output = json_encode($output);
 print_r($json_output);
+mysqli_close($conn);
 ?>

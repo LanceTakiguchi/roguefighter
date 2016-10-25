@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ROGUE FIGHTERS LOGIN</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="1008724184795-omh68sq6kf9amt9qnnb1dar36okaku6l.apps.googleusercontent.com">
+    <script src="login_script.js"></script>
+</head>
+<body>
+<form>
+    <input type="email" name="email" placeholder="Email">
+    <input type="password" name="password" placeholder="password">
+    <button type="button" id="old">Login</button>
+</form>
+<div id="welcomeBack"></div>
+<br><br><br>
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
+<br>
+<button type="button" onclick="signOut();">Sign out</button>
+</body>
+</html>
