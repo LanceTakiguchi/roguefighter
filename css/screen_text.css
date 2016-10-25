@@ -1,4 +1,7 @@
-p{
+#main_content{
+    padding-top: 30%;
+}
+#titlecontent p{
     font-family: 'Archivo Black', sans-serif;
     color: #f8bb00;
 }
@@ -15,7 +18,7 @@ p{
     font-weight: bold;
     text-align: justify;
     overflow: hidden;
-    transform-origin: 50% 100%;
+    transform-origin: 50% 102%;
     transform: perspective(300px) rotateX(25deg);
 }
 #titles:after
@@ -34,7 +37,7 @@ p{
 {
     position: absolute;
     top: 100%;
-    animation: scroll 200s linear 4s;
+    animation: scroll 100s linear 4s;
 }
 
 @keyframes scroll {

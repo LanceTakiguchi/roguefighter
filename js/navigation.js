@@ -1,24 +1,7 @@
-/**
- * Created by numberSix on 10/23/2016.
- */
-$(document).ready(function() {
-  //fixed navigation on scroll
+$(document).ready(function(){
+  //only when ready, call this
   navScroll();
-  //loads music and plays music on document load
-  playMusic();
-  //click handler for volume
-  $('.volume').click(volumeOff);
-  
-});
-
-function playMusic(){
-  $('.audioDemo').trigger('load');
-  $(".audioDemo").trigger('play');
-}
-
-function volumeOff(){
-  $(".audioDemo").prop("muted",!$(".audioDemo").prop("muted"));
-}
+  });
 
 function navScroll() {
   $(window).scroll(function () {
