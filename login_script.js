@@ -37,8 +37,10 @@ function onSignIn(googleUser) {
     console.log('Email: ' + profile.getEmail());
     var dataToSend = {
         userEmail: profile.getEmail(),
+        userName: profile.getName()
     };
     makeAjaxCall(dataToSend);
+    $("<img>", {src: profile.getImageURl()}).apppendTo("#welcomeBack");
 }
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();

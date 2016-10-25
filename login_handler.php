@@ -8,7 +8,7 @@ if(!$conn){
     print_r($fatal_error);
     exit();
 }
-$test_password = '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8';
+$user_name = $_POST['userName'];
 $user_email = $_POST['userEmail'];
 $query_string = "SELECT `username`, `high_score` FROM `users` WHERE `email`='$user_email'";
 if (isset($user_email)){
@@ -19,6 +19,9 @@ if (isset($user_email)){
         while ($row = mysqli_fetch_assoc($query_result)){
             $output['data'] = $row;
         }
+    } else{
+        $user_insert_query = "INSERT INTO `users`(`username`, `email`, `high_score`, `date_created`) VALUES ('$user_name','$user_email','0','NOW()')";
+        mysqli_query($conn, $grade_insert_query);
     }
 } else {
     $output['message'] = "USERNAME OR PASSWORD INCORRECT";
