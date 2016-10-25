@@ -8,12 +8,10 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/stripe_pay_options.css">
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
   <script src="https://checkout.stripe.com/checkout.js"></script>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="js/visual.js"></script>
   <script src="js/stripe_api.js"></script>
   <script src="js/stripe_gen.js"></script>
@@ -35,10 +33,9 @@
           <li>
             <!-- In action insert the server side code -->
             <!-- Use any email, 4242424242424242 as the credit card for testing, any exp date and any 3 digit cvc -->
-            <div id="dialog-confirm" title="Purchase Lives">
-              <p><span class="" style="float:left; margin:12px 12px 20px 0;"></span>Select a package<br>Rebel: $2.99 - 30 lives<br>General: $19.99 - 250 lives</p>
-            </div>
-            <button id="customButton">Purchase</button>
+
+            <!-- Trigger/Open The Modal -->
+            <button id="myBtn">Open Modal</button>
           </li>
         </ul>
       </div>
@@ -51,6 +48,24 @@
        <footer>
         <div class="volume"></div>
       </footer>
+    </div>
+    <!-- The Payment Modal -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">×</span>
+          <h2>Purchase a Package</h2>
+        </div>
+        <div class="modal-body">
+          <h3>Package Ranks</h3>
+          <p>Officer: 20 Lives - $1.99</p>
+          <p>Captain: 125 Lives - $9.99</p>
+          <p>General: 300 Lives - $19.99</p>
+          <button id="officer">Flight Officer</button>
+          <button id="captain">Captain</button>
+          <button id="general">General</button>
+        </div>
+      </div>
     </div>
 
   </body>

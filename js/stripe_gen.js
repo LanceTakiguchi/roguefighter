@@ -1,50 +1,62 @@
-// Close Checkout on page navigation:
+// Stripe: Close Checkout on page navigation:
 window.addEventListener('popstate', function() {
 	handler.close();
 });
 
 document.addEventListener("DOMContentLoaded", function(event) { 
-	document.getElementById('customButton').addEventListener('click', function(e) {
-  // Open Checkout with further options:
-  var data_amount = null;
-  $( "#dialog-confirm" ).dialog({
-  	resizable: false,
-  	height: "auto",
-  	width: 400,
-  	modal: true,
-  	buttons: {
-  		"Rebel": function() {
-  			open_stripe(299);
-  			$( this ).dialog( "close" );
-  		},
-  		"General": function() {
-  			open_stripe(1999);
-  			$( this ).dialog( "close" );
-  		},
-  		Cancel: function() {
-  			$( this ).dialog( "close" );
-  		}
-  	}
+// Get the package modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the package modal
+var btn = document.getElementById("myBtn");
+
+// Buttons that determine what rank of lives to buy
+var officer = document.getElementById("officer");
+var captain = document.getElementById("captain");
+var general = document.getElementById("general");
+
+// Get the <span> element that closes the package modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, display/open the package modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// Rank button purchase handler
+officer.onclick = function() {
+    // Hide the package type modal
+    modal.style.display = "none";
+    // Open the Stripe modal
+    open_stripe(199);
+  }
+  captain.onclick = function() {
+    modal.style.display = "none";
+    open_stripe(999);
+  }
+  general.onclick = function() {
+    modal.style.display = "none";
+    open_stripe(1999);
+  }
+// When the user clicks on <span> (x), close the package modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the package modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Stripe modal settings
+function open_stripe(data_amount){
+  handler.open({
+    name: 'C10 | 8 Bit Bullet Hell',
+    description: '2 widgets',
+    amount: data_amount
   });
-  function open_stripe(data_amount){
-  	handler.open({
-  		name: 'C10 | 8 Bit Bullet Hell',
-  		description: '2 widgets',
-  		amount: data_amount
-  	});
-  	e.preventDefault();
-  }	
-} );
+  e.preventDefault();
+} 
 });
-// var data_amount = null;
-// data_amount = parseInt(prompt("Please input how much you want to donate"));
-// if(!data_amount){
-// 	data_amount = 999;
-// }
-//   handler.open({
-//   	name: 'C10 | 8 Bit Bullet Hell',
-//   	description: '2 widgets',
-//   	amount: data_amount
-//   });
-//   e.preventDefault();
-// });
