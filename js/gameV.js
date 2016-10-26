@@ -34,9 +34,11 @@ var playerDeath;
 var playerShield;
 var score = 0;
 var highScore;
-var numLives = 5;
+var pLives;
+var maxLives = 5;
 var maxHealth = 120;
 var playerHealth = maxHealth;
+var numLives = maxLives;
 
 function preload() {
 
@@ -140,10 +142,11 @@ function create() {
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
     playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
 
-    // for (var i = 0; i < numLives; i++) {
-    //     pLife = game.add.sprite(60 + (i * 30), gameHeight - 50, 'lives');
-    // }
-    life(numLives);
+    pLives = game.add.group();
+    var pLife;
+    for (var i = 0; i < numLives; i++) {
+        pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
+    }
 }
 
 function shield(health) {
@@ -165,7 +168,7 @@ function shield(health) {
         playerShield = game.add.sprite(10, gameHeight - 50, 'shield3');
     } else if (phealth <= 0) {
         playerShield.kill();
-        pLife.kill();
+        pLives.removeAll();
         numLives -= 1;
         life(numLives);
         if (numLives > 0) {
@@ -179,8 +182,9 @@ function shield(health) {
 
 
 function life(lives) {
-    for (var i = 0; i < lives; i++) {
-        pLife = game.add.sprite(60 + (i * 30), gameHeight - 50, 'lives');
+
+    for (var i = 0; i < numLives; i++) {
+        pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
 }
 
@@ -275,7 +279,7 @@ function enemyBulletKillPlayer(player, enemyBullet) {
         explosion.reset(player.body.x, player.body.y);
         explosion.play('kaboom', 30, false, true);
         game.explode.play();
-        player.reset(gameWidth / 2, gameHeight - 50);
+        player.reset(gameWidth / 2, gameHeight - 150);
         playerShield.kill();
     }
 }
@@ -338,24 +342,10 @@ function restart() {
     tieFighters.callAll('kill');
     game.time.events.remove(tieFighterLaunchTimer);
     game.time.events.add(1000, launchTieFighter);
-    //advancedTie.callAll('kill');
-    //advancedTieBullets.callAll('kill');
-    // game.time.events.remove(advancedTieLaunchTimer);
-    // starDestroyer.kill();
-    // game.time.events.remove(starDestroyerLaunchTimer);
-
-    // advancedTie.callAll('kill');
-    // game.time.events.remove(advancedTieLaunchTimer);
-    //  Revive the player
-    // player.weaponLevel = 1;
     player.revive();
     player.health = 100;
     score = 0;
 
-    //  Hide the text
-    gameOver.visible = false;
     //  Reset pacing
     tieFighterSpacing = 1000;
-    // advancedTieLaunched = false;
-    // starDestroyerLaunched = false;
 }
