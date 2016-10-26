@@ -18,6 +18,20 @@ body {
     background-size: cover;
 }
 
-p{
-    color:white;
+.skip{
+    display: block;
+    position: fixed;
+    bottom: 2%;
+    right: 10%;
+    padding: .50% 2.5%;
+    color: #000000;
+    background: #f8bb00;
+    border-radius: 2em;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 2em;
+    animation: play 4s linear infinite;
+}
+
+@keyframes play {
+    50% {opacity: 0;}
 }

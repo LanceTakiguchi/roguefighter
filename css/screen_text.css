@@ -1,8 +1,9 @@
-#main_content{
-    padding-top: 30%;
-}
 html, body{
     overflow: hidden;
+}
+
+#main_content{
+    padding-top: 30%;
 }
 
 #titlecontent p{
