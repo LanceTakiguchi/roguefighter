@@ -43,7 +43,7 @@ var numLives = maxLives;
 function preload() {
 
     // add the images/audio to the game
-    game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+    //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.load.image('background', 'assets/back.png');
     game.load.image('foreground', 'assets/deathstar.png');
     game.load.image('xwing', 'assets/xwing.png');

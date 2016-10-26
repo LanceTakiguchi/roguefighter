@@ -3,7 +3,7 @@ body {
 }
 
 .wrapper{
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     background: url("../imgs/stars.jpg");
     background-repeat: no-repeat;
@@ -11,7 +11,7 @@ body {
 }
 
 #gameScreen{
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     background: url("../imgs/stars.jpg");
     background-repeat: no-repeat;
@@ -37,9 +37,15 @@ body {
 }
 
 #container{
-    position: absolute;
-    left: 30%;
-    right: 30%;
-    height: 85%;
-    top: 5%;
+
+    margin: auto;
+    width: 33%;
+}
+
+#gameArea {
+    width: 600px;
+    height: 800px;
+    border: solid goldenrod 3px;
+    border-radius: 5%;
+    padding: 10px;
 }
