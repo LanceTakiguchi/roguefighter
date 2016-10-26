@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+}
+
+.wrapper{
+    width: 100%;
+    height: 100vh;
+    background: url("../imgs/stars.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#gameScreen{
+    width: 100%;
+    height: 100vh;
+    background: url("../imgs/stars.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+p{
+    color:white;
+}

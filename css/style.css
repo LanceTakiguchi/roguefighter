@@ -109,6 +109,39 @@ header{
     padding: 0;
 }
 
+.signIn{
+    position: relative;
+}
+
+.signIn .toolTip{
+    font-size: 1em;
+    width: 80%;
+    padding: 3%;
+    background-color: #0059ee;
+    visibility: hidden;
+    color: #ffffff;
+    position: absolute;
+    z-index: 1;
+    top: -2.5em;
+    border-radius: 2px;
+}
+
+.signIn:hover .toolTip{
+    visibility: visible;
+}
+
+.toolTip:before{
+    display:block;
+    position:absolute;
+    content:'';
+    width:0;
+    height:0;
+    border-left: 15px solid transparent;
+    border-right:15px solid transparent;
+    border-top: 15px solid #0059ee;
+    bottom: -13px;
+}
+
 .main_content{
     width: 100%;
     min-height: 67vh;
@@ -148,12 +181,13 @@ header{
 
 .volume{
     background: url("../imgs/volume-droid.png") 0 0;
-    width: 200px;
-    height: 221px;
+    width: 150px;
+    height: 198px;
 }
 
-.volume:hover{
-    background: url("../imgs/volume-droid.png") 0 221px;
-    width: 200px;
-    height: 221px;
+.volumeOff{
+    background: url("../imgs/volume-droid.png") 0 198px;
+    width: 150px;
+    height: 198px;
 }
+

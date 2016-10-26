@@ -1,6 +1,10 @@
 #main_content{
     padding-top: 30%;
 }
+html, body{
+    overflow: hidden;
+}
+
 #titlecontent p{
     font-family: 'Archivo Black', sans-serif;
     color: #f8bb00;

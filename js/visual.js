@@ -18,6 +18,7 @@ function playMusic(){
 
 function volumeOff(){
   $(".audioDemo").prop("muted",!$(".audioDemo").prop("muted"));
+  $('.volume').toggleClass('volumeOff');
 }
 
 function navScroll() {
