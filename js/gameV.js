@@ -114,11 +114,35 @@ function createText() {
 
 }
 
+function play() {
+
+    game.pause = true;
+    console.log('PLAY GAME');
+    // Play Game Text
+    playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME");
+    playGameText.anchor.set(0.5);
+    playGameText.font = 'Orbitron';
+    playGameText.fontSize = 70;
+    playGamegrd = playGameText.context.createLinearGradient(0, 0, 0, playGameText.canvas.height);
+    playGamegrd.addColorStop(0, 'yellow');
+    playGamegrd.addColorStop(1, 'orange');
+    playGameText.fill = playGamegrd;
+    playGameText.align = 'center';
+    playGameText.stroke = '#000000';
+    playGameText.strokeThickness = 2;
+    playGameText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+    playGameText.inputEnabled = true;
+    xwing.kill();
+
+    playGameText.events.onInputDown.add(restart, this);
+}
+
 function gameOver(){
 
     console.log('GAME OVER');
     // Game Over Text
-    gameOverText = game.add.text(40, gameHeight/2 - 35, "GAME OVER!");
+    gameOverText = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER!");
+    gameOverText.anchor.set(0.5);
     gameOverText.font = 'Orbitron';
     gameOverText.fontSize = 70;
     gameOvergrd = gameOverText.context.createLinearGradient(0, 0, 0, gameOverText.canvas.height);
@@ -158,8 +182,6 @@ function create() {
     tieFighters.setAll('angle', 180);
     tieFighters.setAll('outOfBoundsKill', true);
     tieFighters.setAll('checkWorldBounds', true);
-
-    launchTieFighter();
 
     // tieFighter bullets
     tieFightersBullets = game.add.group();
@@ -231,6 +253,9 @@ function create() {
     for (var i = 0; i < numLives; i++) {
         pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
+
+
+    play();
 }
 
 function shield(health) {
@@ -464,6 +489,7 @@ function launchTieFighter() {
 function restart() {
     //  Reset the enemies
     tieFighters.callAll('kill');
+    tieFightersBullets.callAll('kill');
     xwing.revive();
     playerHealth = maxHealth;
     numLives = maxLives;
@@ -472,8 +498,10 @@ function restart() {
     life(numLives);
     scoreText.kill();
     createText();
+    launchTieFighter();
 
     //  Hide the text
+    playGameText.visible = false;
     gameOverText.visible = false;
 }
 
