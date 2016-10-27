@@ -48,4 +48,5 @@ body {
     border: solid goldenrod 3px;
     border-radius: 5%;
     padding: 10px;
+    cursor: none;
 }

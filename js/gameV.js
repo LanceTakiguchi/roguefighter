@@ -47,12 +47,13 @@ var explosions;
 var explode;
 var playerDeath;
 var playerShield;
+var gameOver;
 var scoreText;
 var highScoreText;
 var score = 0;
-var highScore = 100;
+var highScore;
 var pLives;
-var maxLives = 3;
+var maxLives = 2;
 var maxHealth = 120;
 var playerHealth = maxHealth;
 var numLives = maxLives;
@@ -109,6 +110,29 @@ function createText() {
     highScoreText.stroke = '#000000';
     highScoreText.strokeThickness = 2;
     highScoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+
+
+}
+
+function gameOver(){
+
+    console.log('GAME OVER');
+    // Game Over Text
+    gameOverText = game.add.text(40, gameHeight/2 - 35, "GAME OVER!");
+    gameOverText.font = 'Orbitron';
+    gameOverText.fontSize = 70;
+    gameOvergrd = gameOverText.context.createLinearGradient(0, 0, 0, gameOverText.canvas.height);
+    gameOvergrd.addColorStop(0, 'yellow');
+    gameOvergrd.addColorStop(1, 'orange');
+    gameOverText.fill = gameOvergrd;
+    gameOverText.align = 'center';
+    gameOverText.stroke = '#000000';
+    gameOverText.strokeThickness = 2;
+    gameOverText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+    gameOverText.inputEnabled = true;
+    gameOverText.events.onInputDown.add(restart, this);
+    xwing.kill();
+
 }
 
 
@@ -188,6 +212,16 @@ function create() {
     explosions.forEach(setupExplosions, this);
 
 
+
+    //  Big explosion
+    playerDeath = game.add.emitter(xwing.x, xwing.y);
+    playerDeath.width = 50;
+    playerDeath.height = 50;
+    playerDeath.makeParticles('kaboom', [0,1,2,3,4,5,6,7], 10);
+    playerDeath.setAlpha(0.9, 0, 800);
+    playerDeath.setScale(0.1, 0.6, 0.1, 0.6, 1000, Phaser.Easing.Quintic.Out);
+
+
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
     playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
@@ -226,7 +260,7 @@ function shield(health) {
             playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
             shield(playerHealth);
         } else if(numLives <= 0) {
-            console.log('GAME OVER!');
+            gameOver();
         }
     }
 }
@@ -272,9 +306,11 @@ function update() {
         xwing.body.velocity.y = speed;
     }
 
-    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown) {
         fireBullet();
     }
+
+
 }
 
 // fire the bullet
@@ -283,10 +319,10 @@ function fireBullet() {
     if (game.time.now > bulletTime) {
         bullet = bullets.getFirstExists(false);
 
-        if (bullet) {
+        if (bullet && numLives > 0) {
             bullet.reset(xwing.x - 70, xwing.y - 0);
             bullet.reset(xwing.x - 7, xwing.y - 40);
-            bullet.body.velocity.y = -300;
+            bullet.body.velocity.y = - 500;
             bulletTime = game.time.now + 150;
             game.blaster.play();
         }
@@ -307,11 +343,27 @@ function enemyPlayerCollide(player, enemy) {
     playerHealth -= 20;
     shield(playerHealth);
     enemy.kill();
-        var explosion = explosions.getFirstExists(false);
-        explosion.reset(player.body.x + player.body.halfWidth, player.body.y + player.body.halfHeight);
-        explosion.alpha = 0.7;
-        explosion.play('kaboom', 30, false, true);
-        game.explode.play();
+
+    if(numLives > 0) {
+        if (playerHealth > 0) {
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(enemy.body.x, enemy.body.y);
+            explosion.alpha = 0.7;
+            explosion.play('kaboom', 30, false, true);
+            game.explode.play();
+        } else {
+            playerDeath.x = player.x;
+            playerDeath.y = player.y;
+            playerDeath.start(false, 1000, 10, 10);
+            game.explode.play();
+            playerShield.kill();
+            xwing.reset(50, 50);
+        }
+    }
+
+    if(numLives <= 0){
+        xwing.kill();
+    }
 
 }
 
@@ -323,19 +375,25 @@ function enemyBulletKillPlayer(player, enemyBullet) {
     shield(playerHealth);
     enemyBullet.kill();
 
-
-    if (playerHealth <= 0) {
-        //  And create an explosion :)
+if(numLives > 0) {
+    if (playerHealth > 0) {
         var explosion = explosions.getFirstExists(false);
-        if(numLives > 0) {
-            explosion.reset(player.body.x, player.body.y);
-        }
+        explosion.reset(player.body.x - 50, player.body.y - 50);
+        explosion.alpha = 0.7;
         explosion.play('kaboom', 30, false, true);
         game.explode.play();
-        if(numLives > 0) {
-            player.reset(gameWidth / 2, gameHeight - 150);
-        }
+    } else {
+        playerDeath.x = player.x;
+        playerDeath.y = player.y;
+        playerDeath.start(false, 1000, 10, 10);
+        game.explode.play();
         playerShield.kill();
+        xwing.reset(50, 50);
+    }
+}
+
+    if(numLives <= 0){
+        xwing.kill();
     }
 }
 
@@ -349,6 +407,7 @@ function playerKillsEnemy(bullet, enemy) {
 
     if(score >= highScore){
         highScore = score;
+        updateScore(highScore);
     }
 
     scoreText.kill();
@@ -405,12 +464,58 @@ function launchTieFighter() {
 function restart() {
     //  Reset the enemies
     tieFighters.callAll('kill');
-    game.time.events.remove(tieFighterLaunchTimer);
-    game.time.events.add(1000, launchTieFighter);
-    player.revive();
-    player.health = 100;
+    xwing.revive();
+    playerHealth = maxHealth;
+    numLives = maxLives;
     score = 0;
 
-    //  Reset pacing
-    tieFighterSpacing = 1000;
+    //  Hide the text
+    gameOverText.visible = false;
+}
+
+
+
+// set the database reference
+var firebaseRef = firebase;
+//var game = null;
+$(document).ready(function () {
+
+// Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCjFyM0sI-Usm5UJTknhJkprxgPsEmVyUg",
+        authDomain: "star-wars-1978.firebaseapp.com",
+        databaseURL: "https://star-wars-1978.firebaseio.com",
+        storageBucket: "star-wars-1978.appspot.com",
+        messagingSenderId: "919373111684"
+    };
+    firebase.initializeApp(config);
+
+    // check for anonymous login issues
+    firebaseRef.auth().signInAnonymously().catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+    });
+
+});
+
+var db;
+$(document).ready(function(){
+
+    db = firebaseRef.database().ref('hiScore');
+    db.on('value', update_score);
+
+});
+
+function updateScore(board){
+    db.set({
+        hiScore: board
+    });
+}
+
+var state;
+function update_score(score){
+    console.log("NEW SCORE RECEIVED", score.val());
+    state = score.val();
+    highScore = state.hiScore;
 }
