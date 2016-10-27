@@ -30,7 +30,8 @@ mysqli_query($conn, $add_charge_to_db);
 $purchase_id = mysqli_insert_id($conn);
 mysqli_commit($conn);
 if(isset($purchase_id)){
-
+    $game_play_update_query = "UPDATE `users` SET `game_plays`=`game_plays` + 5 WHERE `ID`='1'";
+    $update_results = musqli_query($conn, $game_play_update_query);
 }
 //header('location: checkout.php');
 print_r($_SESSION);
