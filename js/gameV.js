@@ -468,6 +468,10 @@ function restart() {
     playerHealth = maxHealth;
     numLives = maxLives;
     score = 0;
+    shield(playerHealth);
+    life(numLives);
+    scoreText.kill();
+    createText();
 
     //  Hide the text
     gameOverText.visible = false;
