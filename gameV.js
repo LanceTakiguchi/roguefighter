@@ -1,5 +1,6 @@
 /**
  * Created by Weizguy on 10/18/2016.
+
  * Prototype to show proof of collision
  * ie. bullets kill tie fighter, and ship
  * collides with tie fighter, both die and
@@ -10,6 +11,7 @@
 
 // declaration of game engine
     // this is where you can change the board size
+//game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
 var game = new Phaser.Game(600, 900, Phaser.AUTO, 'C10_game', { preload: preload, create: create, update: update });
 
     // declare all globals
@@ -18,31 +20,28 @@ var game = new Phaser.Game(600, 900, Phaser.AUTO, 'C10_game', { preload: preload
     var cursors = null;
     var speed = 300;
     var xwing;
-    var enemies;
     var bullets;
     var bulletTime = 0;
     var bullet;
+    var tieBullet;
+    var enemyBullets;
     var tieFighters;
     var blaster;
     var explosions;
     var explode;
 
 function preload() {
-    
+
     // add the images/audio to the game
-    game.load.image('background', 'back.png');
-    game.load.image('foreground', 'deathstar.png');
-    game.load.image('xwing', 'xwing.png');
-    game.load.spritesheet('tieFighter', 'tie.png');
-    game.load.image('bullet', 'bullet0.png');
-    game.load.image('background', 'back.png');
-    game.load.image('foreground', 'deathstar.png');
-    game.load.image('xwing', 'xwing.png');
-    game.load.image('tieFighter', 'tie.png');
-    game.load.image('bullet', 'bullet0.png');
-    game.load.spritesheet('kaboom', 'explode.png', 128, 128);
-    game.load.audio('blaster', 'blaster.mp3');
-    game.load.audio('explode', 'explosion.mp3');
+    game.load.image('background', 'assets/back.png');
+    game.load.image('foreground', 'assets/deathstar.png');
+    game.load.image('xwing', 'assets/xwing.png');
+    game.load.image('tieFighter', 'assets/tie.png');
+    game.load.image('bullet', 'assets/bullet0.png');
+    game.load.image('tieBullet', 'assets/enemyBullet0.png');
+    game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
+    game.load.audio('blaster', 'assets/blaster.mp3');
+    game.load.audio('explode', 'assets/explosion.mp3');
 }
 
 function create() {
@@ -52,8 +51,9 @@ function create() {
     background.autoScroll(0, 60);
 
     // the image is set super wide to not show up over and over again
-    foreground = game.add.tileSprite(0, 0, 1600, 250, 'foreground');
+    foreground = game.add.tileSprite(0, 0, game.width, 250, 'foreground');
     // here it is set to scroll left
+
     foreground.autoScroll(-20, 0);
     
     //  This will check Group vs. Group collision (bullets vs. enemies)
@@ -61,6 +61,7 @@ function create() {
     enemies = game.add.group();
     enemies.enableBody = true;
     enemies.physicsBodyType = Phaser.Physics.ARCADE;
+
     // create the tieFighter group
     tieFighters = game.add.group();
     tieFighters.enableBody = true;
@@ -71,10 +72,25 @@ function create() {
     tieFighters.setAll('scale.x', 0.5);
     tieFighters.setAll('scale.y', 0.5);
     tieFighters.setAll('angle', 180);
-    tieFighters.setAll('outOfBoundsKill', false);
+    tieFighters.setAll('outOfBoundsKill', true);
     tieFighters.setAll('checkWorldBounds', true);
-
     launchTieFighter();
+
+
+    // tieFighter bullets
+    tieFightersBullets = game.add.group();
+    tieFightersBullets.enableBody = true;
+    tieFightersBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    tieFightersBullets.createMultiple(30, 'tieBullet');
+    tieFightersBullets.callAll('crop', null, {x: 90, y: 0, width: 90, height: 70});
+    tieFightersBullets.setAll('alpha', 0.9);
+    tieFightersBullets.setAll('anchor.x', 0.5);
+    tieFightersBullets.setAll('anchor.y', 0.5);
+    tieFightersBullets.setAll('outOfBoundsKill', true);
+    tieFightersBullets.setAll('checkWorldBounds', true);
+    tieFightersBullets.forEach(function(enemy){
+        enemy.body.setSize(20, 20);
+    });
 
 
     xwing = game.add.group();
@@ -84,6 +100,12 @@ function create() {
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+
+    // Add sounds
+    game.explode = game.add.audio('explode');
+    game.blaster = game.add.audio('blaster');
+
     
     // creating enemies in a random position on screen
     for (var i = 0; i < 3; i++)
@@ -104,20 +126,33 @@ function create() {
     }
 
     // create the xwing
-    xwing = game.add.sprite(250, 750, 'xwing');
+    xwing = game.add.sprite(game.width/2, game.height/2, 'xwing');
     game.physics.enable(xwing, Phaser.Physics.ARCADE);
     xwing.body.collideWorldBounds = true;
+
+    //  An explosion pool
+    explosions = game.add.group();
+    explosions.createMultiple(30, 'kaboom');
+    explosions.forEach(setupExplosions, this);
 
     cursors = game.input.keyboard.createCursorKeys();
     game.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
 
 }
 
+// add explosions
+function setupExplosions (explode) {
+
+    explode.animations.add('kaboom');
+}
+
+
 function update() {
 
-    // add the collsion handlers
-    game.physics.arcade.collide(bullets, enemies, collisionHandler, null, this);
-    game.physics.arcade.collide(xwing, enemies, enemyKillPlayer, null, this);
+    // add the collision handlers
+    //game.physics.arcade.collide(bullets, tieFighters, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(xwing, tieFighters, enemyPlayerCollide, null, this);
+    game.physics.arcade.collide(xwing, tieFightersBullets, enemyBulletKillPlayer, null, this);
 
     // make the xwing controllable
     xwing.body.velocity.x = 0;
@@ -203,9 +238,11 @@ function update() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
     {
         fireBullet();
+
     }
 }
 
+// fire the bullet
 function fireBullet () {
 
     if (game.time.now > bulletTime)
@@ -217,6 +254,7 @@ function fireBullet () {
             bullet.reset(xwing.x +  30, xwing.y - 5);
             bullet.body.velocity.y = -300;
             bulletTime = game.time.now + 150;
+            game.blaster.play();
         }
     }
 
@@ -226,14 +264,37 @@ function fireBullet () {
 function resetBullet (bullet) {
 
     bullet.kill();
-
 }
 
 // called if enemy and player collide
-function enemyKillPlayer (player, enemy) {
+function enemyPlayerCollide (player, enemy) {
 
     player.kill();
     enemy.kill();
+
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x, player.body.y);
+    explosion.play('kaboom', 30, false, true);
+    game.explode.play();
+    explosion.reset(enemy.body.x, enemy.body.y);
+    explosion.play('kaboom', 30, false, true);
+    game.explode.play();
+
+    player.reset(250, 750);
+}
+
+// called if enemy bullet kills player
+function enemyBulletKillPlayer (player, enemyBullet) {
+
+    player.kill();
+    enemyBullet.kill();
+
+    //  And create an explosion :)
+    var explosion = explosions.getFirstExists(false);
+    explosion.reset(player.body.x, player.body.y);
+    explosion.play('kaboom', 30, false, true);
+    game.explode.play();
 
     player.reset(250, 750);
 }
@@ -296,30 +357,79 @@ function launchTieFighter() {
     var MIN_ENEMY_SPACING = 300;
     var MAX_ENEMY_SPACING = 3000;
     var ENEMY_SPEED = 300;
-
+    
     var enemy = tieFighters.getFirstExists(false);
+   
     if (enemy) {
         enemy.reset(game.rnd.integerInRange(0, game.width), -20);
         enemy.body.velocity.x = game.rnd.integerInRange(-300, 300);
         enemy.body.velocity.y = ENEMY_SPEED;
         enemy.body.drag.x = 100;
     }
+    
     enemy.update = function () {
         enemy.angle = 180 - game.math.radToDeg(Math.atan2(enemy.body.velocity.x, enemy.body.velocity.y));
     }
-
-
+    
+    
     //  Send another enemy soon
     //game.time.events.add(game.rnd.integerInRange(MIN_ENEMY_SPACING, MAX_ENEMY_SPACING), launchTieFighter);
     game.time.events.add(1000, launchTieFighter);
 
 
 //  Called if the bullet hits one of the enemies
-function collisionHandler (bullet, enemy) {
-
-
-    bullet.kill();
-    enemy.kill();
-
-
+    function playerKillsEnemy(bullet, enemy) {
+        
+        
+        bullet.kill();
+        enemy.kill();
+        
+        //  And create an explosion :)
+        var explosion = explosions.getFirstExists(false);
+        explosion.reset(enemy.body.x, enemy.body.y);
+        explosion.play('kaboom', 30, false, true);
+        game.explode.play();
+    }
+    
+    function launchTieFighter() {
+        var min = 300;
+        var max = 3000;
+        
+        var enemy = tieFighters.getFirstExists(false);
+        if (enemy) {
+            enemy.reset(game.rnd.integerInRange(0, game.width), -20);
+            enemy.body.velocity.x = game.rnd.integerInRange(-300, 300);
+            enemy.body.velocity.y = speed;
+            enemy.body.drag.x = 100;
+            
+            //  Set up firing
+            var bulletSpeed = 400;
+            var firingDelay = 2000;
+            enemy.enemyBullets = 1;
+            enemy.lastShot = 0;
+        }
+        
+        enemy.update = function () {
+            enemy.angle = 180 - game.math.radToDeg(Math.atan2(enemy.body.velocity.x, enemy.body.velocity.y));
+            
+            //  Fire
+            enemyBullet = tieFightersBullets.getFirstExists(false);
+            if (enemyBullet &&
+              this.alive &&
+              this.enemyBullets &&
+              this.y > game.width / 8 &&
+              game.time.now > firingDelay + this.lastShot) {
+                this.lastShot = game.time.now;
+                this.enemyBullets--;
+                enemyBullet.reset(this.x, this.y + this.height / 2);
+                enemyBullet.damageAmount = this.damageAmount;
+                var angle = game.physics.arcade.moveToObject(enemyBullet, xwing, bulletSpeed);
+                enemyBullet.angle = game.math.radToDeg(angle);
+            }
+        }
+        // Send another enemy soon
+        game.time.events.add(game.rnd.integerInRange(min, max), launchTieFighter);
+    }
+        
 }
+    
