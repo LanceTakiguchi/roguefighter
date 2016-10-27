@@ -15,6 +15,21 @@ var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
     render: render
 });
 
+// set up for use of Orbitron font
+WebFontConfig = {
+
+    //  'active' means all requested fonts have finished loading
+    //  We set a 1 second delay before calling 'createText'.
+    //  For some reason if we don't the browser cannot render the text the first time it's created.
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+        families: ['Orbitron']
+    }
+
+};
+
 // declare all globals
 var background = null;
 var foreground = null;
@@ -32,10 +47,12 @@ var explosions;
 var explode;
 var playerDeath;
 var playerShield;
+var scoreText;
+var highScoreText;
 var score = 0;
-var highScore;
+var highScore = 100;
 var pLives;
-var maxLives = 5;
+var maxLives = 3;
 var maxHealth = 120;
 var playerHealth = maxHealth;
 var numLives = maxLives;
@@ -58,7 +75,40 @@ function preload() {
     game.load.image('shield2', 'assets/shield2.png');
     game.load.image('shield3', 'assets/shield3.png');
     game.load.image('lives', 'assets/lives.png');
+    // Load the Google WebFont Loader script
+    game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
+}
+
+// create the score text
+function createText() {
+
+
+    // Score Text
+    scoreText = game.add.text(10, 10, "Score:\n" + score);
+    scoreText.font = 'Orbitron';
+    scoreText.fontSize = 20;
+    scoregrd = scoreText.context.createLinearGradient(0, 0, 0, scoreText.canvas.height);
+    scoregrd.addColorStop(0, 'yellow');
+    scoregrd.addColorStop(1, 'orange');
+    scoreText.fill = scoregrd;
+    scoreText.align = 'left';
+    scoreText.stroke = '#000000';
+    scoreText.strokeThickness = 2;
+    scoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+
+    // High Score Text
+    highScoreText = game.add.text(game.width - 150, 10, "High Score:\n" + highScore);
+    highScoreText.font = 'Orbitron';
+    highScoreText.fontSize = 20;
+    highScoregrd = highScoreText.context.createLinearGradient(0, 0, 0, highScoreText.canvas.height);
+    highScoregrd.addColorStop(0, 'yellow');
+    highScoregrd.addColorStop(1, 'orange');
+    highScoreText.fill = highScoregrd;
+    highScoreText.align = 'right';
+    highScoreText.stroke = '#000000';
+    highScoreText.strokeThickness = 2;
+    highScoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
 }
 
 
@@ -175,8 +225,9 @@ function shield(health) {
             playerHealth = maxHealth;
             playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
             shield(playerHealth);
-        } else
+        } else if(numLives <= 0) {
             console.log('GAME OVER!');
+        }
     }
 }
 
@@ -276,10 +327,14 @@ function enemyBulletKillPlayer(player, enemyBullet) {
     if (playerHealth <= 0) {
         //  And create an explosion :)
         var explosion = explosions.getFirstExists(false);
-        explosion.reset(player.body.x, player.body.y);
+        if(numLives > 0) {
+            explosion.reset(player.body.x, player.body.y);
+        }
         explosion.play('kaboom', 30, false, true);
         game.explode.play();
-        player.reset(gameWidth / 2, gameHeight - 150);
+        if(numLives > 0) {
+            player.reset(gameWidth / 2, gameHeight - 150);
+        }
         playerShield.kill();
     }
 }
@@ -289,6 +344,16 @@ function playerKillsEnemy(bullet, enemy) {
 
     bullet.kill();
     enemy.kill();
+
+    score += 20;
+
+    if(score >= highScore){
+        highScore = score;
+    }
+
+    scoreText.kill();
+    highScoreText.kill();
+    createText();
 
     //  And create an explosion :)
     var explosion = explosions.getFirstExists(false);
