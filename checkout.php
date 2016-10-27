@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<?php
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,15 +11,22 @@
     <script src="login_script.js"></script>
 </head>
 <body>
-<form>
-    <input type="email" name="email" placeholder="Email">
-    <input type="password" name="password" placeholder="password">
-    <button type="button" id="old">Login</button>
-</form>
 <div id="welcomeBack"></div>
 <br><br><br>
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
 <br>
 <button type="button" onclick="signOut();">Sign out</button>
+<br><br><br>
+<form action="stripe_handler.php" method="POST">
+    <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="pk_test_FdGFoKV6xdSErG0cg7GNrKz3"
+            data-amount="999"
+            data-name="C10 | 8 Bit Bullet Hell"
+            data-description="Widget"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
+    </script>
+</form>
 </body>
 </html>
