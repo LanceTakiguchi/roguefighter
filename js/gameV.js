@@ -36,6 +36,7 @@ var foreground = null;
 var cursors = null;
 var speed = 300;
 var xwing;
+var alive = false;
 var tieFighters;
 var blaster;
 var bullets;
@@ -48,6 +49,8 @@ var explode;
 var playerDeath;
 var playerShield;
 var gameOver;
+var gameOverText = '';
+var playGameText = '';
 var scoreText;
 var highScoreText;
 var score = 0;
@@ -134,6 +137,7 @@ function play() {
     playGameText.inputEnabled = true;
     xwing.kill();
 
+
     playGameText.events.onInputDown.add(restart, this);
 }
 
@@ -156,6 +160,7 @@ function gameOver(){
     gameOverText.inputEnabled = true;
     gameOverText.events.onInputDown.add(restart, this);
     xwing.kill();
+    alive = false;
 
 }
 
@@ -200,6 +205,8 @@ function create() {
         enemy.damageAmount = 20;
     });
 
+    launchTieFighter();
+
     xwing = game.add.group();
     xwing.enableBody = true;
     xwing.physicsBodyType = Phaser.Physics.ARCADE;
@@ -233,8 +240,6 @@ function create() {
     explosions.createMultiple(30, 'kaboom');
     explosions.forEach(setupExplosions, this);
 
-
-
     //  Big explosion
     playerDeath = game.add.emitter(xwing.x, xwing.y);
     playerDeath.width = 50;
@@ -243,8 +248,17 @@ function create() {
     playerDeath.setAlpha(0.9, 0, 800);
     playerDeath.setScale(0.1, 0.6, 0.1, 0.6, 1000, Phaser.Easing.Quintic.Out);
 
-
     cursors = game.input.keyboard.createCursorKeys();
+
+    wasd = {
+        up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+        down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+        left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+        right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+        pawz: game.input.keyboard.addKey(Phaser.Keyboard.p),
+        rez: game.input.keyboard.addKey(Phaser.Keyboard.r)
+    };
+
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
     playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
 
@@ -318,23 +332,30 @@ function update() {
     xwing.body.velocity.x = 0;
     xwing.body.velocity.y = 0;
 
-    if (cursors.left.isDown) {
+    if (cursors.left.isDown || wasd.left.isDown) {
         xwing.body.velocity.x = -speed;
     }
-    else if (cursors.right.isDown) {
+    else if (cursors.right.isDown || wasd.right.isDown) {
         xwing.body.velocity.x = speed;
     }
-    else if (cursors.up.isDown) {
+    else if (cursors.up.isDown || wasd.up.isDown) {
         xwing.body.velocity.y = -speed;
     }
-    else if (cursors.down.isDown) {
+    else if (cursors.down.isDown || wasd.down.isDown) {
         xwing.body.velocity.y = speed;
     }
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown) {
-        fireBullet();
+        if(alive){
+            fireBullet();
+        }
     }
 
+    if (wasd.pawz.isDown) {
+        game.pause = true;
+    }else if(wasd.rez.isDown){
+        game.pause = false;
+    }
 
 }
 
@@ -490,7 +511,9 @@ function restart() {
     //  Reset the enemies
     tieFighters.callAll('kill');
     tieFightersBullets.callAll('kill');
+    game.time.events.remove(launchTieFighter);
     xwing.revive();
+    alive = true;
     playerHealth = maxHealth;
     numLives = maxLives;
     score = 0;
@@ -498,7 +521,6 @@ function restart() {
     life(numLives);
     scoreText.kill();
     createText();
-    launchTieFighter();
 
     //  Hide the text
     playGameText.visible = false;
