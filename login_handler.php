@@ -31,7 +31,6 @@ if(mysqli_num_rows($user_data_results) > 0) {
     while ($row = mysqli_fetch_assoc($user_data_results)) {
         $output['data']= $row;
     }
-    $_SESSION['game_plays'] = $output['data']['game_plays'];
 } else {
     $output['message'] = "USERNAME OR PASSWORD INCORRECT";
 }

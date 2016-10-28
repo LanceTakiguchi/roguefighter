@@ -2,6 +2,12 @@
 session_start();
 require_once('mysql_connect.php');
 require_once ('stripe-php-4.1.0/init.php');
+if(!$conn){
+    $output['message'] = "Fatal Error: could not reach database";
+    $fatal_error = json_encode($output);
+    print_r($fatal_error);
+    exit();
+}
 \Stripe\Stripe::setApiKey("sk_test_k7htWlvB4XQJXy9qzNydieSo");
 // Get the credit card details submitted by the form
 $token = $_POST['stripeToken'];
@@ -11,7 +17,7 @@ try {
         "amount" => 1000, // Amount in cents
         "currency" => "usd",
         "source" => $token,
-        "description" => "Example charge"
+        "description" => "more lives"
     ));
 } catch(\Stripe\Error\Card $e) {
     echo  "The card has been declined";

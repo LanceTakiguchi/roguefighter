@@ -1,11 +1,3 @@
-$(document).ready(function () {
-    addClickHandlers();
-});
-function addClickHandlers() {
-    $("#id").click(function () {
-        makeAjaxCall();
-    });
-}
 function makeAjaxCall(dataobj) {
     $.ajax({
         url: "login_handler.php",
