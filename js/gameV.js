@@ -119,7 +119,7 @@ function createText() {
 
 function play() {
 
-    game.pause = true;
+    //game.paused = true;
     console.log('PLAY GAME');
     // Play Game Text
     playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME");
@@ -254,9 +254,7 @@ function create() {
         up: game.input.keyboard.addKey(Phaser.Keyboard.W),
         down: game.input.keyboard.addKey(Phaser.Keyboard.S),
         left: game.input.keyboard.addKey(Phaser.Keyboard.A),
-        right: game.input.keyboard.addKey(Phaser.Keyboard.D),
-        pawz: game.input.keyboard.addKey(Phaser.Keyboard.p),
-        rez: game.input.keyboard.addKey(Phaser.Keyboard.r)
+        right: game.input.keyboard.addKey(Phaser.Keyboard.D)
     };
 
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
@@ -267,7 +265,6 @@ function create() {
     for (var i = 0; i < numLives; i++) {
         pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
-
 
     play();
 }
@@ -351,11 +348,7 @@ function update() {
         }
     }
 
-    if (wasd.pawz.isDown) {
-        game.pause = true;
-    }else if(wasd.rez.isDown){
-        game.pause = false;
-    }
+    window.onkeydown = function(event) {  if (event.keyCode == 80){       game.paused = !game.paused;   } }
 
 }
 
