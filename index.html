@@ -8,9 +8,14 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/stripe_pay_options.css">
+  <link rel="stylesheet" type="text/css" href="css/stripe_style.css">
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
+  <script src="https://checkout.stripe.com/checkout.js"></script>
   <script src="js/visual.js"></script>
+  <script src="js/stripe_api.js"></script>
+  <script src="js/stripe_gen.js"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -28,21 +33,55 @@
           <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
           <li class="signIn">
             <span class="toolTip">Sign in with your Google Account</span>
-            <a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a></li>
+            <a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
+          </li>
+          <li class="menuItem"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i><p id="purchase">Purchase</p></a>
+          </li>
         </ul>
       </div>
     </header>
     <div class="main_content">
       <audio loop class="audioDemo" preload="none">
         <source src="sound/intro-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
-      </audio>
-      <div>
-        <a class="play standard_padding" href="play.html">- PLAY -</a>
+        </audio>
+        <div>
+          <a class="play standard_padding" href="play.html">- PLAY -</a>
+        </div>
+        <!-- The Payment Modal -->
+        <div id="package_select" class="modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <!-- <i class="fa fa-times-circle close" aria-hidden="true"></i> -->
+              <img src="https://b.stripecdn.com/checkout/v3/images/close-gbN3V5bjbhRxDClwGYFQ.png" class="close">
+              <div class="shop_logo">
+                <img src="imgs/rebel.png">
+              </div>
+              <h1>Purchase a Rebel Package</h1>
+              <h2>Join the Fight Against the Empire</h2>
+            </div>
+            <!-- <div id="line_space">Fight the Empire</div> -->
+            <div class="modal-body">
+              <h4>Rebel Package Ranks</h4>
+              <div class="pkg_descriptions">
+                <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Officer: 20 Games  </p>
+                <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Captain: 125 Games  </p>
+                <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games  </p>
+              </div>
+              <div class="pkg_price">
+                <p>$1.99</p>
+                <p>$9.99</p>
+                <p>$19.99</p>
+              </div>
+              <a href="#" id="officer" class="stripe-connect light-blue"><span>Officer</span></a><br>
+              <a href="#" id="captain" class="stripe-connect light-blue"><span>Captain</span></a><br>
+              <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
+            </div>
+          </div>
+        </div>
+        <footer>
+          <div class="volume"></div>
+        </footer>
       </div>
-    <footer>
-      <div class="volume"></div>
-    </footer>
     </div>
-  </div>
-</body>
-</html>
+  </body>
+  </html>
