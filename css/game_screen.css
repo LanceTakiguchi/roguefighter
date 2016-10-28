@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+}
+
+.wrapper{
+    width: 100vw;
+    height: 100vh;
+    background: url("../imgs/stars.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#gameScreen{
+    width: 100vw;
+    height: 100vh;
+    background: url("../imgs/stars.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.skip{
+    display: block;
+    position: fixed;
+    bottom: 2%;
+    right: 10%;
+    padding: .50% 2.5%;
+    color: #000000;
+    background: #f8bb00;
+    border-radius: 2em;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 2em;
+    animation: play 4s linear infinite;
+}
+
+@keyframes play {
+    50% {opacity: 0;}
+}
+
+#container{
+
+    margin: auto;
+    width: 33%;
+}
+
+#gameArea {
+    width: 600px;
+    height: 800px;
+    border: solid goldenrod 3px;
+    border-radius: 5%;
+    padding: 10px;
+    cursor: none;
+}
