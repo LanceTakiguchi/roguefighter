@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/stripe_pay_options.css">
+  <link rel="stylesheet" type="text/css" href="css/stripe_style.css">
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
   <script src="https://checkout.stripe.com/checkout.js"></script>
@@ -31,12 +32,7 @@
           <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
           <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
           <li class="signIn"><a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a></li>
-          <li>
-            <!-- In action insert the server side code -->
-            <!-- Use any email, 4242424242424242 as the credit card for testing, any exp date and any 3 digit cvc -->
-
-            <!-- Trigger/Open The Modal -->
-            <button id="purchase">Packages</button>
+          <li class="menuItem"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i><p id="purchase">Purchase</p></a>
           </li>
         </ul>
       </div>
@@ -58,17 +54,30 @@
   <div id="package_select" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="close">×</span>
-        <h2>Purchase a Rebel Package</h2>
+        <!-- <i class="fa fa-times-circle close" aria-hidden="true"></i> -->
+        <img src="https://b.stripecdn.com/checkout/v3/images/close-gbN3V5bjbhRxDClwGYFQ.png" class="close">
+        <div class="shop_logo">
+          <img src="imgs/rebel.png">
+        </div>
+        <h1>Purchase a Rebel Package</h1>
+        <h2>Join the Fight Against the Empire</h2>
       </div>
+      <!-- <div id="line_space">Fight the Empire</div> -->
       <div class="modal-body">
-        <h3>Rebel Package Ranks</h3>
-        <p>Officer: 20 Lives - $1.99</p>
-        <p>Captain: 125 Lives - $9.99</p>
-        <p>General: 300 Lives - $19.99</p>
-        <button id="officer">Flight Officer</button>
-        <button id="captain">Captain</button>
-        <button id="general">General</button>
+        <h4>Rebel Package Ranks</h4>
+        <div class="pkg_descriptions">
+          <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Officer: 20 Games  </p>
+          <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Captain: 125 Games  </p>
+          <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games  </p>
+        </div>
+        <div class="pkg_price">
+          <p>$1.99</p>
+          <p>$9.99</p>
+          <p>$19.99</p>
+        </div>
+        <a href="#" id="officer" class="stripe-connect light-blue"><span>Officer</span></a><br>
+        <a href="#" id="captain" class="stripe-connect light-blue"><span>Captain</span></a><br>
+        <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
       </div>
     </div>
   </div>

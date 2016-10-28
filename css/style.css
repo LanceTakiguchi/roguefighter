@@ -104,6 +104,10 @@ header{
     color: #45FFF8;
 }
 
+#navigation ul li i.fa-shopping-cart {
+    color: #EAD103;
+}
+
 #navigation ul li a p{
     margin: 0;
     padding: 0;

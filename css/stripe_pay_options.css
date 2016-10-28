@@ -3,7 +3,7 @@
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    padding-top: 11.8em; /* Location of the box from top*/
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -15,12 +15,13 @@
 
 /* Modal Content */
 .modal-content {
+	border-radius: 8px;
     position: relative;
     background-color: #fefefe;
     margin: auto;
     padding: 0;
-    border: 1px solid #888;
-    width: 80%;
+    /*border: 1px solid #888;*/
+    width: 304px; /*Closely matches Stripe modal width*/
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -30,24 +31,27 @@
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0}
+    from {top:100px; opacity:0}
     to {top:0; opacity:1}
 }
 
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
+    from {top:100px; opacity:0}
     to {top:0; opacity:1}
 }
 
 /* The Close Button */
 .close {
-    color: white;
+    color: #F5F5F7; /*Grey sampled off Stripe Checkout*/
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close:hover,
+.close:hover{
+    color: #FF3A08; /*Rebel's red*/
+    cursor: pointer;
+}
 .close:focus {
     color: #000;
     text-decoration: none;
@@ -55,9 +59,71 @@
 }
 
 .modal-header {
-    padding: 2px 16px;
-    background-color: #f8bb00; /*Gold from screen_test.css*/
-    color: white;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    display: block;
+    position: relative;
+    padding: 12px 12px 12px 10px;
+    text-align: center;
+    background-color: #e8e9eb;
+}
+.modal-header h1{
+    color: #000;
+    font-size: 17px;
+    font-weight: bold;
+    height: 22px;
+    padding-top: 53px;
+}
+.modal-header h2{
+    color: #5b5b65;
+    font-size: 13px;
+    font-family: "HelveticaNeueMedium","HelveticaNeue-Medium","Helvetica Neue Medium","HelveticaNeue","Helvetica Neue",Helvetica,Arial;
+    font-weight: normal;
+    padding-bottom: 5px;
+    text-shadow: 0 1px 0 #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.1em;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.modal-body {
+	border-radius: 0px 0px 4px 4px;
+	padding: 32px 36px; 
+    background-color: #F5F5F7; /*Grey sampled off Stripe Checkout*/
+}
+.pkg_descriptions{
+    /*display: inline;*/
+    line-height: 0px;
+    float: left;
+}
+.pkg_price{
+    float: right;
+    line-height: 1;
+}
+.modal-body h4{
+    margin-top: 0em;
+    margin-bottom: .5em;
+}
+.shop_logo{
+    width: 76px;
+    height: 75px;
+    position: absolute;
+    left: 46%;
+    margin-left: -38px;
+    top: -36px;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-header img::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+.modal-body div{
+  overflow: auto;
+}
