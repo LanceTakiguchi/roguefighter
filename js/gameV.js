@@ -39,9 +39,13 @@ var xwing;
 var alive = false;
 var tieFighters;
 var blaster;
-var bullets;
-var bulletTime = 0;
+var bulletsR;
+var bulletsL;
+var bulletTimeL = 0;
+var bulletTimeR = 0;
 var bullet;
+var bulletL;
+var bulletR;
 var tieBullet;
 var enemyBullets;
 var explosions;
@@ -69,7 +73,8 @@ function preload() {
     game.load.image('foreground', 'assets/deathstar.png');
     game.load.image('xwing', 'assets/xwing.png');
     game.load.image('tieFighter', 'assets/tie.png');
-    game.load.image('bullet', 'assets/bullet0.png');
+    game.load.image('bulletL', 'assets/bullet0.png');
+    game.load.image('bulletR', 'assets/bullet0.png');
     game.load.image('tieBullet', 'assets/enemyBullet0.png');
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.audio('blaster', 'assets/blaster.mp3');
@@ -117,7 +122,7 @@ function createText() {
 
 }
 
-function play() {
+function playGame() {
 
     //game.paused = true;
     console.log('PLAY GAME');
@@ -202,7 +207,6 @@ function create() {
     tieFightersBullets.forEach(function (enemy) {
         enemy.body.setSize(20, 20);
         enemy.body.setSize(enemy.width * 3 / 4, enemy.height * 3 / 4);
-        enemy.damageAmount = 20;
     });
 
     launchTieFighter();
@@ -212,21 +216,32 @@ function create() {
     xwing.physicsBodyType = Phaser.Physics.ARCADE;
 
 
-    bullets = game.add.group();
-    bullets.enableBody = true;
-    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+    bulletsR = game.add.group();
+    bulletsR.enableBody = true;
+    bulletsR.physicsBodyType = Phaser.Physics.ARCADE;
+    bulletsR.createMultiple(30, 'bulletR');
+    bulletsL = game.add.group();
+    bulletsL.enableBody = true;
+    bulletsL.physicsBodyType = Phaser.Physics.ARCADE;
+    bulletsL.createMultiple(30, 'bulletR');
 
     // Add sounds
     game.explode = game.add.audio('explode');
     game.blaster = game.add.audio('blaster');
 
-    for (var i = 0; i < 20; i++) {
-        var b = bullets.create(40, 0, 'bullet');
-        b.name = 'bullet' + i;
-        b.exists = false;
-        b.visible = false;
-        b.checkWorldBounds = true;
-        b.events.onOutOfBounds.add(resetBullet, this);
+    for (var i = 0; i < 200; i++) {
+        var bL = bulletsL.create(40, 0, 'bulletL');
+        var bR = bulletsR.create(40, 0, 'bulletR');
+        bL.name = 'bulletL' + i;
+        bL.exists = false;
+        bL.visible = false;
+        bL.checkWorldBounds = true;
+        bL.events.onOutOfBounds.add(resetBullet, this);
+        bR.name = 'bulletR' + i;
+        bR.exists = false;
+        bR.visible = false;
+        bR.checkWorldBounds = true;
+        bR.events.onOutOfBounds.add(resetBullet, this);
     }
 
     // create the xwing
@@ -266,7 +281,8 @@ function create() {
         pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
 
-    play();
+
+    playGame();
 }
 
 function shield(health) {
@@ -321,7 +337,8 @@ function setupExplosions(explode) {
 function update() {
 
     // add the collision handlers
-    game.physics.arcade.collide(bullets, tieFighters, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(bulletsL, tieFighters, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(bulletsR, tieFighters, playerKillsEnemy, null, this);
     game.physics.arcade.collide(xwing, tieFighters, enemyPlayerCollide, null, this);
     game.physics.arcade.collide(xwing, tieFightersBullets, enemyBulletKillPlayer, null, this);
 
@@ -341,10 +358,11 @@ function update() {
     else if (cursors.down.isDown || wasd.down.isDown) {
         xwing.body.velocity.y = speed;
     }
-
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown) {
         if(alive){
-            fireBullet();
+
+            fireBulletL();
+            fireBulletR();
         }
     }
 
@@ -353,20 +371,32 @@ function update() {
 }
 
 // fire the bullet
-function fireBullet() {
 
-    if (game.time.now > bulletTime) {
-        bullet = bullets.getFirstExists(false);
+function fireBulletL() {
 
-        if (bullet && numLives > 0) {
-            bullet.reset(xwing.x - 70, xwing.y - 0);
-            bullet.reset(xwing.x - 7, xwing.y - 40);
-            bullet.body.velocity.y = - 500;
-            bulletTime = game.time.now + 150;
+    if (game.time.now > bulletTimeL) {
+        bulletL = bulletsL.getFirstExists(false);
+
+        if (bulletL && numLives > 0) {
+            bulletL.reset(xwing.x - 44, xwing.y - 40);
+            bulletL.body.velocity.y = -500;
+            bulletTimeL = game.time.now + 150;
             game.blaster.play();
         }
     }
+}
+function fireBulletR() {
+    if (game.time.now > bulletTimeR) {
+        bulletR = bulletsR.getFirstExists(false);
 
+
+        if (bulletR && numLives > 0) {
+            bulletR.reset(xwing.x + 20, xwing.y - 40);
+            bulletR.body.velocity.y = -500;
+            bulletTimeR = game.time.now + 150;
+            game.blaster.play();
+        }
+    }
 }
 
 //  Called if the bullet goes out of the screen
@@ -417,7 +447,7 @@ function enemyBulletKillPlayer(player, enemyBullet) {
 if(numLives > 0) {
     if (playerHealth > 0) {
         var explosion = explosions.getFirstExists(false);
-        explosion.reset(player.body.x - 50, player.body.y - 50);
+        explosion.reset(player.body.x - 25, player.body.y - 20);
         explosion.alpha = 0.7;
         explosion.play('kaboom', 30, false, true);
         game.explode.play();
@@ -445,6 +475,7 @@ function playerKillsEnemy(bullet, enemy) {
     score += 20;
 
     if(score >= highScore){
+
         highScore = score;
         updateScore(highScore);
     }
@@ -472,8 +503,8 @@ function launchTieFighter() {
         enemy.body.drag.x = 100;
 
         //  Set up firing
-        var bulletSpeed = 400;
-        var firingDelay = 2000;
+        var bulletSpeed = 800;
+        var firingDelay = 1000;
         enemy.enemyBullets = 1;
         enemy.lastShot = 0;
     }
