@@ -1,17 +1,48 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
 <head>
-    <title>Phaser prototype</title>
-    <meta charset="utf-8">
-    <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-
-    <script src="gameV.js"></script>
-    <style>
-    </style>
+  <title>Rogue Fighter</title>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
+  <script src="js/visual.js"></script>
 </head>
 <body>
-
-<div id="game"></div>
-
+  <div class="wrapper">
+    <header>
+      <div id="background_slice"  class="originalHeight">
+        <div id="brand">
+          <img class="brandIcon" src="imgs/rogue-fighter-logo.png">
+        </div>
+      </div>
+      <div id="navigation">
+        <ul>
+          <li class="menuItem"><a href="index.html"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
+          <li class="menuItem"><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
+          <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
+          <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
+          <li class="signIn">
+            <span class="toolTip">Sign in with your Google Account</span>
+            <a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a></li>
+        </ul>
+      </div>
+    </header>
+    <div class="main_content">
+      <audio loop class="audioDemo" preload="none">
+        <source src="sound/intro-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
+      </audio>
+      <div>
+        <a class="play standard_padding" href="play.html">- PLAY -</a>
+      </div>
+    <footer>
+      <div class="volume"></div>
+    </footer>
+    </div>
+  </div>
 </body>
 </html>

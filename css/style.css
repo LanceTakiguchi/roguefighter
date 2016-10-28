@@ -1,0 +1,193 @@
+body{
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+header{
+    width: 100%;
+}
+
+#background_slice{
+    width: 100%;
+    background: url("../imgs/rogue-fighter-cover.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.originalHeight{
+    min-height: 25vh;
+}
+
+.fixed{
+    position: fixed;
+    top:0;
+}
+
+.minHeight{
+    height: 10vh;
+}
+
+#brand img{
+    width: 30vw;
+    margin-top: 1%;
+}
+
+#navigation {
+    width: 100%;
+    background-color: #0a0a0a;
+}
+
+#navigation ul{
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    text-align: center;
+}
+
+#navigation ul li{
+     display: inline-block;
+     list-style-type: none;
+     vertical-align: middle;
+     font-size: 1vw;
+     line-height: 1vw;
+     border-right: solid 1px #4D4D4D;
+     padding: .75% 4% .75% 4%;
+     color: #4D4D4D;
+ }
+
+#navigation ul li:last-of-type{
+    border-right: none;
+    color: #4D4D4D;
+}
+
+#navigation ul .menuItem:hover{
+    background-color: #3c3c3c;
+    color: #1A1A1A;
+}
+
+#navigation ul .menuItem a{
+    text-decoration: none;
+}
+
+#navigation ul .signIn a {
+    text-decoration: none;
+    padding-bottom: 1%;
+}
+
+#navigation ul .signIn a:hover {
+    border-bottom: 2px solid;
+    color: #0059ee;
+}
+
+#navigation ul li a{
+    color: #ffffff;
+}
+
+#navigation ul li a i{
+    padding: 0 0;
+}
+
+#navigation ul li a i.fa-rebel{
+    color: #FF3A08;
+}
+
+#navigation ul li a i.fa-cogs{
+    color: #FF8105;
+}
+
+#navigation ul li a i.fa-users{
+    color: #18CC92;
+}
+
+#navigation ul li a i.fa-newspaper-o{
+    color: #45FFF8;
+}
+
+#navigation ul li a p{
+    margin: 0;
+    padding: 0;
+}
+
+.signIn{
+    position: relative;
+}
+
+.signIn .toolTip{
+    font-size: 1em;
+    width: 80%;
+    padding: 3%;
+    background-color: #0059ee;
+    visibility: hidden;
+    color: #ffffff;
+    position: absolute;
+    z-index: 1;
+    top: -2.5em;
+    border-radius: 2px;
+}
+
+.signIn:hover .toolTip{
+    visibility: visible;
+}
+
+.toolTip:before{
+    display:block;
+    position:absolute;
+    content:'';
+    width:0;
+    height:0;
+    border-left: 15px solid transparent;
+    border-right:15px solid transparent;
+    border-top: 15px solid #0059ee;
+    bottom: -13px;
+}
+
+.main_content{
+    width: 100%;
+    min-height: 67vh;
+    background: url("../imgs/stars.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.standard_padding{
+    padding-top: 10%;
+}
+
+.increased_padding{
+    padding-top: 30%;
+}
+
+.play {
+    font-family: 'Orbitron', sans-serif;
+    display: block;
+    font-size: 5em;
+    text-align: center;
+    text-decoration: none;
+    color: #eecd0a;
+    animation: play 2s linear infinite;
+}
+
+@keyframes play {
+    50% { opacity: 0; }
+}
+
+.volume{
+    position: fixed;
+    bottom: 10px;
+    right: 50px;
+    color: #ffffff;
+}
+
+.volume{
+    background: url("../imgs/volume-droid.png") 0 0;
+    width: 150px;
+    height: 198px;
+}
+
+.volumeOff{
+    background: url("../imgs/volume-droid.png") 0 198px;
+    width: 150px;
+    height: 198px;
+}
+
