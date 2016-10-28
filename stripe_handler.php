@@ -16,23 +16,25 @@ try {
 } catch(\Stripe\Error\Card $e) {
     echo  "The card has been declined";
 }
-mysqli_begin_transaction($conn, MYSQLI_TRANS_START_READ_WRITE);
+mysqli_begin_transaction($conn);
 $charge_amount = $charge['amount'];
 $account_to_credit = $_SESSION['user_email'];
 $return_user_id = "SELECT `id` FROM `users` WHERE `email`='$account_to_credit'";
 $query_results = mysqli_query($conn, $return_user_id);
 if(mysqli_num_rows($query_results)>0){
-    $returned_id = mysqli_fetch_assoc($query_results);
+    while ($row = mysqli_fetch_assoc($query_results)){
+        $returned_id = $row['id'];
+    }
 }
 mysqli_commit($conn);
-$add_charge_to_db = "INSERT INTO `purchases`(`total_amount`, `item_id`, `customer_id`, `date_created`) VALUES ('$charge_amount', '1', '$returned_id', NOW())";
+$add_charge_to_db = "INSERT INTO `purchases`(`total_amount`, `item_id`, `customer_id`, `date_created`) VALUES ('$charge_amount', '1', '$returned_id', 'NOW()')";
 mysqli_query($conn, $add_charge_to_db);
 $purchase_id = mysqli_insert_id($conn);
 mysqli_commit($conn);
 if(isset($purchase_id)){
-    $game_play_update_query = "UPDATE `users` SET `game_plays`=`game_plays` + 5 WHERE `ID`='1'";
-    $update_results = musqli_query($conn, $game_play_update_query);
+    $game_play_update_query = "UPDATE `users` SET `game_plays`=`game_plays` + 5 WHERE `ID`='$returned_id'";
+    $update_results = mysqli_query($conn, $game_play_update_query);
+    mysqli_commit($conn);
 }
-//header('location: checkout.php');
-print_r($_SESSION);
+header('location: checkout.php');
 ?>
