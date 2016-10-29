@@ -307,11 +307,11 @@ function shield(health) {
         pLives.removeAll();
         numLives -= 1;
         life(numLives);
-        if (numLives > 0) {
+        if (numLives > -1) {
             playerHealth = maxHealth;
             playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
             shield(playerHealth);
-        } else if(numLives <= 0) {
+        } else if(numLives <= -1) {
             gameOver();
         }
     }
@@ -377,7 +377,7 @@ function fireBulletL() {
     if (game.time.now > bulletTimeL) {
         bulletL = bulletsL.getFirstExists(false);
 
-        if (bulletL && numLives > 0) {
+        if (bulletL && numLives > -1) {
             bulletL.reset(xwing.x - 44, xwing.y - 40);
             bulletL.body.velocity.y = -500;
             bulletTimeL = game.time.now + 150;
@@ -390,7 +390,7 @@ function fireBulletR() {
         bulletR = bulletsR.getFirstExists(false);
 
 
-        if (bulletR && numLives > 0) {
+        if (bulletR && numLives > -1) {
             bulletR.reset(xwing.x + 20, xwing.y - 40);
             bulletR.body.velocity.y = -500;
             bulletTimeR = game.time.now + 150;
@@ -413,7 +413,7 @@ function enemyPlayerCollide(player, enemy) {
     shield(playerHealth);
     enemy.kill();
 
-    if(numLives > 0) {
+    if(numLives > -1) {
         if (playerHealth > 0) {
             var explosion = explosions.getFirstExists(false);
             explosion.reset(enemy.body.x, enemy.body.y);
@@ -430,7 +430,7 @@ function enemyPlayerCollide(player, enemy) {
         }
     }
 
-    if(numLives <= 0){
+    if(numLives <= -1){
         xwing.kill();
     }
 
@@ -444,7 +444,7 @@ function enemyBulletKillPlayer(player, enemyBullet) {
     shield(playerHealth);
     enemyBullet.kill();
 
-if(numLives > 0) {
+if(numLives > -1) {
     if (playerHealth > 0) {
         var explosion = explosions.getFirstExists(false);
         explosion.reset(player.body.x - 25, player.body.y - 20);
@@ -461,7 +461,7 @@ if(numLives > 0) {
     }
 }
 
-    if(numLives <= 0){
+    if(numLives <= -1){
         xwing.kill();
     }
 }
@@ -543,6 +543,7 @@ function restart() {
     score = 0;
     shield(playerHealth);
     life(numLives);
+    highScoreText.kill();
     scoreText.kill();
     createText();
 
@@ -585,9 +586,9 @@ $(document).ready(function(){
 
 });
 
-function updateScore(board){
+function updateScore(score){
     db.set({
-        hiScore: board
+        hiScore: score
     });
 }
 
