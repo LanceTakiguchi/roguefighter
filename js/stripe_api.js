@@ -21,7 +21,7 @@ function display_games(){
     var cur = parseInt(games_dom.text());
     // The amount of games to add onto existing amount
     var add_games = 0;
-    // Convert value purchased to games
+    // Convert money amount into an amount of games
     switch(games_amount){
     	case 199:
     		add_games = 20;
@@ -33,7 +33,8 @@ function display_games(){
     		add_games = 300;
     		break;
     }
+    // Add on the purchased games to existing amount
     cur += add_games;
-    // console.log("Testing current value: " + cur);
+    // Change the number on the DOM
     games_dom.text(cur);
 }

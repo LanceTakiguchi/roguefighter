@@ -57,6 +57,8 @@
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
+
+/*To even out the longer character text "commander" in the modal button*/
 #com_style{
   padding: 0 1cm 0 2.15cm; /*Center's Button Text*/
 }
