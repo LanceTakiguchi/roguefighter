@@ -9,6 +9,31 @@ var handler = StripeCheckout.configure({
   token: function(token) {
     // You can access the token ID with `token.id`.
     // Get the token ID to your server-side code for use.
+  	display_games();
   }
 });
 
+// Just to test displaying games purchased onto the DOM
+function display_games(){
+	// Dom's displayed amount of games
+	var games_dom = $("#game_count");
+	// Grab the current amount of games pre-purchase
+    var cur = parseInt(games_dom.text());
+    // The amount of games to add onto existing amount
+    var add_games = 0;
+    // Convert value purchased to games
+    switch(games_amount){
+    	case 199:
+    		add_games = 20;
+    		break;
+    	case 999:
+    		add_games = 125;
+    		break;
+    	case 1999:
+    		add_games = 300;
+    		break;
+    }
+    cur += add_games;
+    // console.log("Testing current value: " + cur);
+    games_dom.text(cur);
+}
