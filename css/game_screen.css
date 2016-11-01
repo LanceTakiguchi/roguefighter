@@ -50,3 +50,110 @@ body {
     padding: 10px;
     cursor: none;
 }
+
+
+
+
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: goldenrod;
+}
+
+h3 {
+    font-size: 32px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: goldenrod;
+}
+
+th {
+    font-size: 32px;
+    color: lightgray;
+}
+
+td {
+    font-size: 24px;
+}
+
+p {
+    font-size: 32px;
+}
+
+input {
+    font-size: 24px;
+}
+
+input[type=text] {
+    color: lightgray;
+    border: 2px solid goldenrod;
+    border-radius: 15px;
+    background-color: transparent;
+    text-align: center;
+}
+
+
+
+/* Leaderboard */
+#leaderboardTable {
+    margin: 0 auto 20px auto;
+    text-align: center;
+    border: 0;
+    width: 200px;
+}
+
+#nameInput {
+    width: 200px;
+}
+
+#messageInput {
+    width: 68%;
+}
+
+#highestScore {
+    margin-top: 20px;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 100; /* Sit on top */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 620px;
+    text-align: center;
+    margin: auto;
+    top: 120px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: black;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 3px solid goldenrod;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 15px;
+    background-image: url(../assets/bg.jpg);
+    background-size: cover;
+    color: goldenrod;
+    text-align: center;
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: goldenrod;
+    text-decoration: none;
+    cursor: pointer;
+}
