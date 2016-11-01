@@ -37,6 +37,13 @@
           </li>
           <li class="menuItem"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i><p id="purchase">Purchase</p></a>
           </li>
+          <!-- UX NOTE: Needs to change the game's display to be unclickable & intuitively so -->
+          <li class="menuItem" id="games_box">
+            <a href="#">
+              <i class="fa fa-heart" aria-hidden="true"></i>
+              <p>Games: <span id="game_count">10</span></p>
+          </a>
+          </li>
         </ul>
       </div>
     </header>
@@ -63,17 +70,17 @@
             <div class="modal-body">
               <h4>Rebel Package Ranks</h4>
               <div class="pkg_descriptions">
-                <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Officer: 20 Games  </p>
-                <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Captain: 125 Games  </p>
-                <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games  </p>
+                <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Trooper: 20 Games</p>
+                <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Commander: 125 Games</p>
+                <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games</p>
               </div>
               <div class="pkg_price">
                 <p>$1.99</p>
                 <p>$9.99</p>
                 <p>$19.99</p>
               </div>
-              <a href="#" id="officer" class="stripe-connect light-blue"><span>Officer</span></a><br>
-              <a href="#" id="captain" class="stripe-connect light-blue"><span>Captain</span></a><br>
+              <a href="#" id="trooper" class="stripe-connect light-blue"><span>Trooper</span></a><br>
+              <a href="#" id="commander" class="stripe-connect light-blue"><span id="com_style">Commander</span></a><br>
               <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
             </div>
           </div>

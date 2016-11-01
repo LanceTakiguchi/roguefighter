@@ -96,10 +96,12 @@
 }
 .pkg_descriptions{
     /*display: inline;*/
+    font-size: 14px; 
     line-height: 0px;
     float: left;
 }
 .pkg_price{
+    font-size: 14px; 
     float: right;
     line-height: 1;
 }

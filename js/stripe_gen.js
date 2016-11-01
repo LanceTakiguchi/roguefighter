@@ -1,3 +1,6 @@
+//GLOBAL
+var games_amount = null;
+
 // Stripe: Close Checkout on page navigation:
 window.addEventListener('popstate', function() {
 	handler.close();
@@ -9,33 +12,36 @@ var package_modal = document.getElementById('package_select');
 
 // Get the button that opens the package modal
 var purchase = document.getElementById("purchase");
+var dom_games = document.getElementById("games_box");
 
 // Buttons that determine what rank of lives to buy
-var officer = $('#officer');
-var captain = $('#captain');
+var trooper = $('#trooper');
+var commander = $('#commander');
 var general = $('#general');
 
 // Get the <span> element that closes the package modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, display/open the package modal
-purchase.onclick = function() {
+// When the user clicks the button, display/open the package modal 
+var click_template = function() {
   package_modal.style.display = "block";
 }
+purchase.onclick = click_template;
+dom_games.onclick = click_template;
 // Needed to call e.preventDefault() in the open_stripe function
 var eventObj = null;
 // Rank button purchase handler
-officer.on('click', function(e) {
+trooper.on('click', function(e) {
     // Hide the package type modal
     package_modal.style.display = "none";
     eventObj = e;
     // Open the Stripe modal (data_amount is in cents)
-    open_stripe(199, "Officer Package");
+    open_stripe(199, "Trooper Package");
   })
-captain.on('click', function(e) {
+commander.on('click', function(e) {
   package_modal.style.display = "none";
   eventObj = e;
-  open_stripe(999, "Captain Package");
+  open_stripe(999, "Commander Package");
 })
 general.on('click', function(e) {
   package_modal.style.display = "none";
@@ -60,6 +66,7 @@ function open_stripe(data_amount, info){
     description: info,
     amount: data_amount
   });
+  games_amount = data_amount;
   eventObj.preventDefault();
 } 
 });

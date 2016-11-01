@@ -104,6 +104,14 @@ header{
     color: #45FFF8;
 }
 
+#navigation ul li a i.fa-shopping-cart{
+    color: #e7cb46; /*yellow*/
+}
+
+#navigation ul li a i.fa-heart{
+    color: #ff8a8a; /*pink*/
+}
+
 #navigation ul li a p{
     margin: 0;
     padding: 0;

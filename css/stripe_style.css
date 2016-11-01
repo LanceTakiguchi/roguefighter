@@ -33,7 +33,7 @@
 .stripe-connect span {
   display: block;
   position: relative;
-  padding: 0 1cm 0 2.6cm; /*Center's Button Text*/
+  padding: 0 1cm 0 2.5cm; /*Center's Button Text*/
   height: 30px;
 
   background: #1275FF;
@@ -56,6 +56,11 @@
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
+}
+
+/*To even out the longer character text "commander" in the modal button*/
+#com_style{
+  padding: 0 1cm 0 2.15cm; /*Center's Button Text*/
 }
 
 .stripe-connect span:before {
