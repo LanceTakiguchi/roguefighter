@@ -127,9 +127,8 @@ function createText() {
 function playGame() {
 
     //game.paused = true;
-    console.log('PLAY GAME');
     // Play Game Text
-    playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME");
+    playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME ?");
     playGameText.anchor.set(0.5);
     playGameText.font = 'Orbitron';
     playGameText.fontSize = 70;
@@ -150,9 +149,8 @@ function playGame() {
 
 function gameOver() {
 
-    console.log('GAME OVER');
     // Game Over Text
-    gameOverText = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER!");
+    gameOverText = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER !");
     gameOverText.anchor.set(0.5);
     gameOverText.font = 'Orbitron';
     gameOverText.fontSize = 70;
@@ -168,15 +166,41 @@ function gameOver() {
     gameOverText.events.onInputDown.add(restart, this);
     xwing.kill();
     alive = false;
+    game.input.keyboard.removeKey(Phaser.Keyboard.W);
+    game.input.keyboard.removeKey(Phaser.Keyboard.S);
+    game.input.keyboard.removeKey(Phaser.Keyboard.A);
+    game.input.keyboard.removeKey(Phaser.Keyboard.D);
+    game.time.events.add(1000, scoreBoard);
 
-    $('#myModal').css('display', 'block');
-    console.log('btn clicked');
+    function scoreBoard() {
+        gameOverText.kill();
+        $('#myModal').fadeIn(3000);
+        if (score > lowScore) {
+            $('#nameInput').show();
+        } else
+            $('#nameInput').hide();
+    }
 
-    if (score > lowScore) {
-        $('#nameInput').show();
-    } else
-        $('#nameInput').hide();
 
+
+}
+
+function playAgain(){
+
+    playAgainText = game.add.text(game.world.centerX, game.world.centerY, "PLAY AGAIN ?");
+    playAgainText.anchor.set(0.5);
+    playAgainText.font = 'Orbitron';
+    playAgainText.fontSize = 70;
+    playAgaingrd = playAgainText.context.createLinearGradient(0, 0, 0, playAgainText.canvas.height);
+    playAgaingrd.addColorStop(0, 'yellow');
+    playAgaingrd.addColorStop(1, 'orange');
+    playAgainText.fill = playAgaingrd;
+    playAgainText.align = 'center';
+    playAgainText.stroke = '#000000';
+    playAgainText.strokeThickness = 2;
+    playAgainText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+    playAgainText.inputEnabled = true;
+    playAgainText.events.onInputDown.add(restart, this);
 }
 
 
@@ -557,10 +581,17 @@ function restart() {
     score = 0;
     shield(playerHealth);
     life(numLives);
-    highScoreText.kill();
+    playGameText.kill();
+    playAgainText.kill();
     scoreText.kill();
     createText();
 
+    wasd = {
+        up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+        down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+        left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+        right: game.input.keyboard.addKey(Phaser.Keyboard.D)
+    };
     //  Hide the text
     playGameText.visible = false;
     gameOverText.visible = false;
@@ -743,22 +774,12 @@ $(document).ready(function () {
 // Get the <span> element that closes the modal
     var span = $(".close")[0];
 
-// When the user clicks the button, open the modal
-    $('button#myBtn').click(function () {
-        //modal.style.display = "block";
-        $('#myModal').css('display', 'block');
-        console.log('btn clicked');
-
-        if (score > lowScore) {
-            $('#nameInput').show();
-        } else
-            $('#nameInput').hide();
-    });
 $(document).ready(function () {
 // When the user clicks on <span> (x), close the modal
     $('.close').click(function () {
         $('#myModal').css('display', 'none');
         $('#nameInput').val('');
+        playAgain();
     });
 });
 

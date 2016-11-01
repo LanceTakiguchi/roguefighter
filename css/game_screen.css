@@ -117,6 +117,7 @@ input[type=text] {
 
 /* The Modal (background) */
 .modal {
+    font-family: 'Orbitron', sans-serif;
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 100; /* Sit on top */
@@ -131,6 +132,7 @@ input[type=text] {
 
 /* Modal Content/Box */
 .modal-content {
+    font-family: 'Orbitron', sans-serif;
     background-color: black;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
