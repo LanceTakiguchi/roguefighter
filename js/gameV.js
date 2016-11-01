@@ -21,7 +21,9 @@ WebFontConfig = {
     //  'active' means all requested fonts have finished loading
     //  We set a 1 second delay before calling 'createText'.
     //  For some reason if we don't the browser cannot render the text the first time it's created.
-    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+    active: function () {
+        game.time.events.add(Phaser.Timer.SECOND, createText, this);
+    },
 
     //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
@@ -39,9 +41,13 @@ var xwing;
 var alive = false;
 var tieFighters;
 var blaster;
-var bullets;
-var bulletTime = 0;
+var bulletsR;
+var bulletsL;
+var bulletTimeL = 0;
+var bulletTimeR = 0;
 var bullet;
+var bulletL;
+var bulletR;
 var tieBullet;
 var enemyBullets;
 var explosions;
@@ -69,7 +75,8 @@ function preload() {
     game.load.image('foreground', 'assets/deathstar.png');
     game.load.image('xwing', 'assets/xwing.png');
     game.load.image('tieFighter', 'assets/tie.png');
-    game.load.image('bullet', 'assets/bullet0.png');
+    game.load.image('bulletL', 'assets/bullet0.png');
+    game.load.image('bulletR', 'assets/bullet0.png');
     game.load.image('tieBullet', 'assets/enemyBullet0.png');
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.audio('blaster', 'assets/blaster.mp3');
@@ -117,7 +124,7 @@ function createText() {
 
 }
 
-function play() {
+function playGame() {
 
     //game.paused = true;
     console.log('PLAY GAME');
@@ -141,7 +148,7 @@ function play() {
     playGameText.events.onInputDown.add(restart, this);
 }
 
-function gameOver(){
+function gameOver() {
 
     console.log('GAME OVER');
     // Game Over Text
@@ -161,6 +168,14 @@ function gameOver(){
     gameOverText.events.onInputDown.add(restart, this);
     xwing.kill();
     alive = false;
+
+    $('#myModal').css('display', 'block');
+    console.log('btn clicked');
+
+    if (score > lowScore) {
+        $('#nameInput').show();
+    } else
+        $('#nameInput').hide();
 
 }
 
@@ -202,7 +217,6 @@ function create() {
     tieFightersBullets.forEach(function (enemy) {
         enemy.body.setSize(20, 20);
         enemy.body.setSize(enemy.width * 3 / 4, enemy.height * 3 / 4);
-        enemy.damageAmount = 20;
     });
 
     launchTieFighter();
@@ -212,21 +226,32 @@ function create() {
     xwing.physicsBodyType = Phaser.Physics.ARCADE;
 
 
-    bullets = game.add.group();
-    bullets.enableBody = true;
-    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+    bulletsR = game.add.group();
+    bulletsR.enableBody = true;
+    bulletsR.physicsBodyType = Phaser.Physics.ARCADE;
+    bulletsR.createMultiple(30, 'bulletR');
+    bulletsL = game.add.group();
+    bulletsL.enableBody = true;
+    bulletsL.physicsBodyType = Phaser.Physics.ARCADE;
+    bulletsL.createMultiple(30, 'bulletR');
 
     // Add sounds
     game.explode = game.add.audio('explode');
     game.blaster = game.add.audio('blaster');
 
-    for (var i = 0; i < 20; i++) {
-        var b = bullets.create(40, 0, 'bullet');
-        b.name = 'bullet' + i;
-        b.exists = false;
-        b.visible = false;
-        b.checkWorldBounds = true;
-        b.events.onOutOfBounds.add(resetBullet, this);
+    for (var i = 0; i < 200; i++) {
+        var bL = bulletsL.create(40, 0, 'bulletL');
+        var bR = bulletsR.create(40, 0, 'bulletR');
+        bL.name = 'bulletL' + i;
+        bL.exists = false;
+        bL.visible = false;
+        bL.checkWorldBounds = true;
+        bL.events.onOutOfBounds.add(resetBullet, this);
+        bR.name = 'bulletR' + i;
+        bR.exists = false;
+        bR.visible = false;
+        bR.checkWorldBounds = true;
+        bR.events.onOutOfBounds.add(resetBullet, this);
     }
 
     // create the xwing
@@ -244,7 +269,7 @@ function create() {
     playerDeath = game.add.emitter(xwing.x, xwing.y);
     playerDeath.width = 50;
     playerDeath.height = 50;
-    playerDeath.makeParticles('kaboom', [0,1,2,3,4,5,6,7], 10);
+    playerDeath.makeParticles('kaboom', [0, 1, 2, 3, 4, 5, 6, 7], 10);
     playerDeath.setAlpha(0.9, 0, 800);
     playerDeath.setScale(0.1, 0.6, 0.1, 0.6, 1000, Phaser.Easing.Quintic.Out);
 
@@ -266,7 +291,8 @@ function create() {
         pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
 
-    play();
+
+    playGame();
 }
 
 function shield(health) {
@@ -291,11 +317,11 @@ function shield(health) {
         pLives.removeAll();
         numLives -= 1;
         life(numLives);
-        if (numLives > 0) {
+        if (numLives > -1) {
             playerHealth = maxHealth;
             playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
             shield(playerHealth);
-        } else if(numLives <= 0) {
+        } else if (numLives <= -1) {
             gameOver();
         }
     }
@@ -321,7 +347,8 @@ function setupExplosions(explode) {
 function update() {
 
     // add the collision handlers
-    game.physics.arcade.collide(bullets, tieFighters, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(bulletsL, tieFighters, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(bulletsR, tieFighters, playerKillsEnemy, null, this);
     game.physics.arcade.collide(xwing, tieFighters, enemyPlayerCollide, null, this);
     game.physics.arcade.collide(xwing, tieFightersBullets, enemyBulletKillPlayer, null, this);
 
@@ -341,32 +368,49 @@ function update() {
     else if (cursors.down.isDown || wasd.down.isDown) {
         xwing.body.velocity.y = speed;
     }
-
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown) {
-        if(alive){
-            fireBullet();
+        if (alive) {
+
+            fireBulletL();
+            fireBulletR();
         }
     }
 
-    window.onkeydown = function(event) {  if (event.keyCode == 80){       game.paused = !game.paused;   } }
+    window.onkeydown = function (event) {
+        if (event.keyCode == 80) {
+            game.paused = !game.paused;
+        }
+    }
 
 }
 
 // fire the bullet
-function fireBullet() {
 
-    if (game.time.now > bulletTime) {
-        bullet = bullets.getFirstExists(false);
+function fireBulletL() {
 
-        if (bullet && numLives > 0) {
-            bullet.reset(xwing.x - 70, xwing.y - 0);
-            bullet.reset(xwing.x - 7, xwing.y - 40);
-            bullet.body.velocity.y = - 500;
-            bulletTime = game.time.now + 150;
+    if (game.time.now > bulletTimeL) {
+        bulletL = bulletsL.getFirstExists(false);
+
+        if (bulletL && numLives > -1) {
+            bulletL.reset(xwing.x - 44, xwing.y - 40);
+            bulletL.body.velocity.y = -500;
+            bulletTimeL = game.time.now + 150;
             game.blaster.play();
         }
     }
+}
+function fireBulletR() {
+    if (game.time.now > bulletTimeR) {
+        bulletR = bulletsR.getFirstExists(false);
 
+
+        if (bulletR && numLives > -1) {
+            bulletR.reset(xwing.x + 20, xwing.y - 40);
+            bulletR.body.velocity.y = -500;
+            bulletTimeR = game.time.now + 150;
+            game.blaster.play();
+        }
+    }
 }
 
 //  Called if the bullet goes out of the screen
@@ -383,7 +427,7 @@ function enemyPlayerCollide(player, enemy) {
     shield(playerHealth);
     enemy.kill();
 
-    if(numLives > 0) {
+    if (numLives > -1) {
         if (playerHealth > 0) {
             var explosion = explosions.getFirstExists(false);
             explosion.reset(enemy.body.x, enemy.body.y);
@@ -400,7 +444,7 @@ function enemyPlayerCollide(player, enemy) {
         }
     }
 
-    if(numLives <= 0){
+    if (numLives <= -1) {
         xwing.kill();
     }
 
@@ -414,24 +458,24 @@ function enemyBulletKillPlayer(player, enemyBullet) {
     shield(playerHealth);
     enemyBullet.kill();
 
-if(numLives > 0) {
-    if (playerHealth > 0) {
-        var explosion = explosions.getFirstExists(false);
-        explosion.reset(player.body.x - 50, player.body.y - 50);
-        explosion.alpha = 0.7;
-        explosion.play('kaboom', 30, false, true);
-        game.explode.play();
-    } else {
-        playerDeath.x = player.x;
-        playerDeath.y = player.y;
-        playerDeath.start(false, 1000, 10, 10);
-        game.explode.play();
-        playerShield.kill();
-        xwing.reset(50, 50);
+    if (numLives > -1) {
+        if (playerHealth > 0) {
+            var explosion = explosions.getFirstExists(false);
+            explosion.reset(player.body.x - 25, player.body.y - 20);
+            explosion.alpha = 0.7;
+            explosion.play('kaboom', 30, false, true);
+            game.explode.play();
+        } else {
+            playerDeath.x = player.x;
+            playerDeath.y = player.y;
+            playerDeath.start(false, 1000, 10, 10);
+            game.explode.play();
+            playerShield.kill();
+            xwing.reset(50, 50);
+        }
     }
-}
 
-    if(numLives <= 0){
+    if (numLives <= -1) {
         xwing.kill();
     }
 }
@@ -444,7 +488,8 @@ function playerKillsEnemy(bullet, enemy) {
 
     score += 20;
 
-    if(score >= highScore){
+    if (score >= highScore) {
+
         highScore = score;
         updateScore(highScore);
     }
@@ -472,8 +517,8 @@ function launchTieFighter() {
         enemy.body.drag.x = 100;
 
         //  Set up firing
-        var bulletSpeed = 400;
-        var firingDelay = 2000;
+        var bulletSpeed = 800;
+        var firingDelay = 1000;
         enemy.enemyBullets = 1;
         enemy.lastShot = 0;
     }
@@ -512,6 +557,7 @@ function restart() {
     score = 0;
     shield(playerHealth);
     life(numLives);
+    highScoreText.kill();
     scoreText.kill();
     createText();
 
@@ -521,48 +567,234 @@ function restart() {
 }
 
 
+//
+// // set the database reference
+// var firebaseRef = firebase;
+// //var game = null;
+// $(document).ready(function () {
+//
+// // Initialize Firebase
+//     var config = {
+//         apiKey: "AIzaSyCjFyM0sI-Usm5UJTknhJkprxgPsEmVyUg",
+//         authDomain: "star-wars-1978.firebaseapp.com",
+//         databaseURL: "https://star-wars-1978.firebaseio.com",
+//         storageBucket: "star-wars-1978.appspot.com",
+//         messagingSenderId: "919373111684"
+//     };
+//     firebase.initializeApp(config);
+//
+//     // check for anonymous login issues
+//     firebaseRef.auth().signInAnonymously().catch(function (error) {
+//         // Handle Errors here.
+//         var errorCode = error.code;
+//         var errorMessage = error.message;
+//     });
+//
+// });
+//
+// var db;
+// $(document).ready(function(){
+//
+//     db = firebaseRef.database().ref('hiScore');
+//     db.on('value', update_score);
+//
+// });
+//
+// function updateScore(score){
+//     db.set({
+//         hiScore: score,
+//         timeStamp: Date()
+//     });
+// }
+//
+// var state;
+// function update_score(score){
+//     console.log("NEW SCORE RECEIVED", score.val());
+//     state = score.val();
+//     highScore = state.hiScore;
+// }
 
-// set the database reference
-var firebaseRef = firebase;
-//var game = null;
-$(document).ready(function () {
 
-// Initialize Firebase
+// Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
+var htmlForPath = {};
+var scoreArray = [];
+var nameArray = [];
+var lowScore;
+var newScoreRow;
+var rootRef;
+var scoreListRef;
+var highestScoreRef;
+
+
+    var LEADERBOARD_SIZE = 5;
+    // Initialize Firebase
     var config = {
-        apiKey: "AIzaSyCjFyM0sI-Usm5UJTknhJkprxgPsEmVyUg",
-        authDomain: "star-wars-1978.firebaseapp.com",
-        databaseURL: "https://star-wars-1978.firebaseio.com",
-        storageBucket: "star-wars-1978.appspot.com",
-        messagingSenderId: "919373111684"
+        apiKey: "AIzaSyB4IOXzUkZOyXsCjvhRsw0sKFNcD512yx0",
+        authDomain: "roguefighter-8aefa.firebaseapp.com",
+        databaseURL: "https://roguefighter-8aefa.firebaseio.com",
+        storageBucket: "roguefighter-8aefa.appspot.com",
+        messagingSenderId: "206138842370"
     };
     firebase.initializeApp(config);
 
+// Build some firebase references.
+    rootRef = firebase;
+    scoreListRef = rootRef.database().ref('scoreList');
+    highestScoreRef = rootRef.database().ref('highestScore');
+
+
     // check for anonymous login issues
-    firebaseRef.auth().signInAnonymously().catch(function (error) {
+    rootRef.auth().signInAnonymously().catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
     });
 
-});
 
-var db;
-$(document).ready(function(){
+    // Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
+    function handleScoreAdded(scoreSnapshot, prevScoreName) {
+        newScoreRow = $("<tr/>");
+        newScoreRow.append($("<td/>").text(scoreSnapshot.val().name));
+        newScoreRow.append($("<td/>").text('........'));
+        newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
 
-    db = firebaseRef.database().ref('hiScore');
-    db.on('value', update_score);
+        scoreArray.push(scoreSnapshot.val().score);
+        nameArray.push(scoreSnapshot.val().name);
 
-});
+        // Store a reference to the table row so we can get it again later.
+        htmlForPath[scoreSnapshot.key] = newScoreRow;
 
-function updateScore(board){
-    db.set({
-        hiScore: board
+        // Insert the new score in the appropriate place in the table.
+        if (prevScoreName === null) {
+            $("#leaderboardTable").append(newScoreRow);
+        }
+        else {
+            var lowerScoreRow = htmlForPath[prevScoreName];
+            lowerScoreRow.before(newScoreRow);
+        }
+        lowScore = scoreArray[0];
+        console.log('low score: ', lowScore);
+    }
+
+
+    // Helper function to handle a score object being removed; just removes the corresponding table row.
+    function handleScoreRemoved(scoreSnapshot) {
+        var removedScoreRow = htmlForPath[scoreSnapshot.key];
+        removedScoreRow.remove();
+        delete htmlForPath[scoreSnapshot.key];
+    }
+
+    // Create a view to only receive callbacks for the last LEADERBOARD_SIZE scores
+    var scoreListView = scoreListRef.limitToLast(LEADERBOARD_SIZE);
+
+    // Add a callback to handle when a new score is added.
+    scoreListView.on("child_added", function (newScoreSnapshot, prevScoreName) {
+        handleScoreAdded(newScoreSnapshot, prevScoreName);
     });
-}
 
-var state;
-function update_score(score){
-    console.log("NEW SCORE RECEIVED", score.val());
-    state = score.val();
-    highScore = state.hiScore;
-}
+    // Add a callback to handle when a score is removed
+    scoreListView.on("child_removed", function (oldScoreSnapshot) {
+        handleScoreRemoved(oldScoreSnapshot);
+    });
+
+    // Add a callback to handle when a score changes or moves positions.
+    var changedCallback = function (scoreSnapshot, prevScoreName) {
+        handleScoreRemoved(scoreSnapshot);
+        handleScoreAdded(scoreSnapshot, prevScoreName);
+    };
+    scoreListView.on("child_moved", changedCallback);
+    scoreListView.on("child_changed", changedCallback);
+
+
+$(document).ready(function () {
+    // When the user presses enter on scoreInput, add the score, and update the highest score.
+    $("#nameInput").keypress(function (e) {
+
+        if (e.keyCode == 13) {
+            var newScore = score;
+            var name = $("#nameInput").val();
+            var i = nameArray.indexOf(name);
+            if ($.inArray(name, nameArray) && score < scoreArray[i]) {
+                $('#nameInput').hide();
+                return;
+            }
+
+
+            console.log('names: ', nameArray);
+            $('#nameInput').hide();
+
+            if (name.length === 0)
+                return;
+
+            var userScoreRef = scoreListRef.child(name);
+
+            // Use setWithPriority to put the name / score in Firebase, and set the priority to be the score.
+            userScoreRef.setWithPriority({name: name, score: newScore}, newScore);
+        }
+    });
+});
+
+// Get the modal
+    var modal = $('#myModal');
+
+// Get the button that opens the modal
+    var btn = $("#myBtn");
+
+// Get the <span> element that closes the modal
+    var span = $(".close")[0];
+
+// When the user clicks the button, open the modal
+    $('button#myBtn').click(function () {
+        //modal.style.display = "block";
+        $('#myModal').css('display', 'block');
+        console.log('btn clicked');
+
+        if (score > lowScore) {
+            $('#nameInput').show();
+        } else
+            $('#nameInput').hide();
+    });
+$(document).ready(function () {
+// When the user clicks on <span> (x), close the modal
+    $('.close').click(function () {
+        $('#myModal').css('display', 'none');
+        $('#nameInput').val('');
+    });
+});
+
+    var state;
+var fbRef = firebase.database();
+//     function update_score(score) {
+//         state = score.val();
+//         console.log(state);
+//         highScore = state.highestScore;
+//         console.log("NEW SCORE RECEIVED", highScore);
+//     }
+
+
+    fbRef.ref('HiScore').on("value", function (newHighestScore) {
+        state = newHighestScore.val();
+        highScore = state.highestScore;
+        console.log('Score: ', highScore);
+    })
+
+
+    // var db;
+    // $(document).ready(function () {
+    //     db = rootRef.database().ref('highestScore');
+    //     db.on('value', update_score);
+    // });
+
+        function updateScore(score) {
+            var fbRef = firebase.database();
+
+            var dataToSend = {
+                highestScore: score
+            };
+
+            fbRef.ref('HiScore').set(dataToSend);
+        }
+
+
+
+

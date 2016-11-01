@@ -6,15 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" type="text/css" href="css/game_screen.css">
   <link rel="stylesheet" type="text/css" href="css/screen_text.css">
-  <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
   <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.js"></script>
   <script src="js/game_play_animation.js"></script>
   <script src="js/gameV.js"></script>
 </head>
 <body>
+
+
+
+
 <div class="wrapper">
+
+
+
+
+
+
+
   <p class="skip">SKIP</p>
   <div id="titles">
     <div id="titlecontent">
@@ -26,9 +37,44 @@
   </div>
 </div>
 <div id="gameScreen">
-  <div id="game"></div>
+  <div id="game">
+
+
+
+
+  </div>
     <div id="container">
+
+
+
+
+
+
       <div id="gameArea"></div>
+      <br><br>
+
+
+      <!-- Trigger/Open The Modal -->
+      <!--<button id="myBtn">Open Modal</button>-->
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">×</span>
+          <h1>High Scores</h1>
+          <table id="leaderboardTable">
+            <tr>
+              <th>Name</th>
+              <th></th>
+              <th>Score</th>
+            </tr>
+          </table>
+          <input type="text" id="nameInput" placeholder="Enter your name">
+        </div>
+      </div>
+
+
+
     </div>
 </div>
 </body>
