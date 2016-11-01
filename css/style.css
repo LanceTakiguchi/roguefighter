@@ -150,6 +150,17 @@ header{
     bottom: -13px;
 }
 
+.toolTip:after {
+    content:'';
+    background: url("../imgs/r2d2-tooltip.png");
+    width: 100px;
+    height: 49px;
+    position:absolute;
+    top: -49px;
+    left:40%;
+
+}
+
 .main_content{
     width: 100%;
     min-height: 67vh;
