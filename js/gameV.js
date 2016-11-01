@@ -1,11 +1,10 @@
 /**
  * Created by Weizguy on 10/25/2016.
- * Prototype to for player health and shields
+ * Game logic built with Phaser engine
  */
 
 // declaration of game engine
 // this is where you can change the board size
-//var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
 var gameWidth = 600;
 var gameHeight = 800;
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
@@ -25,11 +24,10 @@ WebFontConfig = {
         game.time.events.add(Phaser.Timer.SECOND, createText, this);
     },
 
-    //  The Google Fonts we want to load (specify as many as you like in the array)
+    //  The Google Fonts we want to load (we could specify others, but we use Orbitron)
     google: {
         families: ['Orbitron']
     }
-
 };
 
 // declare all globals
@@ -40,6 +38,10 @@ var speed = 300;
 var xwing;
 var alive = false;
 var tieFighters;
+var advancedTie;
+var advancedTieLaunchTimer;
+var advancedTieLaunched = false;
+var advancedTieSpacing = 2500;
 var blaster;
 var bulletsR;
 var bulletsL;
@@ -57,10 +59,11 @@ var playerShield;
 var gameOver;
 var gameOverText = '';
 var playGameText = '';
-var scoreText;
-var highScoreText;
+var scoreText = '';
+var highScoreText = '';
+var playAgainText = '';
 var score = 0;
-var highScore;
+var highScore = 0;
 var pLives;
 var maxLives = 2;
 var maxHealth = 120;
@@ -70,14 +73,15 @@ var numLives = maxLives;
 function preload() {
 
     // add the images/audio to the game
-    //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.load.image('background', 'assets/back.png');
     game.load.image('foreground', 'assets/deathstar.png');
     game.load.image('xwing', 'assets/xwing.png');
     game.load.image('tieFighter', 'assets/tie.png');
+    game.load.image('advancedTie', 'assets/advTie.png');
     game.load.image('bulletL', 'assets/bullet0.png');
     game.load.image('bulletR', 'assets/bullet0.png');
     game.load.image('tieBullet', 'assets/enemyBullet0.png');
+    game.load.image('advancedTieBullet', 'assets/enemyBullet1.png');
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.audio('blaster', 'assets/blaster.mp3');
     game.load.audio('explode', 'assets/explosion.mp3');
@@ -93,7 +97,6 @@ function preload() {
 
 // create the score text
 function createText() {
-
 
     // Score Text
     scoreText = game.add.text(10, 10, "Score:\n" + score);
@@ -120,13 +123,10 @@ function createText() {
     highScoreText.stroke = '#000000';
     highScoreText.strokeThickness = 2;
     highScoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
-
-
 }
 
 function playGame() {
 
-    //game.paused = true;
     // Play Game Text
     playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME ?");
     playGameText.anchor.set(0.5);
@@ -142,7 +142,6 @@ function playGame() {
     playGameText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
     playGameText.inputEnabled = true;
     xwing.kill();
-
 
     playGameText.events.onInputDown.add(restart, this);
 }
@@ -180,9 +179,6 @@ function gameOver() {
         } else
             $('#nameInput').hide();
     }
-
-
-
 }
 
 function playAgain(){
@@ -203,15 +199,14 @@ function playAgain(){
     playAgainText.events.onInputDown.add(restart, this);
 }
 
-
 function create() {
 
     background = game.add.tileSprite(0, 0, gameWidth, gameHeight, 'background');
     // this is where you set the speed of the scroll (and the direction)
     background.autoScroll(0, 60);
-
+    // setting up the DeathStar to scroll
     foreground = game.add.tileSprite(0, 0, gameWidth, 250, 'foreground');
-    // here it is set to scroll left
+    // here the foreground is set to scroll left
     foreground.autoScroll(-10, 0);
 
     // create the tieFighter group
@@ -244,6 +239,33 @@ function create() {
     });
 
     launchTieFighter();
+
+
+
+    //  Advanced Tie Fighter's bullets
+    advancedTieBullets = game.add.group();
+    advancedTieBullets.enableBody = true;
+    advancedTieBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    advancedTieBullets.createMultiple(30, 'advancedTieBullet');
+    advancedTieBullets.callAll('crop', null, {x: 90, y: 0, width: 90, height: 70});
+    advancedTieBullets.setAll('alpha', 0.9);
+    advancedTieBullets.setAll('anchor.x', 0.5);
+    advancedTieBullets.setAll('anchor.y', 0.5);
+    advancedTieBullets.setAll('outOfBoundsKill', true);
+    advancedTieBullets.setAll('checkWorldBounds', true);
+
+    //  More baddies!
+    advancedTie = game.add.group();
+    advancedTie.enableBody = true;
+    advancedTie.physicsBodyType = Phaser.Physics.ARCADE;
+    advancedTie.createMultiple(30, 'advancedTie');
+    advancedTie.setAll('anchor.x', 0.5);
+    advancedTie.setAll('anchor.y', 0.5);
+    advancedTie.setAll('scale.x', 0.5);
+    advancedTie.setAll('scale.y', 0.5);
+    advancedTie.setAll('angle', 180);
+
+
 
     xwing = game.add.group();
     xwing.enableBody = true;
@@ -373,6 +395,13 @@ function update() {
     // add the collision handlers
     game.physics.arcade.collide(bulletsL, tieFighters, playerKillsEnemy, null, this);
     game.physics.arcade.collide(bulletsR, tieFighters, playerKillsEnemy, null, this);
+
+    game.physics.arcade.collide(bulletsL, advancedTie, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(bulletsR, advancedTie, playerKillsEnemy, null, this);
+
+    game.physics.arcade.collide(xwing, advancedTie, enemyPlayerCollide, null, this);
+    game.physics.arcade.collide(xwing, advancedTieBullets, enemyBulletKillPlayer, null, this);
+
     game.physics.arcade.collide(xwing, tieFighters, enemyPlayerCollide, null, this);
     game.physics.arcade.collide(xwing, tieFightersBullets, enemyBulletKillPlayer, null, this);
 
@@ -527,6 +556,14 @@ function playerKillsEnemy(bullet, enemy) {
     explosion.reset(enemy.body.x, enemy.body.y);
     explosion.play('kaboom', 30, false, true);
     game.explode.play();
+
+
+
+    //  Advanced Tie Fighters come in after a score of 500
+    if (!advancedTieLaunched && score > 100) {
+        advancedTieLaunched = true;
+        launchAdvancedTie();
+    }
 }
 
 function launchTieFighter() {
@@ -569,11 +606,75 @@ function launchTieFighter() {
     game.time.events.add(game.rnd.integerInRange(min, max), launchTieFighter);
 }
 
+
+function launchAdvancedTie() {
+    var startingX = game.rnd.integerInRange(100, game.width - 100);
+    var verticalSpeed = 180;
+    var spread = 120;
+    var frequency = 70;
+    var verticalSpacing = 70;
+    var horizontalSpacing = 90;
+    var numEnemiesInWave = 3;
+
+    //  Launch wave
+    for (var i = 0; i < numEnemiesInWave; i++) {
+        var enemy = advancedTie.getFirstExists(false);
+        if (enemy) {
+            enemy.startingX = startingX;
+            enemy.reset(startingX + 50, -verticalSpacing * i);
+            enemy.body.velocity.y = verticalSpeed;
+
+            //  Set up firing
+            var bulletSpeed = 400;
+            var firingDelay = 2000;
+            enemy.bullets = 1;
+            enemy.lastShot = 0;
+
+            //  Update function for each enemy
+            enemy.update = function(){
+                //  Wave movement
+                this.body.x = this.startingX + Math.sin((this.y) / frequency) * spread;
+
+                //  Fire
+                enemyBullet = advancedTieBullets.getFirstExists(false);
+                if (enemyBullet &&
+                    this.alive &&
+                    this.bullets &&
+                    this.y > game.width / 8 &&
+                    game.time.now > firingDelay + this.lastShot) {
+                    this.lastShot = game.time.now;
+                    this.bullets--;
+                    enemyBullet.reset(this.x, this.y + this.height / 2);
+                    enemyBullet.damageAmount = this.damageAmount;
+                    var angle = game.physics.arcade.moveToObject(enemyBullet, xwing, bulletSpeed);
+                    enemyBullet.angle = game.math.radToDeg(angle);
+                }
+
+                //  Kill enemies once they go off screen
+                if (this.y > game.height + 200) {
+                    this.kill();
+                    this.y = -20;
+                }
+            };
+        }
+    }
+
+    //  Send another wave soon
+    advancedTieLaunchTimer = game.time.events.add(game.rnd.integerInRange(advancedTieSpacing, advancedTieSpacing + 4000), launchAdvancedTie);
+}
+
+
+
+
 function restart() {
     //  Reset the enemies
     tieFighters.callAll('kill');
     tieFightersBullets.callAll('kill');
+    advancedTie.callAll('kill');
+    advancedTieBullets.callAll('kill');
+    game.time.events.remove(advancedTieLaunchTimer);
     game.time.events.remove(launchTieFighter);
+    advancedTieLaunched = false;
     xwing.revive();
     alive = true;
     playerHealth = maxHealth;

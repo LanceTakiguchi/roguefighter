@@ -24,7 +24,7 @@ html, body{
     text-align: justify;
     overflow: hidden;
     transform-origin: 50% 102%;
-    transform: perspective(300px) rotateX(25deg);
+    transform: perspective(300px) rotateX(15deg);
 }
 #titles:after
 {
@@ -42,10 +42,10 @@ html, body{
 {
     position: absolute;
     top: 100%;
-    animation: scroll 1000s linear 40s;
+    animation: scroll 100s linear 6s;
 }
 
 @keyframes scroll {
     0% { top: 100%; }
-    100% { top: -170%; }
+    100% { top: -110%; }
 }
