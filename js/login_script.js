@@ -1,6 +1,6 @@
 function makeAjaxCall(dataobj) {
     $.ajax({
-        url: "login_handler.php",
+        url: "./php/login_handler.php",
         data: dataobj,
         method: "POST",
         dataType: "JSON",
