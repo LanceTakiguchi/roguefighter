@@ -6,7 +6,7 @@ html, body{
     padding-top: 30%;
 }
 
-#titlecontent p{
+#titlecontent p {
     font-family: 'Archivo Black', sans-serif;
     color: #f8bb00;
 }
@@ -15,7 +15,7 @@ html, body{
 {
     position: absolute;
     width: 18em;
-    height: 70em;
+    height: 100em;
     bottom: 0;
     left: 50%;
     margin-left: -9em;
@@ -24,7 +24,7 @@ html, body{
     text-align: justify;
     overflow: hidden;
     transform-origin: 50% 102%;
-    transform: perspective(300px) rotateX(25deg);
+    transform: perspective(300px) rotateX(15deg);
 }
 #titles:after
 {
@@ -42,10 +42,10 @@ html, body{
 {
     position: absolute;
     top: 100%;
-    animation: scroll 100s linear 4s;
+    animation: scroll 100s linear 6s;
 }
 
 @keyframes scroll {
     0% { top: 100%; }
-    100% { top: -170%; }
+    100% { top: -110%; }
 }

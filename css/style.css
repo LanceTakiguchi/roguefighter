@@ -45,6 +45,7 @@ header{
     text-align: center;
 }
 
+/* menu appearance */
 #navigation ul li{
      display: inline-block;
      list-style-type: none;
@@ -56,11 +57,6 @@ header{
      color: #4D4D4D;
  }
 
-#navigation ul li:last-of-type{
-    border-right: none;
-    color: #4D4D4D;
-}
-
 #navigation ul .menuItem:hover{
     background-color: #3c3c3c;
     color: #1A1A1A;
@@ -68,16 +64,6 @@ header{
 
 #navigation ul .menuItem a{
     text-decoration: none;
-}
-
-#navigation ul .signIn a {
-    text-decoration: none;
-    padding-bottom: 1%;
-}
-
-#navigation ul .signIn a:hover {
-    border-bottom: 2px solid;
-    color: #0059ee;
 }
 
 #navigation ul li a{
@@ -117,11 +103,13 @@ header{
     padding: 0;
 }
 
-.signIn{
+/* login section of the menu */
+.login{
     position: relative;
 }
 
-.signIn .toolTip{
+    /* tool tip that appears above the login */
+.login .toolTip{
     font-size: 1em;
     width: 80%;
     padding: 3%;
@@ -130,11 +118,11 @@ header{
     color: #ffffff;
     position: absolute;
     z-index: 1;
-    top: -2.5em;
+    top: -4em;
     border-radius: 2px;
 }
 
-.signIn:hover .toolTip{
+.login:hover .toolTip{
     visibility: visible;
 }
 
@@ -160,6 +148,21 @@ header{
     left:40%;
 
 }
+
+/* specific styles for player button */
+
+#navigation .playerItem, #navigation .login{
+    border-right: none;
+    padding: .75% 1% .75% 1%;
+    font-family: 'Orbitron', sans-serif;
+    color: #ffffff;
+}
+
+#navigation .playerItem a {
+    text-decoration: none;
+}
+
+/* END NAVIGATION STYLES */
 
 .main_content{
     width: 100%;
