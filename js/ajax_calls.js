@@ -6,8 +6,9 @@ function login_user(dataObj) {
         method: "POST",
         dataType: "JSON",
         success: function (response) {
+            var responseObj = response.data
             console.log(response);
-            //$("#game_count").text();
+            $("#game_count").text(responseObj.game_plays);
         },
         error: function (response) {
             console.log(response);
