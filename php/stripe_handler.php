@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('mysql_connect.php');
-require_once('./stripe-php-4.1.0/init.php');
+require_once('stripe-php-4.1.0/init.php');
 if(!$conn){
     $output['message'] = "Fatal Error: could not reach database";
     $fatal_error = json_encode($output);
@@ -10,6 +10,7 @@ if(!$conn){
 }
 $account_to_credit = $_SESSION['user_email'];
 $charge_amount = $_POST['chargeAmount'];
+
 \Stripe\Stripe::setApiKey("sk_test_k7htWlvB4XQJXy9qzNydieSo");
 // Get the credit card details submitted by the form
 $token = $_POST['stripeToken'];
