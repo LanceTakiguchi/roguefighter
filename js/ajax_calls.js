@@ -22,7 +22,7 @@ function chargeUser(dataObj) {
         data: dataObj,
         method: "POST",
         success: function (response) {
-            return true;
+            console.log(response);
         }
     });
 }
