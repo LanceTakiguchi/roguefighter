@@ -1,0 +1,55 @@
+html, body{
+    overflow: hidden;
+}
+
+#main_content{
+    padding-top: 30%;
+}
+
+#titlecontent p {
+    font-family: 'Archivo Black', sans-serif;
+    color: #f8bb00;
+}
+
+#titlecontent p.heading{
+text-align: center;
+}
+
+#titles
+{
+    position: absolute;
+    width: 18em;
+    height: 40em;
+    bottom: 0;
+    left: 50%;
+    margin-left: -9em;
+    font-size: 350%;
+    font-weight: bold;
+    text-align: justify;
+    overflow: hidden;
+    transform-origin: 50% 102%;
+    transform: perspective(300px) rotateX(20deg);
+}
+#titles:after
+{
+    position: absolute;
+    content: ' ';
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 60%;
+    background-image: linear-gradient(top, rgba(0,0,0,1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+#titlecontent
+{
+    position: absolute;
+    top: 100%;
+    animation: scroll 80s linear 1s;
+}
+
+@keyframes scroll {
+    0% { top: 100%; }
+    100% { top: -110%; }
+}
