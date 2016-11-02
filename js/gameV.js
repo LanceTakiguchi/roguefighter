@@ -148,7 +148,7 @@ function playGame() {
 
 // game over text and even that brings up the leaderboard
 function gameOver() {
-
+    decreaseGameCount();
     // Game Over Text
     gameOverText = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER !");
     gameOverText.anchor.set(0.5);
