@@ -1,0 +1,66 @@
+<?php
+session_start();
+?>
+<html lang="en">
+<head>
+    <title>Rogue Fighter | Play</title>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="css/game_screen.css">
+    <link rel="stylesheet" type="text/css" href="css/screen_text.css">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
+    <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
+    <script src="js/login_script.js"></script>
+    <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.js"></script>
+    <script src="js/game_play_animation.js"></script>
+    <script src="js/gameV.js"></script>
+
+</head>
+<body>
+<div class="wrapper">
+    <p class="skip">SKIP</p>
+    <div id="titles">
+        <div id="titlecontent">
+            <p>
+                A long time ago, in a galaxy far, far, away...
+                It is a period of civil war. Rebel spaceships, striking from a hidden base, have won their first victory
+                against the evil Galactic Empire.
+                During the battle, Rebel spies managed to steal secret plans to the Empire's ultimate weapon, the DEATH
+                STAR, an armored space station with enough power to destroy an entire planet.
+                Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, custodian of the
+                stolen plans that can save her people and restore freedom to the galaxy....
+                ....In the meantime,
+                It is up to you to take your X-Wing fighter and clear out as many imperial ships as possible to clear the
+                way for Princess Leia to get the plans into the right hands....
+            </p>
+        </div>
+    </div>
+</div>
+<div id="gameScreen">
+    <div id="game"></div>
+    <div id="container">
+        <div id="gameArea"></div>
+        <br><br>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">×</span>
+                <h1>High Scores</h1>
+                <table id="leaderboardTable">
+                    <tr>
+                        <th>Name</th>
+                        <th></th>
+                        <th>Score</th>
+                    </tr>
+                </table>
+                <input type="text" id="nameInput" maxlength="10" placeholder="Enter your name">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
