@@ -22,7 +22,7 @@ body {
     display: block;
     position: fixed;
     bottom: 2%;
-    right: 10%;
+    left: 10%;
     padding: .50% 2.5%;
     color: #000000;
     background: #f8bb00;
@@ -44,7 +44,7 @@ body {
 
 #gameArea {
     width: 600px;
-    height: 800px;
+    height: 650px;
     border: solid goldenrod 3px;
     border-radius: 5%;
     padding: 10px;
@@ -127,7 +127,7 @@ input[type=text] {
     width: 620px;
     text-align: center;
     margin: auto;
-    top: 120px;
+    top: 90px;
 }
 
 /* Modal Content/Box */
@@ -143,6 +143,11 @@ input[type=text] {
     background-size: cover;
     color: goldenrod;
     text-align: center;
+}
+
+.modal-content h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 40px;
 }
 
 /* The Close Button */

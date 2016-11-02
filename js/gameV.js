@@ -1,13 +1,12 @@
 /**
  * Created by Weizguy on 10/25/2016.
- * Prototype to for player health and shields
+ * Game logic built with Phaser engine
  */
 
 // declaration of game engine
 // this is where you can change the board size
-//var game = new Phaser.Game(window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio, Phaser.CANVAS, 'gameArea');
 var gameWidth = 600;
-var gameHeight = 800;
+var gameHeight = 650;
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
     preload: preload,
     create: create,
@@ -19,17 +18,16 @@ var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
 WebFontConfig = {
 
     //  'active' means all requested fonts have finished loading
-    //  We set a 1 second delay before calling 'createText'.
+    //  Set a 1 second delay before calling 'createText'.
     //  For some reason if we don't the browser cannot render the text the first time it's created.
     active: function () {
         game.time.events.add(Phaser.Timer.SECOND, createText, this);
     },
 
-    //  The Google Fonts we want to load (specify as many as you like in the array)
+    //  The Google Fonts we want to load (we could specify others, but we use Orbitron)
     google: {
         families: ['Orbitron']
     }
-
 };
 
 // declare all globals
@@ -40,6 +38,10 @@ var speed = 300;
 var xwing;
 var alive = false;
 var tieFighters;
+var advancedTie;
+var advancedTieLaunchTimer;
+var advancedTieLaunched = false;
+var advancedTieSpacing = 2500;
 var blaster;
 var bulletsR;
 var bulletsL;
@@ -57,10 +59,11 @@ var playerShield;
 var gameOver;
 var gameOverText = '';
 var playGameText = '';
-var scoreText;
-var highScoreText;
+var scoreText = '';
+var highScoreText = '';
+var playAgainText = '';
 var score = 0;
-var highScore;
+var highScore = 0;
 var pLives;
 var maxLives = 2;
 var maxHealth = 120;
@@ -70,14 +73,15 @@ var numLives = maxLives;
 function preload() {
 
     // add the images/audio to the game
-    //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.load.image('background', 'assets/back.png');
     game.load.image('foreground', 'assets/deathstar.png');
     game.load.image('xwing', 'assets/xwing.png');
     game.load.image('tieFighter', 'assets/tie.png');
+    game.load.image('advancedTie', 'assets/advTie.png');
     game.load.image('bulletL', 'assets/bullet0.png');
     game.load.image('bulletR', 'assets/bullet0.png');
     game.load.image('tieBullet', 'assets/enemyBullet0.png');
+    game.load.image('advancedTieBullet', 'assets/enemyBullet1.png');
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.audio('blaster', 'assets/blaster.mp3');
     game.load.audio('explode', 'assets/explosion.mp3');
@@ -88,12 +92,10 @@ function preload() {
     game.load.image('lives', 'assets/lives.png');
     // Load the Google WebFont Loader script
     game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
-
 }
 
 // create the score text
 function createText() {
-
 
     // Score Text
     scoreText = game.add.text(10, 10, "Score:\n" + score);
@@ -120,13 +122,11 @@ function createText() {
     highScoreText.stroke = '#000000';
     highScoreText.strokeThickness = 2;
     highScoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
-
-
 }
 
+// Play game text and click event to start the game
 function playGame() {
 
-    //game.paused = true;
     // Play Game Text
     playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME ?");
     playGameText.anchor.set(0.5);
@@ -143,10 +143,10 @@ function playGame() {
     playGameText.inputEnabled = true;
     xwing.kill();
 
-
     playGameText.events.onInputDown.add(restart, this);
 }
 
+// game over text and even that brings up the leaderboard
 function gameOver() {
 
     // Game Over Text
@@ -162,16 +162,16 @@ function gameOver() {
     gameOverText.stroke = '#000000';
     gameOverText.strokeThickness = 2;
     gameOverText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
-    gameOverText.inputEnabled = true;
-    gameOverText.events.onInputDown.add(restart, this);
+    // remove xwing from screen
     xwing.kill();
     alive = false;
+    // allow the use of the WASD keys for high score name input
     game.input.keyboard.removeKey(Phaser.Keyboard.W);
     game.input.keyboard.removeKey(Phaser.Keyboard.S);
     game.input.keyboard.removeKey(Phaser.Keyboard.A);
     game.input.keyboard.removeKey(Phaser.Keyboard.D);
     game.time.events.add(1000, scoreBoard);
-
+    // add the leaderboard
     function scoreBoard() {
         gameOverText.kill();
         $('#myModal').fadeIn(3000);
@@ -180,12 +180,10 @@ function gameOver() {
         } else
             $('#nameInput').hide();
     }
-
-
-
 }
 
-function playAgain(){
+// play again text with click event to restart the game
+function playAgain() {
 
     playAgainText = game.add.text(game.world.centerX, game.world.centerY, "PLAY AGAIN ?");
     playAgainText.anchor.set(0.5);
@@ -203,15 +201,15 @@ function playAgain(){
     playAgainText.events.onInputDown.add(restart, this);
 }
 
-
+// Create the player, enemies, and bullets
 function create() {
 
     background = game.add.tileSprite(0, 0, gameWidth, gameHeight, 'background');
     // this is where you set the speed of the scroll (and the direction)
     background.autoScroll(0, 60);
-
+    // setting up the DeathStar to scroll
     foreground = game.add.tileSprite(0, 0, gameWidth, 250, 'foreground');
-    // here it is set to scroll left
+    // here the foreground is set to scroll left
     foreground.autoScroll(-10, 0);
 
     // create the tieFighter group
@@ -245,11 +243,39 @@ function create() {
 
     launchTieFighter();
 
+    // Next level of bad guys
+    advancedTie = game.add.group();
+    advancedTie.enableBody = true;
+    advancedTie.physicsBodyType = Phaser.Physics.ARCADE;
+    advancedTie.createMultiple(30, 'advancedTie');
+    advancedTie.setAll('anchor.x', 0.5);
+    advancedTie.setAll('anchor.y', 0.5);
+    advancedTie.setAll('scale.x', 0.5);
+    advancedTie.setAll('scale.y', 0.5);
+    advancedTie.setAll('angle', 180);
+
+    //  Advanced Tie Fighter's bullets
+    advancedTieBullets = game.add.group();
+    advancedTieBullets.enableBody = true;
+    advancedTieBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    advancedTieBullets.createMultiple(30, 'advancedTieBullet');
+    advancedTieBullets.callAll('crop', null, {x: 90, y: 0, width: 90, height: 70});
+    advancedTieBullets.setAll('alpha', 0.9);
+    advancedTieBullets.setAll('anchor.x', 0.5);
+    advancedTieBullets.setAll('anchor.y', 0.5);
+    advancedTieBullets.setAll('outOfBoundsKill', true);
+    advancedTieBullets.setAll('checkWorldBounds', true);
+    advancedTieBullets.forEach(function (enemy) {
+        enemy.body.setSize(20, 20);
+        enemy.body.setSize(enemy.width * 3 / 4, enemy.height * 3 / 4);
+    });
+
+    // add the player (aka xwing)
     xwing = game.add.group();
     xwing.enableBody = true;
     xwing.physicsBodyType = Phaser.Physics.ARCADE;
 
-
+    // add left and right lasers for xwing
     bulletsR = game.add.group();
     bulletsR.enableBody = true;
     bulletsR.physicsBodyType = Phaser.Physics.ARCADE;
@@ -263,6 +289,7 @@ function create() {
     game.explode = game.add.audio('explode');
     game.blaster = game.add.audio('blaster');
 
+    // create the bullets for both left and right for the xwing
     for (var i = 0; i < 200; i++) {
         var bL = bulletsL.create(40, 0, 'bulletL');
         var bR = bulletsR.create(40, 0, 'bulletR');
@@ -289,7 +316,7 @@ function create() {
     explosions.createMultiple(30, 'kaboom');
     explosions.forEach(setupExplosions, this);
 
-    //  Big explosion
+    //  Bigger explosion
     playerDeath = game.add.emitter(xwing.x, xwing.y);
     playerDeath.width = 50;
     playerDeath.height = 50;
@@ -297,28 +324,30 @@ function create() {
     playerDeath.setAlpha(0.9, 0, 800);
     playerDeath.setScale(0.1, 0.6, 0.1, 0.6, 1000, Phaser.Easing.Quintic.Out);
 
+    // allow the use of the arrow keys for player movement
     cursors = game.input.keyboard.createCursorKeys();
-
+    // set up use of the WASD keys for player movement
     wasd = {
         up: game.input.keyboard.addKey(Phaser.Keyboard.W),
         down: game.input.keyboard.addKey(Phaser.Keyboard.S),
         left: game.input.keyboard.addKey(Phaser.Keyboard.A),
         right: game.input.keyboard.addKey(Phaser.Keyboard.D)
     };
-
+    // set up the space bar and mouse button to allow firing the lasers
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
     playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
 
+    // create the mini ships on the bottom to represent the number of lives left
     pLives = game.add.group();
     var pLife;
     for (var i = 0; i < numLives; i++) {
         pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
-
-
+    // start the game
     playGame();
 }
 
+// function to change image based on shield damage
 function shield(health) {
 
     var phealth = (health / maxHealth) * 100;
@@ -337,6 +366,7 @@ function shield(health) {
         playerShield.kill();
         playerShield = game.add.sprite(10, gameHeight - 50, 'shield3');
     } else if (phealth <= 0) {
+        // kill the player icons on bottom of page
         playerShield.kill();
         pLives.removeAll();
         numLives -= 1;
@@ -346,12 +376,13 @@ function shield(health) {
             playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
             shield(playerHealth);
         } else if (numLives <= -1) {
+            // start the game over function
             gameOver();
         }
     }
 }
 
-
+// re-create the lives on bottom of screen after shield dissapates
 function life(lives) {
 
     for (var i = 0; i < numLives; i++) {
@@ -359,15 +390,18 @@ function life(lives) {
     }
 }
 
+// render function for future use
 function render() {
 
 }
+
 // add explosions
 function setupExplosions(explode) {
 
     explode.animations.add('kaboom');
 }
 
+// listener function for change states in game
 function update() {
 
     // add the collision handlers
@@ -375,6 +409,10 @@ function update() {
     game.physics.arcade.collide(bulletsR, tieFighters, playerKillsEnemy, null, this);
     game.physics.arcade.collide(xwing, tieFighters, enemyPlayerCollide, null, this);
     game.physics.arcade.collide(xwing, tieFightersBullets, enemyBulletKillPlayer, null, this);
+    game.physics.arcade.collide(bulletsL, advancedTie, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(bulletsR, advancedTie, playerKillsEnemy, null, this);
+    game.physics.arcade.collide(xwing, advancedTie, enemyPlayerCollide, null, this);
+    game.physics.arcade.collide(xwing, advancedTieBullets, enemyBulletKillPlayer, null, this);
 
     // make the xwing controllable
     xwing.body.velocity.x = 0;
@@ -400,16 +438,17 @@ function update() {
         }
     }
 
+    // add pause function when 'p' is pressed
     window.onkeydown = function (event) {
         if (event.keyCode == 80) {
             game.paused = !game.paused;
         }
     }
-
 }
+// End of Update Function
+//***********************************************************
 
 // fire the bullet
-
 function fireBulletL() {
 
     if (game.time.now > bulletTimeL) {
@@ -424,9 +463,9 @@ function fireBulletL() {
     }
 }
 function fireBulletR() {
+
     if (game.time.now > bulletTimeR) {
         bulletR = bulletsR.getFirstExists(false);
-
 
         if (bulletR && numLives > -1) {
             bulletR.reset(xwing.x + 20, xwing.y - 40);
@@ -445,7 +484,6 @@ function resetBullet(bullet) {
 
 // called if enemy and player collide
 function enemyPlayerCollide(player, enemy) {
-
 
     playerHealth -= 20;
     shield(playerHealth);
@@ -471,13 +509,11 @@ function enemyPlayerCollide(player, enemy) {
     if (numLives <= -1) {
         xwing.kill();
     }
-
 }
 
 // called if enemy bullet kills player
 function enemyBulletKillPlayer(player, enemyBullet) {
 
-    //player.kill();
     playerHealth -= 20;
     shield(playerHealth);
     enemyBullet.kill();
@@ -527,8 +563,15 @@ function playerKillsEnemy(bullet, enemy) {
     explosion.reset(enemy.body.x, enemy.body.y);
     explosion.play('kaboom', 30, false, true);
     game.explode.play();
+
+    //  Advanced Tie Fighters come in after a score of 500
+    if (!advancedTieLaunched && score > 500) {
+        advancedTieLaunched = true;
+        launchAdvancedTie();
+    }
 }
 
+// launch the tie fighters
 function launchTieFighter() {
     var min = 300;
     var max = 3000;
@@ -549,7 +592,7 @@ function launchTieFighter() {
     enemy.update = function () {
         enemy.angle = 180 - game.math.radToDeg(Math.atan2(enemy.body.velocity.x, enemy.body.velocity.y));
 
-        //  Fire
+        // Fire
         enemyBullet = tieFightersBullets.getFirstExists(false);
         if (enemyBullet &&
             this.alive &&
@@ -569,11 +612,72 @@ function launchTieFighter() {
     game.time.events.add(game.rnd.integerInRange(min, max), launchTieFighter);
 }
 
+// launch the advanced tie fighters
+function launchAdvancedTie() {
+    var startingX = game.rnd.integerInRange(100, game.width - 100);
+    var verticalSpeed = 180;
+    var spread = 120;
+    var frequency = 70;
+    var verticalSpacing = 70;
+    var horizontalSpacing = 90;
+    var numEnemiesInWave = 3;
+
+    //  Launch wave
+    for (var i = 0; i < numEnemiesInWave; i++) {
+        var enemy = advancedTie.getFirstExists(false);
+        if (enemy) {
+            enemy.startingX = startingX;
+            enemy.reset(startingX + 50, -verticalSpacing * i);
+            enemy.body.velocity.y = verticalSpeed;
+
+            // Set up firing
+            var bulletSpeed = 400;
+            var firingDelay = 2000;
+            enemy.bullets = 1;
+            enemy.lastShot = 0;
+
+            // Update function for each enemy
+            enemy.update = function () {
+                // Wave movement
+                this.body.x = this.startingX + Math.sin((this.y) / frequency) * spread;
+
+                // Fire
+                enemyBullet = advancedTieBullets.getFirstExists(false);
+                if (enemyBullet &&
+                    this.alive &&
+                    this.bullets &&
+                    this.y > game.width / 8 &&
+                    game.time.now > firingDelay + this.lastShot) {
+                    this.lastShot = game.time.now;
+                    this.bullets--;
+                    enemyBullet.reset(this.x, this.y + this.height / 2);
+                    enemyBullet.damageAmount = this.damageAmount;
+                    var angle = game.physics.arcade.moveToObject(enemyBullet, xwing, bulletSpeed);
+                    enemyBullet.angle = game.math.radToDeg(angle);
+                }
+
+                //  Kill enemies once they go off screen
+                if (this.y > game.height + 200) {
+                    this.kill();
+                    this.y = -20;
+                }
+            };
+        }
+    }
+    //  Send another wave soon
+    advancedTieLaunchTimer = game.time.events.add(game.rnd.integerInRange(advancedTieSpacing, advancedTieSpacing + 4000), launchAdvancedTie);
+}
+
+// function called to restart the game
 function restart() {
     //  Reset the enemies
     tieFighters.callAll('kill');
     tieFightersBullets.callAll('kill');
+    advancedTie.callAll('kill');
+    advancedTieBullets.callAll('kill');
+    game.time.events.remove(advancedTieLaunchTimer);
     game.time.events.remove(launchTieFighter);
+    advancedTieLaunched = false;
     xwing.revive();
     alive = true;
     playerHealth = maxHealth;
@@ -592,59 +696,10 @@ function restart() {
         left: game.input.keyboard.addKey(Phaser.Keyboard.A),
         right: game.input.keyboard.addKey(Phaser.Keyboard.D)
     };
-    //  Hide the text
+    // Hide the text
     playGameText.visible = false;
     gameOverText.visible = false;
 }
-
-
-//
-// // set the database reference
-// var firebaseRef = firebase;
-// //var game = null;
-// $(document).ready(function () {
-//
-// // Initialize Firebase
-//     var config = {
-//         apiKey: "AIzaSyCjFyM0sI-Usm5UJTknhJkprxgPsEmVyUg",
-//         authDomain: "star-wars-1978.firebaseapp.com",
-//         databaseURL: "https://star-wars-1978.firebaseio.com",
-//         storageBucket: "star-wars-1978.appspot.com",
-//         messagingSenderId: "919373111684"
-//     };
-//     firebase.initializeApp(config);
-//
-//     // check for anonymous login issues
-//     firebaseRef.auth().signInAnonymously().catch(function (error) {
-//         // Handle Errors here.
-//         var errorCode = error.code;
-//         var errorMessage = error.message;
-//     });
-//
-// });
-//
-// var db;
-// $(document).ready(function(){
-//
-//     db = firebaseRef.database().ref('hiScore');
-//     db.on('value', update_score);
-//
-// });
-//
-// function updateScore(score){
-//     db.set({
-//         hiScore: score,
-//         timeStamp: Date()
-//     });
-// }
-//
-// var state;
-// function update_score(score){
-//     console.log("NEW SCORE RECEIVED", score.val());
-//     state = score.val();
-//     highScore = state.hiScore;
-// }
-
 
 // Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
 var htmlForPath = {};
@@ -656,91 +711,86 @@ var rootRef;
 var scoreListRef;
 var highestScoreRef;
 
-
-    var LEADERBOARD_SIZE = 5;
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyB4IOXzUkZOyXsCjvhRsw0sKFNcD512yx0",
-        authDomain: "roguefighter-8aefa.firebaseapp.com",
-        databaseURL: "https://roguefighter-8aefa.firebaseio.com",
-        storageBucket: "roguefighter-8aefa.appspot.com",
-        messagingSenderId: "206138842370"
-    };
-    firebase.initializeApp(config);
+var LEADERBOARD_SIZE = 5;
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyB4IOXzUkZOyXsCjvhRsw0sKFNcD512yx0",
+    authDomain: "roguefighter-8aefa.firebaseapp.com",
+    databaseURL: "https://roguefighter-8aefa.firebaseio.com",
+    storageBucket: "roguefighter-8aefa.appspot.com",
+    messagingSenderId: "206138842370"
+};
+firebase.initializeApp(config);
 
 // Build some firebase references.
-    rootRef = firebase;
-    scoreListRef = rootRef.database().ref('scoreList');
-    highestScoreRef = rootRef.database().ref('highestScore');
+rootRef = firebase;
+scoreListRef = rootRef.database().ref('scoreList');
+highestScoreRef = rootRef.database().ref('highestScore');
 
+// check for anonymous login issues
+rootRef.auth().signInAnonymously().catch(function (error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+});
 
-    // check for anonymous login issues
-    rootRef.auth().signInAnonymously().catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-    });
+// Helper function that takes a new score snapshot and adds an appropriate row to the leaderboard table.
+function handleScoreAdded(scoreSnapshot, prevScoreName) {
+    newScoreRow = $("<tr/>");
+    newScoreRow.append($("<td/>").text(scoreSnapshot.val().name));
+    newScoreRow.append($("<td/>").text('........'));
+    newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
 
+    scoreArray.push(scoreSnapshot.val().score);
+    nameArray.push(scoreSnapshot.val().name);
 
-    // Helper function that takes a new score snapshot and adds an appropriate row to our leaderboard table.
-    function handleScoreAdded(scoreSnapshot, prevScoreName) {
-        newScoreRow = $("<tr/>");
-        newScoreRow.append($("<td/>").text(scoreSnapshot.val().name));
-        newScoreRow.append($("<td/>").text('........'));
-        newScoreRow.append($("<td/>").text(scoreSnapshot.val().score));
+    // Store a reference to the table row so we can get it again later.
+    htmlForPath[scoreSnapshot.key] = newScoreRow;
 
-        scoreArray.push(scoreSnapshot.val().score);
-        nameArray.push(scoreSnapshot.val().name);
-
-        // Store a reference to the table row so we can get it again later.
-        htmlForPath[scoreSnapshot.key] = newScoreRow;
-
-        // Insert the new score in the appropriate place in the table.
-        if (prevScoreName === null) {
-            $("#leaderboardTable").append(newScoreRow);
-        }
-        else {
-            var lowerScoreRow = htmlForPath[prevScoreName];
-            lowerScoreRow.before(newScoreRow);
-        }
-        lowScore = scoreArray[0];
-        console.log('low score: ', lowScore);
+    // Insert the new score in the appropriate place in the table.
+    if (prevScoreName === null) {
+        $("#leaderboardTable").append(newScoreRow);
     }
-
-
-    // Helper function to handle a score object being removed; just removes the corresponding table row.
-    function handleScoreRemoved(scoreSnapshot) {
-        var removedScoreRow = htmlForPath[scoreSnapshot.key];
-        removedScoreRow.remove();
-        delete htmlForPath[scoreSnapshot.key];
+    else {
+        var lowerScoreRow = htmlForPath[prevScoreName];
+        lowerScoreRow.before(newScoreRow);
     }
+    lowScore = scoreArray[0];
+    console.log('low score: ', lowScore);
+}
 
-    // Create a view to only receive callbacks for the last LEADERBOARD_SIZE scores
-    var scoreListView = scoreListRef.limitToLast(LEADERBOARD_SIZE);
+// Helper function to handle a score object being removed; just removes the corresponding table row.
+function handleScoreRemoved(scoreSnapshot) {
+    var removedScoreRow = htmlForPath[scoreSnapshot.key];
+    removedScoreRow.remove();
+    delete htmlForPath[scoreSnapshot.key];
+}
 
-    // Add a callback to handle when a new score is added.
-    scoreListView.on("child_added", function (newScoreSnapshot, prevScoreName) {
-        handleScoreAdded(newScoreSnapshot, prevScoreName);
-    });
+// Create a view to only receive callbacks for the last LEADERBOARD_SIZE scores
+var scoreListView = scoreListRef.limitToLast(LEADERBOARD_SIZE);
 
-    // Add a callback to handle when a score is removed
-    scoreListView.on("child_removed", function (oldScoreSnapshot) {
-        handleScoreRemoved(oldScoreSnapshot);
-    });
+// Add a callback to handle when a new score is added.
+scoreListView.on("child_added", function (newScoreSnapshot, prevScoreName) {
+    handleScoreAdded(newScoreSnapshot, prevScoreName);
+});
 
-    // Add a callback to handle when a score changes or moves positions.
-    var changedCallback = function (scoreSnapshot, prevScoreName) {
-        handleScoreRemoved(scoreSnapshot);
-        handleScoreAdded(scoreSnapshot, prevScoreName);
-    };
-    scoreListView.on("child_moved", changedCallback);
-    scoreListView.on("child_changed", changedCallback);
+// Add a callback to handle when a score is removed
+scoreListView.on("child_removed", function (oldScoreSnapshot) {
+    handleScoreRemoved(oldScoreSnapshot);
+});
 
+// Add a callback to handle when a score changes or moves positions.
+var changedCallback = function (scoreSnapshot, prevScoreName) {
+    handleScoreRemoved(scoreSnapshot);
+    handleScoreAdded(scoreSnapshot, prevScoreName);
+};
+scoreListView.on("child_moved", changedCallback);
+scoreListView.on("child_changed", changedCallback);
 
 $(document).ready(function () {
     // When the user presses enter on scoreInput, add the score, and update the highest score.
     $("#nameInput").keypress(function (e) {
-
+        // enter key adds name to leaderboard
         if (e.keyCode == 13) {
             var newScore = score;
             var name = $("#nameInput").val();
@@ -750,8 +800,6 @@ $(document).ready(function () {
                 return;
             }
 
-
-            console.log('names: ', nameArray);
             $('#nameInput').hide();
 
             if (name.length === 0)
@@ -766,16 +814,13 @@ $(document).ready(function () {
 });
 
 // Get the modal
-    var modal = $('#myModal');
-
-// Get the button that opens the modal
-    var btn = $("#myBtn");
+var modal = $('#myModal');
 
 // Get the <span> element that closes the modal
-    var span = $(".close")[0];
+var span = $(".close")[0];
 
 $(document).ready(function () {
-// When the user clicks on <span> (x), close the modal
+// When the user clicks on <span> (x), close the leaderboard and show Play again text
     $('.close').click(function () {
         $('#myModal').css('display', 'none');
         $('#nameInput').val('');
@@ -783,38 +828,26 @@ $(document).ready(function () {
     });
 });
 
-    var state;
+// set up database references
+var state;
 var fbRef = firebase.database();
-//     function update_score(score) {
-//         state = score.val();
-//         console.log(state);
-//         highScore = state.highestScore;
-//         console.log("NEW SCORE RECEIVED", highScore);
-//     }
 
+// get score from database and set to high score in game
+fbRef.ref('HiScore').on("value", function (newHighestScore) {
+    state = newHighestScore.val();
+    highScore = state.highestScore;
+});
 
-    fbRef.ref('HiScore').on("value", function (newHighestScore) {
-        state = newHighestScore.val();
-        highScore = state.highestScore;
-        console.log('Score: ', highScore);
-    })
+// send the high score to the database
+function updateScore(score) {
+    var fbRef = firebase.database();
 
+    var dataToSend = {
+        highestScore: score
+    };
 
-    // var db;
-    // $(document).ready(function () {
-    //     db = rootRef.database().ref('highestScore');
-    //     db.on('value', update_score);
-    // });
-
-        function updateScore(score) {
-            var fbRef = firebase.database();
-
-            var dataToSend = {
-                highestScore: score
-            };
-
-            fbRef.ref('HiScore').set(dataToSend);
-        }
+    fbRef.ref('HiScore').set(dataToSend);
+}
 
 
 
