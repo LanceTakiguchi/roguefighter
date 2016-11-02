@@ -5,7 +5,7 @@
 // declaration of game engine
 // this is where you can change the board size
 var gameWidth = 600;
-var gameHeight = 650;
+var gameHeight = 500;
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
   preload: preload,
   create: create,
@@ -44,10 +44,10 @@ function preload() {
 // Play game text and click event to start the game
 function playGame() {
   // Play Game Text
-  playGameText = game.add.text(game.world.centerX, game.world.centerY, " Click to Pilot X Wing!");
-  playGameText.anchor.set(0.5);
+  playGameText = game.add.text(300, 50, " Click to Pilot");
+  playGameText.anchor.set(.02);
   playGameText.font = 'Orbitron';
-  playGameText.fontSize = 40;
+  playGameText.fontSize = 30;
   playGamegrd = playGameText.context.createLinearGradient(0, 0, 0, playGameText.canvas.height);
   playGamegrd.addColorStop(0, 'yellow');
   playGamegrd.addColorStop(1, 'orange');

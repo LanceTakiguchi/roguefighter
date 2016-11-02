@@ -2,3 +2,17 @@
     margin: 0 auto;
     width: 33%;
 }
+
+#controlsModal{
+    width: 100%;
+    color: #eecd0a;
+}
+
+#controlsModal p {
+    text-align: center;
+    padding: 2% 0 2% 0;
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5em;
+    color: #eecd0a;
+}
