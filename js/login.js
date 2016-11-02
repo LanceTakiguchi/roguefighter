@@ -36,7 +36,7 @@ function onSignIn(googleUser) {
     userEmail: profile.getEmail(),
     userName: userName
   };
-  makeAjaxCall(dataToSend);
+  login_user(dataToSend);
 };
 
 //Signs a user out

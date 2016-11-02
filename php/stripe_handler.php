@@ -8,10 +8,8 @@ if(!$conn){
     print_r($fatal_error);
     exit();
 }
-
-$account_to_credit = $_POST['stripeEmail'];
+$account_to_credit = $_SESSION['user_email'];
 $charge_amount = $_POST['chargeAmount'];
-
 \Stripe\Stripe::setApiKey("sk_test_k7htWlvB4XQJXy9qzNydieSo");
 // Get the credit card details submitted by the form
 $token = $_POST['stripeToken'];

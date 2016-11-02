@@ -126,7 +126,7 @@ function createText() {
 
 // Play game text and click event to start the game
 function playGame() {
-
+    decreaseGameCount();
     // Play Game Text
     playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME ?");
     playGameText.anchor.set(0.5);
@@ -148,7 +148,7 @@ function playGame() {
 
 // game over text and even that brings up the leaderboard
 function gameOver() {
-    decreaseGameCount();
+
     // Game Over Text
     gameOverText = game.add.text(game.world.centerX, game.world.centerY, "GAME OVER !");
     gameOverText.anchor.set(0.5);
@@ -184,7 +184,7 @@ function gameOver() {
 
 // play again text with click event to restart the game
 function playAgain() {
-
+    decreaseGameCount();
     playAgainText = game.add.text(game.world.centerX, game.world.centerY, "PLAY AGAIN ?");
     playAgainText.anchor.set(0.5);
     playAgainText.font = 'Orbitron';
