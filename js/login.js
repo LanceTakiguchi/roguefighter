@@ -48,11 +48,13 @@ function signOutDisplay(){
   if (signInFlag === false) {
     $('.g-signin2').show();
     $('.signOut').hide();
+    $('.toolTip').removeClass('hidden');
     $('.playerItem').hide();
   }
   else{
     $('.g-signin2').hide();
     $('.signOut').show();
+    $('.toolTip').addClass('hidden');
     $('.playerItem').show();
   }
 }
