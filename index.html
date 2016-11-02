@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html" charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-signin-client_id" content="395407413314-ol7h22b6rhks9hucno3bncmuqo45v8ld.apps.googleusercontent.com">
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -13,9 +14,11 @@
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
   <script src="https://checkout.stripe.com/checkout.js"></script>
+  <script src="https://apis.google.com/js/platform.js?" async defer></script>
   <script src="js/visual.js"></script>
   <script src="js/stripe_api.js"></script>
   <script src="js/stripe_gen.js"></script>
+  <script src="js/login.js"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -31,18 +34,21 @@
           <li class="menuItem"><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
           <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
           <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
-          <li class="signIn">
+          <li class="login">
             <span class="toolTip">Sign in with your Google Account</span>
-            <a href="#"> <i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</a>
+            <a class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"> </a>
+            <a class="signOut" onclick="signOut();">Sign Out </a>
           </li>
-          <li class="menuItem"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i><p id="purchase">Purchase</p></a>
+          <li class="playerItem userName">Welcome<br></li>
+          <li class="playerItem">
+            <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              <p id="purchase">Purchase</p>
+            </a>
           </li>
-          <!-- UX NOTE: Needs to change the game's display to be unclickable & intuitively so -->
-          <li class="menuItem" id="games_box">
-            <a href="#">
-              <i class="fa fa-heart" aria-hidden="true"></i>
+          <li class="playerItem" id="games_box">
+            <a href="#"><i class="fa fa-heart" aria-hidden="true"></i>
               <p>Games: <span id="game_count">10</span></p>
-          </a>
+            </a>
           </li>
         </ul>
       </div>
@@ -50,10 +56,10 @@
     <div class="main_content">
       <audio loop class="audioDemo" preload="none">
         <source src="sound/intro-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
-        </audio>
-        <div>
-          <a class="play standard_padding" href="play.html">- PLAY -</a>
-        </div>
+      </audio>
+      <div>
+        <a class="play standard_padding" href="play.html">- PLAY -</a>
+      </div>
         <!-- The Payment Modal -->
         <div id="package_select" class="modal">
           <div class="modal-content">
