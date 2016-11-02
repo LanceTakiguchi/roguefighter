@@ -1,4 +1,4 @@
 <?php
-$post = json_encode($_POST);
+$post = json_encode($_SESSION);
 print_r($post);
 ?>
