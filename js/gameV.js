@@ -703,6 +703,7 @@ function restart() {
     // Hide the text
     playGameText.visible = false;
     gameOverText.visible = false;
+    playAgainText.visible = false;
 }
 
 // Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
@@ -760,7 +761,6 @@ function handleScoreAdded(scoreSnapshot, prevScoreName) {
         lowerScoreRow.before(newScoreRow);
     }
     lowScore = scoreArray[0];
-    console.log('low score: ', lowScore);
 }
 
 // Helper function to handle a score object being removed; just removes the corresponding table row.
