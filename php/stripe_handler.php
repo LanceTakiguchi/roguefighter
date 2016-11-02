@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('mysql_connect.php');
-require_once('stripe-php-4.1.0/init.php');
+require_once('./stripe-php-4.1.0/init.php');
 if(!$conn){
     $output['message'] = "Fatal Error: could not reach database";
     $fatal_error = json_encode($output);
