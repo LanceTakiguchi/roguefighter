@@ -64,7 +64,7 @@ session_start();
             <source src="sound/r2d2_confirm_beep.mp3" type="audio/mpeg"> Your browser does not support the audio element
         </audio>
         <div>
-            <a class="play standard_padding" href="play.html">- PLAY -</a>
+            <a class="play standard_padding" href="play.php">- PLAY -</a>
         </div>
         <!-- The Payment Modal -->
         <div id="package_select" class="modal">
