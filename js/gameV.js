@@ -56,6 +56,7 @@ var explosions;
 var explode;
 var playerDeath;
 var playerShield;
+var music;
 var gameOver;
 var gameOverText = '';
 var playGameText = '';
@@ -85,6 +86,7 @@ function preload() {
     game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
     game.load.audio('blaster', 'assets/blaster.mp3');
     game.load.audio('explode', 'assets/explosion.mp3');
+    game.load.audio('music', 'sound/game-music.mp3');
     game.load.image('shield0', 'assets/shield0.png');
     game.load.image('shield1', 'assets/shield1.png');
     game.load.image('shield2', 'assets/shield2.png');
@@ -211,6 +213,8 @@ function create() {
     foreground = game.add.tileSprite(0, 0, gameWidth, 250, 'foreground');
     // here the foreground is set to scroll left
     foreground.autoScroll(-10, 0);
+
+    music = game.add.audio('music');
 
     // create the tieFighter group
     tieFighters = game.add.group();
@@ -686,9 +690,9 @@ function restart() {
     shield(playerHealth);
     life(numLives);
     playGameText.kill();
-    playAgainText.kill();
     scoreText.kill();
     createText();
+    music.play();
 
     wasd = {
         up: game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -699,6 +703,7 @@ function restart() {
     // Hide the text
     playGameText.visible = false;
     gameOverText.visible = false;
+    playAgainText.visible = false;
 }
 
 // Keep a mapping of firebase locations to HTML elements, so we can move / remove elements as necessary.
@@ -756,7 +761,6 @@ function handleScoreAdded(scoreSnapshot, prevScoreName) {
         lowerScoreRow.before(newScoreRow);
     }
     lowScore = scoreArray[0];
-    console.log('low score: ', lowScore);
 }
 
 // Helper function to handle a score object being removed; just removes the corresponding table row.
