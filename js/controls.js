@@ -1,12 +1,11 @@
 /**
- * Created by Weizguy on 10/25/2016.
  * Game logic built with Phaser engine
  */
 
 // declaration of game engine
 // this is where you can change the board size
-var gameWidth = 800;
-var gameHeight = 500;
+var gameWidth = 600;
+var gameHeight = 650;
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
   preload: preload,
   create: create,
@@ -14,13 +13,13 @@ var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
   render: render
 });
 
-
 // declare all globals
 var background = null;
 var foreground = null;
 var cursors = null;
 var speed = 300;
 var xwing;
+var alive = false;
 var blaster;
 var bulletsR;
 var bulletsL;
@@ -30,21 +29,37 @@ var bullet;
 var bulletL;
 var bulletR;
 
-
 function preload() {
   
   // add the images/audio to the game
-  game.load.image('background', '../assets/back.png');
-  game.load.image('foreground', '../assets/deathstar.png');
-  game.load.image('xwing', '../assets/xwing.png');
-  game.load.image('bulletL', '../assets/bullet0.png');
-  game.load.image('bulletR', '../assets/bullet0.png');
+  game.load.image('background', 'assets/back.png');
+  game.load.image('foreground', 'assets/deathstar.png');
+  game.load.image('xwing', 'assets/xwing.png');
+  game.load.image('bulletL', 'assets/bullet0.png');
+  game.load.image('bulletR', 'assets/bullet0.png');
+  game.load.audio('blaster', 'assets/blaster.mp3');
+ 
 }
 
-
-
-
-
+// Play game text and click event to start the game
+function playGame() {
+  // Play Game Text
+  playGameText = game.add.text(game.world.centerX, game.world.centerY, " Click to Pilot X Wing!");
+  playGameText.anchor.set(0.5);
+  playGameText.font = 'Orbitron';
+  playGameText.fontSize = 40;
+  playGamegrd = playGameText.context.createLinearGradient(0, 0, 0, playGameText.canvas.height);
+  playGamegrd.addColorStop(0, 'yellow');
+  playGamegrd.addColorStop(1, 'orange');
+  playGameText.fill = playGamegrd;
+  playGameText.align = 'center';
+  playGameText.stroke = '#000000';
+  playGameText.strokeThickness = 2;
+  playGameText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+  playGameText.inputEnabled = true;
+  xwing.kill();
+  playGameText.events.onInputDown.add(restart, this);
+}
 
 // Create the player, enemies, and bullets
 function create() {
@@ -57,8 +72,7 @@ function create() {
   // here the foreground is set to scroll left
   foreground.autoScroll(-10, 0);
   
-  
-  // add the player (aka xwing)
+  // add the player
   xwing = game.add.group();
   xwing.enableBody = true;
   xwing.physicsBodyType = Phaser.Physics.ARCADE;
@@ -74,7 +88,6 @@ function create() {
   bulletsL.createMultiple(30, 'bulletR');
   
   // Add sounds
-  game.explode = game.add.audio('explode');
   game.blaster = game.add.audio('blaster');
   
   // create the bullets for both left and right for the xwing
@@ -110,19 +123,14 @@ function create() {
   };
   // set up the space bar and mouse button to allow firing the lasers
   game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
-  playerShield = game.add.sprite(10, gameHeight - 50, 'shield0');
-  
-
   // start the game
   playGame();
 }
 
-
-// render function for future use
+// Required
 function render() {
   
 }
-
 
 // listener function for change states in game
 function update() {
@@ -151,15 +159,13 @@ function update() {
     }
   }
   
-  // add pause function when 'p' is pressed
+  // Pause game play by keypress of teh the P key
   window.onkeydown = function (event) {
     if (event.keyCode == 80) {
       game.paused = !game.paused;
     }
   }
 }
-// End of Update Function
-//***********************************************************
 
 // fire the bullet
 function fireBulletL() {
@@ -167,12 +173,10 @@ function fireBulletL() {
   if (game.time.now > bulletTimeL) {
     bulletL = bulletsL.getFirstExists(false);
     
-    if (bulletL && numLives > -1) {
       bulletL.reset(xwing.x - 44, xwing.y - 40);
       bulletL.body.velocity.y = -500;
       bulletTimeL = game.time.now + 150;
       game.blaster.play();
-    }
   }
 }
 function fireBulletR() {
@@ -180,12 +184,37 @@ function fireBulletR() {
   if (game.time.now > bulletTimeR) {
     bulletR = bulletsR.getFirstExists(false);
     
-    if (bulletR && numLives > -1) {
       bulletR.reset(xwing.x + 20, xwing.y - 40);
       bulletR.body.velocity.y = -500;
       bulletTimeR = game.time.now + 150;
       game.blaster.play();
-    }
   }
 }
+
+//  Called if the bullet goes out of the screen
+function resetBullet(bullet) {
+  bullet.kill();
+}
+
+//Required to start the game
+function restart() {
+  xwing.revive();
+  alive = true;
+  playGameText.kill();
+  
+  wasd = {
+    up: game.input.keyboard.addKey(Phaser.Keyboard.W),
+    down: game.input.keyboard.addKey(Phaser.Keyboard.S),
+    left: game.input.keyboard.addKey(Phaser.Keyboard.A),
+    right: game.input.keyboard.addKey(Phaser.Keyboard.D)
+  };
+}
+
+
+
+
+
+
+
+
 
