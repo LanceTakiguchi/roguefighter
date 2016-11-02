@@ -9,8 +9,10 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/controls.css">
   <link rel="stylesheet" type="text/css" href="css/stripe_pay_options.css">
   <link rel="stylesheet" type="text/css" href="css/stripe_style.css">
+  <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.js"></script>
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
   <script src="https://use.fontawesome.com/7de87d4cfb.js"></script>
   <script src="https://checkout.stripe.com/checkout.js"></script>
@@ -19,6 +21,7 @@
   <script src="js/stripe_api.js"></script>
   <script src="js/stripe_gen.js"></script>
   <script src="js/login.js"></script>
+  <script src="js/controls.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -60,8 +63,10 @@
     <audio class="r2_sound" preload="none">
       <source src="sound/r2d2_confirm_beep.mp3" type="audio/mpeg"> Your browser does not support the audio element
     </audio>
-    <div>
-      <a class="play standard_padding" href="play.html">- PLAY -</a>
+    <div id="gameScreen">
+      <div id="container">
+        <div id="gameArea"></div>
+      </div>
     </div>
     <!-- The Payment Modal -->
     <div id="package_select" class="modal">
