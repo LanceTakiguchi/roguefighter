@@ -38,3 +38,14 @@ function signOut() {
         $("#welcomeBack").empty();
     });
 }
+///
+function decreaseGameCount() {
+    $.ajax({
+        url: "./php/decrease.php",
+        method: "POST",
+        dataType: "JSON",
+        success: function (response) {
+            console.log(response);
+        }
+    })
+}
