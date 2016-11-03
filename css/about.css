@@ -47,7 +47,7 @@ html, body{
 {
     position: absolute;
     top: 100%;
-    animation: scroll 70s linear 0s;
+    animation: scroll 40s linear 0s;
 }
 
 @keyframes scroll {

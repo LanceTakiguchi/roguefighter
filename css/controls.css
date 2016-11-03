@@ -5,14 +5,23 @@
 
 #controlsModal{
     width: 100%;
-    color: #eecd0a;
 }
 
-#controlsModal p {
+#controlsModal p{
+    margin: 0;
     text-align: center;
     padding: 2% 0 2% 0;
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5em;
-    color: #eecd0a;
 }
+
+.start_game{
+    font-size: 1.8em;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.instructions{
+    font-size: 1.2em;
+    color: #eecd0a;
+    font-family: 'Orbitron', sans-serif;
+}
+
