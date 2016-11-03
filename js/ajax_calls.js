@@ -29,7 +29,7 @@ function chargeUser(dataObj) {
             return true;
         },
         error: function (response) {
-            console.warn(response);
+            console.error(response.statusText);
             return false;
         }
     });
