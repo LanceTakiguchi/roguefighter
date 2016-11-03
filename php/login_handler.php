@@ -8,13 +8,13 @@ if(!$conn){
     print_r($fatal_error);
     exit();
 }
-$user_name =$_POST['userName'];
+$user_name = $_POST['userName'];
 $user_email = $_SESSION['user_email'] = $_POST['userEmail'];
 if(isset($user_email)){
     $user_search = "SELECT `id` FROM  `users` WHERE `email`='$user_email'";
     $user_search_result = mysqli_query($conn, $user_search);
     if(mysqli_num_rows($user_search_result) === 0) {
-        $user_insert_query = "INSERT INTO `users`(`username`, `email`, `high_score`, `date_created`) VALUES ('$user_name','$user_email','0','NOW()')";
+        $user_insert_query = "INSERT INTO `users`(`username`, `email`, `high_score`, `date_created`) VALUES ('$user_name','$user_email','0', NOW())";
         $insert_query_result = mysqli_query($conn, $user_insert_query);
     }
 } else {
