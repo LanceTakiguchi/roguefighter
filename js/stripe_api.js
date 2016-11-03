@@ -9,12 +9,12 @@ var handler = StripeCheckout.configure({
   token: function(token) {
     // You can access the token ID with `token.id`.
     // Get the token ID to your server-side code for use.
+      //data object that gets passed with ajax call to backed
       var stripeData = {
-          stripeToken: token.id,
-          chargeAmount: games_amount
+          stripeToken: token.id, //token needed to charge a user
+          chargeAmount: games_amount //amount to charge user
       }
-      chargeUser(stripeData);
-      display_games();
+      chargeUser(stripeData); //make ajax call to backend for processing
   }
 });
 

@@ -130,7 +130,7 @@ function createText() {
 
 // Play game text and click event to start the game
 function playGame() {
-    decreaseGameCount();
+    decreaseGameCount();//makes ajax call to backend in order to decrease the user's game play count in database
     // Play Game Text
     playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME ?");
     playGameText.anchor.set(0.5);
@@ -678,7 +678,7 @@ function launchAdvancedTie() {
 
 // function called to restart the game
 function restart() {
-    decreaseGameCount();
+    decreaseGameCount(); //makes ajax call to backend in order to decrease the user's game play count in database
     //  Reset the enemies
     tieFighters.callAll('kill');
     tieFightersBullets.callAll('kill');

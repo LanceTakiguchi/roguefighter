@@ -31,12 +31,12 @@ function onSignIn(googleUser) {
   // The ID token you need to pass to your backend:
   var id_token = googleUser.getAuthResponse().id_token;
   console.log("ID Token: " + id_token);
-  //
+  //object of google data to passed during ajax call to database, needed to add a new user to db upon first login
   var dataToSend = {
     userEmail: profile.getEmail(),
     userName: userName
   };
-  login_user(dataToSend);
+  login_user(dataToSend); //function to make ajax call
 };
 
 //Signs a user out

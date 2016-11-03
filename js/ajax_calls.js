@@ -1,4 +1,4 @@
-//sends given user info to backend for database create/retrieval
+//sends given user info from google to backend for database create/retrieval
 function login_user(dataObj) {
     $.ajax({
         url: "./php/login_handler.php",
@@ -7,11 +7,12 @@ function login_user(dataObj) {
         dataType: "JSON",
         success: function (response) {
             var responseObj = response.data
-            console.log(response);
             $("#game_count").text(responseObj.game_plays);
+            return true;
         },
         error: function (response) {
-            console.log(response);
+            console.error(response);
+            return false;
         }
     });
 }
@@ -23,6 +24,13 @@ function chargeUser(dataObj) {
         method: "POST",
         success: function (response) {
             console.log(response);
+            ///display purchased games on successful charge
+            display_games();
+            return true;
+        },
+        error: function (response) {
+            console.error(response.statusText);
+            return false;
         }
     });
 }
@@ -34,6 +42,11 @@ function decreaseGameCount() {
         dataType: "JSON",
         success: function (response) {
             console.log(response);
+            return true;
+        },
+        error: function (response) {
+            console.error(response);
+            return false;
         }
-    })
+    });
 }
