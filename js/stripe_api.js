@@ -14,7 +14,6 @@ var handler = StripeCheckout.configure({
           chargeAmount: games_amount
       }
       chargeUser(stripeData);
-      display_games();
   }
 });
 

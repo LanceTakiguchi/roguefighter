@@ -18,12 +18,12 @@ if(isset($user_email)){
         $insert_query_result = mysqli_query($conn, $user_insert_query);
     }
 } else {
-    $output['message'] = "USERNAME OR PASSWORD INCORRECT";
+    $output['message'] = "ERROR EMAIL NOT RECEIVED";
     $fatal_error = json_encode($output);
     print_r($fatal_error);
     exit();
 }
-$grab_user_data = "SELECT `username`, `high_score`, `game_plays` FROM `users` WHERE `email`='$user_email'";
+$grab_user_data = "SELECT `username`, `game_plays` FROM `users` WHERE `email`='$user_email'";
 $user_data_results = mysqli_query($conn, $grab_user_data);
 if(mysqli_num_rows($user_data_results) > 0) {
     $output['success'] = true;
