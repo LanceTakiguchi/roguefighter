@@ -4,16 +4,25 @@ $(document).ready(function(){
   //executes the animation timer
   gameOpening();
   //loads and plays music on document load
-  playMusic();
-  setTimeout(buildTitle, 500);
+  $('.entry').hide().fadeIn(3000).fadeOut(4000);
+  gameTitleLeadIn()
 });
 
-function buildTitle(){
-  var title = $('<img>').attr("src", "imgs/title-screen-logo.png").addClass('sw_icon');
-  title.appendTo('.wrapper');
+//setTimeout(buildTitle, 500);
+function gameTitleLeadIn(){
+  //game title loads after a brief pause
+  setTimeout(function(){
+    var title = $('<img>').attr("src", "imgs/title-screen-logo.png").addClass('sw_icon');
+    title.appendTo('.wrapper');
+    }, 8000);
+  //animation to fade title out
   setTimeout(function(){
     $('.sw_icon').addClass('scale');
-  },1000)
+  }, 8100);
+  //start music
+  setTimeout(function(){
+    playMusic();
+  },8110);
 }
 
 function clickhandlers(){
@@ -23,10 +32,8 @@ function clickhandlers(){
 
 //will run scroll animation in x amount of time
 function gameOpening(){
-  setTimeout(cleanScroll, 30000);
+  setTimeout(cleanScroll, 100300);
 }
-
-
 
 //this function scrolls from star wars wall text down to the game play area
 function cleanScroll() {
@@ -36,7 +43,8 @@ function cleanScroll() {
   //skip button is faded out when this occurs
   $('.skip').fadeOut();
   //music ends when this is clicked
-  $(".audioDemo").trigger('pause');
+  $(".audioDemo").remove();
+  $("#titlecontent").remove();
 }
 
 //loads and plays html 5 audio

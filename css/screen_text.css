@@ -6,17 +6,24 @@ html, body{
     padding-top: 30%;
 }
 
-#titlecontent p {
-    font-family: 'Archivo Black', sans-serif;
-    color: #f8bb00;
+#titlecontent > p.storyTitle{
+    text-align: center;
+    font-size: 1.5em;
 }
 
-#titles
-{
+#titlecontent > p {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #f8bb00;
+    font-size: 1em;
+    line-height: 1.5em;
+    text-align: justify;
+}
+
+#titles {
     position: absolute;
     width: 18em;
     height: 100em;
-    bottom: 0;
+    bottom: 30%;
     left: 50%;
     margin-left: -9em;
     font-size: 350%;
@@ -24,8 +31,9 @@ html, body{
     text-align: justify;
     overflow: hidden;
     transform-origin: 50% 102%;
-    transform: perspective(300px) rotateX(15deg);
+    transform: perspective(300px) rotateX(34deg);
 }
+
 #titles:after
 {
     position: absolute;
@@ -42,7 +50,7 @@ html, body{
 {
     position: absolute;
     top: 100%;
-    animation: scroll 100s linear 6s;
+    animation: scroll 300s linear 15s;
 }
 
 @keyframes scroll {

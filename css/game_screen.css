@@ -18,14 +18,23 @@ body {
     background-size: cover;
 }
 
+.entry{
+    padding-top: 15%;
+    font-size: 2em;
+    text-align: center;
+    color: #0cf6ff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .sw_icon{
     display: block;
     margin: 0 auto;
     width: 100%;
-    transition: all 15s ease-in-out;
+    transition: all 10s ease-in-out;
 }
+
 .scale{
-    transform: scale(.2);
+    transform: scale(.10);
     opacity: 0.0;
 }
 
@@ -60,9 +69,6 @@ body {
     padding: 10px;
     cursor: none;
 }
-
-
-
 
 h1 {
     font-size: 36px;
