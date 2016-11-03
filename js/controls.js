@@ -55,7 +55,6 @@ function playGame() {
   playGameText.strokeThickness = 2;
   playGameText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
   playGameText.inputEnabled = true;
-  xwing.kill();
   playGameText.events.onInputDown.add(restart, this);
   }
 
