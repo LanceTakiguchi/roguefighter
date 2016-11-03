@@ -184,7 +184,7 @@ function gameOver() {
 
 // play again text with click event to restart the game
 function playAgain() {
-    decreaseGameCount();
+
     playAgainText = game.add.text(game.world.centerX, game.world.centerY, "PLAY AGAIN ?");
     playAgainText.anchor.set(0.5);
     playAgainText.font = 'Orbitron';
@@ -670,6 +670,7 @@ function launchAdvancedTie() {
 
 // function called to restart the game
 function restart() {
+    decreaseGameCount();
     //  Reset the enemies
     tieFighters.callAll('kill');
     tieFightersBullets.callAll('kill');
