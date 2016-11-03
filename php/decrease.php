@@ -11,7 +11,7 @@ if(!$conn){
 $logged_in_user = $_SESSION['user_email'];
 $decrement_query = "UPDATE  `users` SET  `game_plays` =  `game_plays` -1 WHERE  `email` =  '$logged_in_user'";
 $decrement_results = mysqli_query($conn, $decrement_query);
-if(mysqli_affected_rows($decrement_results) > 0){
+if(mysqli_num_rows($decrement_results) > 0){
     $output['success'] = true;
     $output['message'] = "used one game play";
 }
