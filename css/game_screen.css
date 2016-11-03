@@ -18,11 +18,18 @@ body {
     background-size: cover;
 }
 
+.sw_icon{
+    padding: 10%;
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+}
+
 .skip{
     display: block;
     position: fixed;
     bottom: 2%;
-    left: 10%;
+    right: 10%;
     padding: .50% 2.5%;
     color: #000000;
     background: #f8bb00;
@@ -37,7 +44,6 @@ body {
 }
 
 #container{
-
     margin: auto;
     width: 33%;
 }
