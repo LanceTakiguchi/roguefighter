@@ -116,6 +116,10 @@ visibility: none;
     display: none;
 }
 
+.signOut{
+    cursor: pointer;
+}
+
 /* tool tip that appears above the login */
 .toolTip{
     position: absolute;
