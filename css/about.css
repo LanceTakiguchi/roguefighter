@@ -12,6 +12,12 @@ html, body{
     line-height: 1.5em;
 }
 
+#titlecontent ul li{
+    font-family: 'Archivo Black', sans-serif;
+    color: #f8bb00;
+    list-style-type: none;
+}
+
 #titlecontent p.heading{
     text-align: center;
 }
@@ -31,8 +37,7 @@ html, body{
     transform: perspective(300px) rotateX(34deg);
 }
 
-#titles:after
-{
+#titles:after {
     position: absolute;
     content: ' ';
     left: 0;
@@ -47,10 +52,10 @@ html, body{
 {
     position: absolute;
     top: 100%;
-    animation: scroll 40s linear 0s;
+    animation: scroll 60s linear 4s;
 }
 
 @keyframes scroll {
     0% { top: 100%; }
-    100% { top: -110%; }
+    100% { top: -300%; }
 }
