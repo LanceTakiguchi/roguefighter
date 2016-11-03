@@ -5,13 +5,15 @@ $(document).ready(function(){
   gameOpening();
   //loads and plays music on document load
   playMusic();
-  $('.sw_icon').fadeIn(3000);
-  buildTitle();
+  setTimeout(buildTitle, 500);
 });
 
 function buildTitle(){
-  var title = $('<img>').attr("src", "../imgs/title-screen-logo.png");
+  var title = $('<img>').attr("src", "imgs/title-screen-logo.png").addClass('sw_icon');
   title.appendTo('.wrapper');
+  setTimeout(function(){
+    $('.sw_icon').addClass('scale');
+  },1000)
 }
 
 function clickhandlers(){

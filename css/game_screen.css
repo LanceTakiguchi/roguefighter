@@ -19,10 +19,14 @@ body {
 }
 
 .sw_icon{
-    padding: 10%;
     display: block;
     margin: 0 auto;
-    width: 30%;
+    width: 100%;
+    transition: all 15s ease-in-out;
+}
+.scale{
+    transform: scale(.2);
+    opacity: 0.0;
 }
 
 .skip{
