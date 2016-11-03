@@ -66,8 +66,9 @@ var playAgainText = '';
 var score = 0;
 var highScore = 0;
 var pLives;
-var maxLives = 2;
-var maxHealth = 120;
+var maxLives = 2; // actually 2 represents two lives beyond current life
+var maxHealth = 80;
+var advTime = 500; // set advanced Ties to come in after set score
 var playerHealth = maxHealth;
 var numLives = maxLives;
 
@@ -113,6 +114,7 @@ function createText() {
     scoreText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
 
     // High Score Text
+    game.time.events.add(1000, getHighScore);
     highScoreText = game.add.text(game.width - 150, 10, "High Score:\n" + highScore);
     highScoreText.font = 'Orbitron';
     highScoreText.fontSize = 20;
@@ -143,6 +145,7 @@ function playGame() {
     playGameText.strokeThickness = 2;
     playGameText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
     playGameText.inputEnabled = true;
+    playGameText.input.useHandCursor = true;
     xwing.kill();
 
     playGameText.events.onInputDown.add(restart, this);
@@ -200,6 +203,7 @@ function playAgain() {
     playAgainText.strokeThickness = 2;
     playAgainText.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
     playAgainText.inputEnabled = true;
+    playAgainText.input.useHandCursor = true;
     playAgainText.events.onInputDown.add(restart, this);
 }
 
@@ -348,7 +352,8 @@ function create() {
         pLife = pLives.create(60 + (i * 30), gameHeight - 50, 'lives', i);
     }
     // start the game
-    playGame();
+    xwing.kill();
+    game.time.events.add(1000, playGame);
 }
 
 // function to change image based on shield damage
@@ -449,8 +454,6 @@ function update() {
         }
     }
 }
-// End of Update Function
-//***********************************************************
 
 // fire the bullet
 function fireBulletL() {
@@ -554,6 +557,7 @@ function playerKillsEnemy(bullet, enemy) {
 
     if (score >= highScore) {
 
+        highScoreText.kill();
         highScore = score;
         updateScore(highScore);
     }
@@ -568,8 +572,8 @@ function playerKillsEnemy(bullet, enemy) {
     explosion.play('kaboom', 30, false, true);
     game.explode.play();
 
-    //  Advanced Tie Fighters come in after a score of 500
-    if (!advancedTieLaunched && score > 500) {
+    //  Advanced Tie Fighters come in after advTime
+    if (!advancedTieLaunched && score > advTime) {
         advancedTieLaunched = true;
         launchAdvancedTie();
     }
@@ -691,7 +695,9 @@ function restart() {
     life(numLives);
     playGameText.kill();
     scoreText.kill();
+    highScoreText.kill();
     createText();
+    music.loop = true;
     music.play();
 
     wasd = {
@@ -804,10 +810,12 @@ $(document).ready(function () {
                 return;
             }
 
-            $('#nameInput').hide();
+            if (name.length === 0){
+                name = ' ';
+            }
 
-            if (name.length === 0)
-                return;
+
+            $('#nameInput').hide();
 
             var userScoreRef = scoreListRef.child(name);
 
@@ -840,6 +848,9 @@ var fbRef = firebase.database();
 fbRef.ref('HiScore').on("value", function (newHighestScore) {
     state = newHighestScore.val();
     highScore = state.highestScore;
+    getHighScore = function(){
+        return highScore;
+    }
 });
 
 // send the high score to the database
