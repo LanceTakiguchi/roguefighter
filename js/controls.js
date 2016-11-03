@@ -5,7 +5,7 @@
 // declaration of game engine
 // this is where you can change the board size
 var gameWidth = 600;
-var gameHeight = 500;
+var gameHeight = 400;
 var game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, 'gameArea', {
   preload: preload,
   create: create,
@@ -30,7 +30,6 @@ var bulletL;
 var bulletR;
 
 function preload() {
-  
   // add the images/audio to the game
   game.load.image('background', 'assets/back.png');
   game.load.image('foreground', 'assets/deathstar.png');
@@ -38,13 +37,12 @@ function preload() {
   game.load.image('bulletL', 'assets/bullet0.png');
   game.load.image('bulletR', 'assets/bullet0.png');
   game.load.audio('blaster', 'assets/blaster.mp3');
- 
 }
 
 // Play game text and click event to start the game
 function playGame() {
   // Play Game Text
-  playGameText = game.add.text(300, 50, " Click to Pilot");
+  playGameText = game.add.text(" Click to Pilot");
   playGameText.anchor.set(.02);
   playGameText.font = 'Orbitron';
   playGameText.fontSize = 30;
@@ -59,11 +57,10 @@ function playGame() {
   playGameText.inputEnabled = true;
   xwing.kill();
   playGameText.events.onInputDown.add(restart, this);
-}
+  }
 
 // Create the player, enemies, and bullets
 function create() {
-  
   background = game.add.tileSprite(0, 0, gameWidth, gameHeight, 'background');
   // this is where you set the speed of the scroll (and the direction)
   background.autoScroll(0, 60);

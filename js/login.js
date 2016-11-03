@@ -54,13 +54,13 @@ function signOutDisplay(){
   if (signInFlag === false) {
     $('.g-signin2').show();
     $('.signOut').hide();
-    $('.toolTip').removeClass('hidden');
+    $('.toolTip').removeClass('hideClass');
     $('.playerItem').hide();
   }
   else{
     $('.g-signin2').hide();
     $('.signOut').show();
-    $('.toolTip').addClass('hidden');
+    $('.toolTip').addClass('hideClass');
     $('.playerItem').show();
   }
 }

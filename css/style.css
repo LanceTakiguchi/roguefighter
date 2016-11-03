@@ -112,8 +112,12 @@ visibility: none;
     position: relative;
 }
 
-    /* tool tip that appears above the login */
-.login .toolTip{
+.hideClass{
+    display: none;
+}
+
+/* tool tip that appears above the login */
+.toolTip{
     position: absolute;
     top: -5vh;
     visibility: hidden;
