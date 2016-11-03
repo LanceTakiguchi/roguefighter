@@ -1,4 +1,4 @@
-//sends given user info to backend for database create/retrieval
+//sends given user info from google to backend for database create/retrieval
 function login_user(dataObj) {
     $.ajax({
         url: "./php/login_handler.php",
@@ -11,7 +11,7 @@ function login_user(dataObj) {
             return true;
         },
         error: function (response) {
-            console.warn(response);
+            console.error(response);
             return false;
         }
     });
@@ -45,7 +45,7 @@ function decreaseGameCount() {
             return true;
         },
         error: function (response) {
-            console.warn(response);
+            console.error(response);
             return false;
         }
     });
