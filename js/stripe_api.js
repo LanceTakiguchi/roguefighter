@@ -11,17 +11,9 @@ var handler = StripeCheckout.configure({
     // Get the token ID to your server-side code for use.
       var stripeData = {
           stripeToken: token.id,
-          stripeEmail: token.email,
           chargeAmount: games_amount
       }
-      $.ajax({
-          url: "./php/stripe_handler.php",
-          data: stripeData,
-          method: "POST",
-          success: function (response) {
-              console.log(response);
-          }
-      });
+      chargeUser(stripeData);
       display_games();
   }
 });

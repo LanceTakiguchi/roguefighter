@@ -130,7 +130,7 @@ function createText() {
 
 // Play game text and click event to start the game
 function playGame() {
-
+    decreaseGameCount();
     // Play Game Text
     playGameText = game.add.text(game.world.centerX, game.world.centerY, "PLAY GAME ?");
     playGameText.anchor.set(0.5);
@@ -678,6 +678,7 @@ function launchAdvancedTie() {
 
 // function called to restart the game
 function restart() {
+    decreaseGameCount();
     //  Reset the enemies
     tieFighters.callAll('kill');
     tieFightersBullets.callAll('kill');
