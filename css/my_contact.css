@@ -1,0 +1,57 @@
+#contact {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 14px;
+}
+#contact ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+#contact ul li {
+	display: inline-block;
+}
+#my_website p a{
+	font-family: 'Architects Daughter', cursive;
+	font-size: 1.6em;
+}
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 125px;
+}
+#my_website {
+	margin: 3em 0 0.4em 0;
+}
+#contact div li a {
+	font-size: 1.6em;
+}
+#contact div ul li{
+	margin: 0 .5em 0 .5em;
+	padding: 0;
+}
+#contact a {
+	text-decoration: none;
+	color: #4285F4;
+}
+#contact p {
+	margin: 0;
+}
+#contact a:visited {
+	font-style: none;
+	color: #4285F4;
+}
+#contact a:hover {
+	font-style: none;
+	text-decoration: none;
+	color: #4285F4;
+	outline: 0 none;
+	-webkit-transition: linear 200ms;
+	-moz-transition: linear 200ms;
+	-o-transition: linear 200ms;
+	transition: linear 200ms;
+	text-shadow: -3px 3px 8px #ffc, 3px -3px 8px #fff;
+}

@@ -22,125 +22,135 @@
   <script src="js/login.js"></script>
   <!-- Google Analytics -->
   <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-85661465-2', 'auto');
-    ga('send', 'pageview');
+  ga('create', 'UA-85661465-2', 'auto');
+  ga('send', 'pageview');
   </script>
 </head>
 <body>
-<div class="wrapper">
-  <header>
-    <div id="background_slice"  class="originalHeight">
-      <div id="brand">
-        <img class="brandIcon" src="imgs/rogue-fighter-logo.png">
+  <div class="wrapper">
+    <header>
+      <div id="background_slice"  class="originalHeight">
+        <div id="brand">
+          <img class="brandIcon" src="imgs/rogue-fighter-logo.png">
+        </div>
       </div>
-    </div>
-    <div id="navigation">
-      <ul>
-        <li class="menuItem"><a href="index.html"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
-        <li class="menuItem"><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
-        <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
-        <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
-        <li class="login">
-          <span class="toolTip">Sign in with your Google Account</span>
-          <a class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"> </a>
-          <a class="signOut" onclick="signOut();">Sign Out </a>
-        </li>
-        <li class="playerItem userName">Welcome<br></li>
-        <li class="playerItem">
-          <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <p id="purchase">Purchase</p>
-          </a>
-        </li>
-        <li class="playerItem" id="games_box">
-          <a href="#"><i class="fa fa-heart" aria-hidden="true"></i>
-            <p>Games: <span id="game_count">10</span></p>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </header>
-  <div class="main_content">
-    <div id="titles">
-      <div id="titlecontent">
-        <p class="heading">
-          Thank You for Visiting our Project
-        </p>
-        <p>This web application was a collaborative effort designed to utilize and demonstrate
-          many of the skills learned and developed at Learning Fuze. Originally we sought out to
-          build a video game using JavaScript but expanded upon this idea to deliver a more robust
-          experience.  This web application incorporates Google OAuth Sign In, ecommerce payment
-          functionality through Stripe API, PHP backend for player data, Firebase for leaderboard,
-          Google Analytics, a web blog to enhance organic search and a fully functional star wars
-          themed x-wing fighter shoot ‘em up game.
-        </p>
-        <p>Technologies utilized to build this web application include:
-          <ul>
-            <li>-JavaScript</li>
-            <li>-jQuery</li>
-            <li>-Phaser Game Engine</li>
-            <li>-PHP</li>
-            <li>-Firebase</li>
-            <li>-MYSQL</li>
-            <li>-WordPress</li>
-            <li>-Stripe</li>
-            <li>-Google Sign-In</li>
-          </ul>
-        </p>
-        <p class="heading">
-          This is a fan made project.
-        </p>
+      <div id="navigation">
+        <ul>
+          <li class="menuItem"><a href="index.html"><i class="fa fa-rebel" aria-hidden="true"></i><p>Base</p></a></li>
+          <li class="menuItem"><a href="controls.html"><i class="fa fa-cogs" aria-hidden="true"></i><p>Controls</p></a></li>
+          <li class="menuItem"><a href="about.html"><i class="fa fa-users" aria-hidden="true"></i><p>About</p></a></li>
+          <li class="menuItem"><a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i><p>Blog</p></a></li>
+          <li class="login">
+            <span class="toolTip">Sign in with your Google Account</span>
+            <a class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"> </a>
+            <a class="signOut" onclick="signOut();">Sign Out </a>
+          </li>
+          <li class="playerItem userName">Welcome<br></li>
+          <li class="playerItem">
+            <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+              <p id="purchase">Purchase</p>
+            </a>
+          </li>
+          <li class="playerItem" id="games_box">
+            <a href="#"><i class="fa fa-heart" aria-hidden="true"></i>
+              <p>Games: <span id="game_count">10</span></p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <div class="main_content">
+      <div id="titles">
+        <div id="titlecontent">
+          <p class="heading">
+            Thank You for Visiting our Project
+          </p>
+          <p>This web application was a collaborative effort designed to utilize and demonstrate
+            many of the skills learned and developed at Learning Fuze. Originally we sought out to
+            build a video game using JavaScript but expanded upon this idea to deliver a more robust
+            experience.  This web application incorporates Google OAuth Sign In, ecommerce payment
+            functionality through Stripe API, PHP backend for player data, Firebase for leaderboard,
+            Google Analytics, a web blog to enhance organic search and a fully functional star wars
+            themed x-wing fighter shoot ‘em up game.
+          </p>
+          <p>Technologies utilized to build this web application include:
+            <ul>
+              <li>-JavaScript</li>
+              <li>-jQuery</li>
+              <li>-Phaser Game Engine</li>
+              <li>-PHP</li>
+              <li>-Firebase</li>
+              <li>-MYSQL</li>
+              <li>-WordPress</li>
+              <li>-Stripe</li>
+              <li>-Google Sign-In</li>
+            </ul>
+          </p>
+          <p class="heading">
+            This is a fan made project.
+          </p>
 
-        <p class="heading">
-          Special Thanks to Cohort 11 for their help and feedback.
-        </p>
-      </div>
-    </div>
-    <!-- The Payment Modal -->
-    <div id="package_select" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- <i class="fa fa-times-circle close" aria-hidden="true"></i> -->
-          <img src="https://b.stripecdn.com/checkout/v3/images/close-gbN3V5bjbhRxDClwGYFQ.png" class="close">
-          <div class="shop_logo">
-            <img src="imgs/rebel.png">
-          </div>
-          <h1>Purchase a Rebel Package</h1>
-          <h2>Join the Fight Against the Empire</h2>
-        </div>
-        <!-- <div id="line_space">Fight the Empire</div> -->
-        <div class="modal-body">
-          <h4>Rebel Package Ranks</h4>
-          <div class="pkg_descriptions">
-            <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Trooper: 20 Games</p>
-            <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Commander: 125 Games</p>
-            <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games</p>
-          </div>
-          <div class="pkg_price">
-            <p>$1.99</p>
-            <p>$9.99</p>
-            <p>$19.99</p>
-          </div>
-          <a href="#" id="trooper" class="stripe-connect light-blue"><span>Trooper</span></a><br>
-          <a href="#" id="commander" class="stripe-connect light-blue"><span id="com_style">Commander</span></a><br>
-          <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
+          <p class="heading">
+            Special Thanks to Cohort 11 for their help and feedback.
+          </p>
         </div>
       </div>
-    </div>
-    <footer>
+      <!-- The Payment Modal -->
+      <div id="package_select" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- <i class="fa fa-times-circle close" aria-hidden="true"></i> -->
+            <img src="https://b.stripecdn.com/checkout/v3/images/close-gbN3V5bjbhRxDClwGYFQ.png" class="close">
+            <div class="shop_logo">
+              <img src="imgs/rebel.png">
+            </div>
+            <h1>Purchase a Rebel Package</h1>
+            <h2>Join the Fight Against the Empire</h2>
+          </div>
+          <!-- <div id="line_space">Fight the Empire</div> -->
+          <div class="modal-body">
+            <h4>Rebel Package Ranks</h4>
+            <div class="pkg_descriptions">
+              <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Trooper: 20 Games</p>
+              <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Commander: 125 Games</p>
+              <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games</p>
+            </div>
+            <div class="pkg_price">
+              <p>$1.99</p>
+              <p>$9.99</p>
+              <p>$19.99</p>
+            </div>
+            <a href="#" id="trooper" class="stripe-connect light-blue"><span>Trooper</span></a><br>
+            <a href="#" id="commander" class="stripe-connect light-blue"><span id="com_style">Commander</span></a><br>
+            <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
+          </div>
+        </div>
+      </div>
+      <footer id="contact" class="footer">
+        <div class="container"> 
+         <div id="my_website"> <p class="text-center"> <a href="http://www.lancetakiguchi.com" target="_blank"> Lance Takiguchi </a> </p> </div>
+         <div>
+          <ul class="list-unstyled list-inline text-center">
+            <li><p id="contact_links"><a href="https://www.linkedin.com/in/lancetakiguchi" target="_blank"><i id="linkedin" class="fa fa-linkedin-square" aria-hidden="true"></i></a></p></li>
+            <li><p><a href="https://github.com/LanceTakiguchi/portfolio_Rogue_Fighter" target="_blank"><i id="github" class="fa fa-github" aria-hidden="true"></i></a></p></li>
+            <li><p><a href="assets/docs/LanceTakiguchiResume.pdf" target="_blank"><i id="resume" class="fa fa-file-pdf-o" aria-hidden="true"></i></a></p></li>
+          </ul> 
+        </div>
+      </div>
       <div class="volume"></div>
     </footer>
     <audio loop class="audioDemo" preload="none">
       <source src="sound/about-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
-    </audio>
-    <audio class="r2_sound" preload="none">
-      <source src="sound/r2d2_confirm_beep.mp3" type="audio/mpeg"> Your browser does not support the audio element
-    </audio>
-  </div>
-</div>
-</body>
-</html>
+      </audio>
+      <audio class="r2_sound" preload="none">
+        <source src="sound/r2d2_confirm_beep.mp3" type="audio/mpeg"> Your browser does not support the audio element
+        </audio>
+      </div>
+    </div>
+  </body>
+  </html>

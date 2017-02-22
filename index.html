@@ -17,7 +17,9 @@ Version Objective: Bring project up to minimum portfolio requirements.
   <meta name="google-signin-client_id" content="395407413314-ol7h22b6rhks9hucno3bncmuqo45v8ld.apps.googleusercontent.com">
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Architects+Daughter" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/my_contact.css">
   <link rel="stylesheet" type="text/css" href="css/stripe_pay_options.css">
   <link rel="stylesheet" type="text/css" href="css/stripe_style.css">
   <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
@@ -31,13 +33,13 @@ Version Objective: Bring project up to minimum portfolio requirements.
   <script src="js/ajax_calls.js"></script>
   <!-- Google Analytics -->
   <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-85661465-2', 'auto');
-    ga('send', 'pageview');
+  ga('create', 'UA-85661465-2', 'auto');
+  ga('send', 'pageview');
   </script>
 </head>
 <body>
@@ -76,45 +78,55 @@ Version Objective: Bring project up to minimum portfolio requirements.
     <div class="main_content">
       <audio loop class="audioDemo" preload="none">
         <source src="sound/intro-star-wars.mp3" type="audio/mpeg"> Your browser does not support the audio element
-      </audio>
-      <audio class="r2_sound" preload="none">
-        <source src="sound/r2d2_confirm_beep.mp3" type="audio/mpeg"> Your browser does not support the audio element
-      </audio>
-      <div>
-        <a class="play standard_padding" href="play.html">- PLAY -</a>
-      </div>
-        <!-- The Payment Modal -->
-        <div id="package_select" class="modal">
-          <div class="modal-content">
-            <div class="modal-header">
-              <!-- <i class="fa fa-times-circle close" aria-hidden="true"></i> -->
-              <img src="https://b.stripecdn.com/checkout/v3/images/close-gbN3V5bjbhRxDClwGYFQ.png" class="close">
-              <div class="shop_logo">
-                <img src="imgs/rebel.png">
+        </audio>
+        <audio class="r2_sound" preload="none">
+          <source src="sound/r2d2_confirm_beep.mp3" type="audio/mpeg"> Your browser does not support the audio element
+          </audio>
+          <div>
+            <a class="play standard_padding" href="play.html">- PLAY -</a>
+          </div>
+          <!-- The Payment Modal -->
+          <div id="package_select" class="modal">
+            <div class="modal-content">
+              <div class="modal-header">
+                <!-- <i class="fa fa-times-circle close" aria-hidden="true"></i> -->
+                <img src="https://b.stripecdn.com/checkout/v3/images/close-gbN3V5bjbhRxDClwGYFQ.png" class="close">
+                <div class="shop_logo">
+                  <img src="imgs/rebel.png">
+                </div>
+                <h1>Purchase a Rebel Package</h1>
+                <h2>Join the Fight Against the Empire</h2>
               </div>
-              <h1>Purchase a Rebel Package</h1>
-              <h2>Join the Fight Against the Empire</h2>
-            </div>
-            <!-- <div id="line_space">Fight the Empire</div> -->
-            <div class="modal-body">
-              <h4>Rebel Package Ranks</h4>
-              <div class="pkg_descriptions">
-                <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Trooper: 20 Games</p>
-                <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Commander: 125 Games</p>
-                <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games</p>
+              <!-- <div id="line_space">Fight the Empire</div> -->
+              <div class="modal-body">
+                <h4>Rebel Package Ranks</h4>
+                <div class="pkg_descriptions">
+                  <p><i class="fa fa-hand-peace-o" aria-hidden="true"></i> Trooper: 20 Games</p>
+                  <p><i class="fa fa-hand-spock-o" aria-hidden="true"></i> Commander: 125 Games</p>
+                  <p><i class="fa fa-globe" aria-hidden="true"></i> General: 300 Games</p>
+                </div>
+                <div class="pkg_price">
+                  <p>$1.99</p>
+                  <p>$9.99</p>
+                  <p>$19.99</p>
+                </div>
+                <a href="#" id="trooper" class="stripe-connect light-blue"><span>Trooper</span></a><br>
+                <a href="#" id="commander" class="stripe-connect light-blue"><span id="com_style">Commander</span></a><br>
+                <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
               </div>
-              <div class="pkg_price">
-                <p>$1.99</p>
-                <p>$9.99</p>
-                <p>$19.99</p>
-              </div>
-              <a href="#" id="trooper" class="stripe-connect light-blue"><span>Trooper</span></a><br>
-              <a href="#" id="commander" class="stripe-connect light-blue"><span id="com_style">Commander</span></a><br>
-              <a href="#" id="general" class="stripe-connect light-blue"><span>General</span></a>
             </div>
           </div>
-        </div>
-        <footer>
+          <footer id="contact" class="footer">
+            <div class="container"> 
+             <div id="my_website"> <p class="text-center"> <a href="http://www.lancetakiguchi.com" target="_blank"> Lance Takiguchi </a> </p> </div>
+             <div>
+              <ul class="list-unstyled list-inline text-center">
+                <li><p id="contact_links"><a href="https://www.linkedin.com/in/lancetakiguchi" target="_blank"><i id="linkedin" class="fa fa-linkedin-square" aria-hidden="true"></i></a></p></li>
+                <li><p><a href="https://github.com/LanceTakiguchi/portfolio_Rogue_Fighter" target="_blank"><i id="github" class="fa fa-github" aria-hidden="true"></i></a></p></li>
+                <li><p><a href="assets/docs/LanceTakiguchiResume.pdf" target="_blank"><i id="resume" class="fa fa-file-pdf-o" aria-hidden="true"></i></a></p></li>
+              </ul> 
+            </div>
+          </div>
           <div class="volume"></div>
         </footer>
       </div>
