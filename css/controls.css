@@ -2,26 +2,24 @@
     margin: 0 auto;
     width: 33%;
 }
-
 #controlsModal{
     width: 100%;
 }
-
 #controlsModal p{
     margin: 0;
     text-align: center;
     padding: 2% 0 2% 0;
 }
-
 .start_game{
     font-size: 1.8em;
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
 }
-
 .instructions{
     font-size: 1.2em;
     color: #eecd0a;
     font-family: 'Orbitron', sans-serif;
 }
-
+.main_content #contact {
+    width: 25%;
+}
