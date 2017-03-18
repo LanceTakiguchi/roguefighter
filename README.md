@@ -20,18 +20,18 @@ As a team, engineer an online web browser game and devise an e-commerce business
 #### Screen capture of gameplay
 <img src="../README_assets/rogue-fighter-game-play.JPG"/>
 
-###Initial wireframes
+### Initial wireframes
 
-#### initial landing page wireframe
+#### Initial landing page wireframe
 <img src="../README_assets/rogue-fighter-landing-wireframe.jpg"/>
 
-#### initial about page wireframe
+#### Initial about page wireframe
 <img src="../README_assets/rogue-fighter-credits-wireframe.jpg"/>
 
-#### initial gameplay wireframe
+#### Initial gameplay wireframe
 <img src="../README_assets/rogue-fighter-game-play-wireframe.jpg"/>
 
-#### initial boss gameplay wireframe
+#### Initial boss gameplay wireframe
 <img src="../README_assets/rogue-fighter-boss-gameplay-wireframe.jpg"/>
 
 ## Version Description
