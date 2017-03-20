@@ -35,19 +35,19 @@
 }
 #contact a {
 	text-decoration: none;
-	color: #4285F4;
+	color: #F0F0F0;
 }
 #contact p {
 	margin: 0;
 }
 #contact a:visited {
 	font-style: none;
-	color: #4285F4;
+	color: #F0F0F0;
 }
 #contact a:hover {
 	font-style: none;
 	text-decoration: none;
-	color: #4285F4;
+	color: #F0F0F0;
 	outline: 0 none;
 	-webkit-transition: linear 200ms;
 	-moz-transition: linear 200ms;
