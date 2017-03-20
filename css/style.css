@@ -54,14 +54,16 @@ visibility: none;
 
 /* menu appearance */
 #navigation ul li{
-     display: inline-block;
-     list-style-type: none;
-     vertical-align: middle;
-     font-size: 1vw;
-     line-height: 1vw;
-     border-right: solid 1px #4D4D4D;
-     padding: .75% 4% .75% 4%;
-     color: #4D4D4D;
+    display: inline-block;
+    list-style-type: none;
+    vertical-align: middle;
+    font-size: 1vw;
+    line-height: 1em;
+    border-right: solid 1px #4D4D4D;
+    width: 10%;
+    height: 2.5em;
+    color: #4D4D4D;
+    padding-top: .7em;
  }
 
 #navigation ul .menuItem:hover{
@@ -75,6 +77,9 @@ visibility: none;
 
 #navigation ul li a{
     color: #F0F0F0;
+    height: 100%;
+    width: 100%;
+    display: block;
 }
 
 #navigation ul li a i{
