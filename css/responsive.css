@@ -1,1 +1,35 @@
-/* File created */
+/* Default state. AKA: desktop & invisible; */
+#responsive_veil {
+	/*display: none; */
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	z-index: 4;
+	background-color: #000000;
+	background-color: rgba(0, 0, 0, 0.7);
+}
+#responsive_msg {
+	background-color: #0c0c0c;
+	width: 41.67%;
+	min-height: 16.67%;
+	margin: auto;
+	margin-top: 25%;
+	border-radius: 0.5vw;
+	border: 0.1vw solid #F0F0F0;
+    color: #F0F0F0;
+}
+.my_close {
+	float: right;
+	margin-right: 1vw;
+	margin-top: 1vw;
+}
+#responsive_msg h3 {
+	color: #eecd0a; /* SW Yellow */
+	text-align: center;
+	display: inline-block;
+	margin: 0;
+	width: 100%;
+}
+#responsive_msg p {
+	margin: 1em;
+}
