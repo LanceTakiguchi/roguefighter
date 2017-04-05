@@ -1,6 +1,5 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-	var close = document.getElementsByClassName("my_close");
-	close.onclick = function() {
-		alert("Closing!");
-	}
+$(document).ready(function() {
+	$(".my_close").click(function() {
+		$("#responsive_veil").css("display", "none");
+	})
 });

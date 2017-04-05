@@ -1,6 +1,5 @@
 /* Default state. AKA: desktop & invisible; */
 #responsive_veil {
-	/*display: none; */
 	position: absolute;
 	width: 100vw;
 	height: 100vh;
@@ -22,6 +21,9 @@
 	float: right;
 	margin-right: 1vw;
 	margin-top: 1vw;
+}
+.my_close.fa {
+	font-size: 1.5em;
 }
 .my_close:hover {
 	cursor: pointer;
