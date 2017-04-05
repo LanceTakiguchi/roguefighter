@@ -6,6 +6,8 @@ $(document).ready(function() {
   navScroll();
   //loads music and plays music on document load
   playMusic();
+  // Start muted
+  $(".audioDemo").prop("muted",!$(".audioDemo").prop("muted"));
   //click handler for volume
   $('.volume').click(volumeOff);
   //r2d2 sounds
