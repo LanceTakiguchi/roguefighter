@@ -40,7 +40,7 @@
 	margin: 1em;
 }
 /* Non-PC */
-@media only screen and (max-width: 721px){
+@media only screen and (max-width: 899px){
 	#responsive_veil {
 		display: block; 
 	}
