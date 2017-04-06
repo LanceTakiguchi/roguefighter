@@ -1,5 +1,6 @@
 /* Default state. AKA: desktop & invisible; */
 #responsive_veil {
+	display: none; 
 	position: absolute;
 	width: 100vw;
 	height: 100vh;
@@ -9,13 +10,13 @@
 }
 #responsive_msg {
 	background-color: #0c0c0c;
-	width: 41.67%;
+	width: 83.33%;
 	min-height: 16.67%;
 	margin: auto;
 	margin-top: 25%;
 	border-radius: 0.5vw;
 	border: 0.1vw solid #F0F0F0;
-    color: #F0F0F0;
+	color: #F0F0F0;
 }
 .my_close {
 	float: right;
@@ -37,4 +38,10 @@
 }
 #responsive_msg p {
 	margin: 1em;
+}
+/* Non-PC */
+@media only screen and (max-width: 721px){
+	#responsive_veil {
+		display: block; 
+	}
 }
