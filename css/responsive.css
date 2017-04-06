@@ -35,19 +35,36 @@
 	display: inline-block;
 	margin: 0;
 	width: 100%;
+	font-size: 1.17em;
 }
 #responsive_msg p {
 	margin: 1em;
+	font-size: 1em;
 }
 /* Non-PC */
 @media only screen and (max-width: 899px){
+	/* Hide veil & message */
 	#responsive_veil {
 		display: block; 
 	}
 	/* About page animation */
 	#titlecontent {
-    position: absolute;
-    top: 0; 
-    animation: none;
-}
+		position: absolute;
+		top: 0; 
+		animation: none;
+	}
+	/* Control page game screen. Hide game */
+	#gameScreen {
+		display: none;
+	}
+	/* Game play page. Display scrolling text and game */
+	#playBody .wrapper div, #playBody .wrapper p, #playBody .wrapper img{
+		display: none !important; 
+	}
+	#container {
+		display: none;
+	}
+	.play {
+		display: none;
+	}
 }

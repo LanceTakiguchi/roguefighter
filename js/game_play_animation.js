@@ -6,6 +6,10 @@ $(document).ready(function(){
   //loads and plays music on document load
   $('.entry').hide().fadeIn(3000).fadeOut(4000);
   gameTitleLeadIn()
+  // Start muted
+  $(".audioDemo").prop("muted",!$(".audioDemo").prop("muted"));
+    //click handler for volume
+  $('.volume').click(volumeOff);
 });
 
 //setTimeout(buildTitle, 500);
@@ -51,4 +55,10 @@ function cleanScroll() {
 function playMusic(){
   $('.audioDemo').trigger('load');
   $(".audioDemo").trigger('play');
+}
+function volumeOff(){
+  //toggles music on and off
+  $(".audioDemo").prop("muted",!$(".audioDemo").prop("muted"));
+  //changes the sprite image
+  $('.volume').toggleClass('volumeOff');
 }
