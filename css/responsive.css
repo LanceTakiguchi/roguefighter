@@ -44,4 +44,10 @@
 	#responsive_veil {
 		display: block; 
 	}
+	/* About page animation */
+	#titlecontent {
+    position: absolute;
+    top: 0; 
+    animation: none;
+}
 }
