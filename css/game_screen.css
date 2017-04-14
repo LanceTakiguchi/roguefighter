@@ -59,7 +59,7 @@ body {
 
 #container{
     margin: auto;
-    width: 33%;
+    width: 100%;
 }
 
 #gameArea {
@@ -68,6 +68,7 @@ body {
     border: solid goldenrod 3px;
     border-radius: 5%;
     padding: 10px;
+    margin: auto; /* Center's gameArea */
 }
 
 h1 {
