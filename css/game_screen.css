@@ -142,8 +142,9 @@ input[type=text] {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     width: 600px;
     text-align: center;
-    margin: 5px;
     top: 90px;
+    left: 50%;
+    margin: 0px 0 0 -307px;
 }
 
 /* Modal Content/Box */
