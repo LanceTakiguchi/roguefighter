@@ -166,8 +166,8 @@ visibility: none;
     content:'';
     background: url("../imgs/r2d2-tooltip.png");
     background-repeat: no-repeat;
-    width: 80vw;
-    height: 80vh;
+    width: 100px; /* r2d2-tooltip.ong width is 100px and height is 49px */
+    height: 49px;
     top: -45px;
     left: 2vw;
     z-index: 0;
@@ -190,7 +190,7 @@ visibility: none;
 
 .main_content{
     width: 100%;
-    min-height: 67vh;
+    min-height: 65vh; /* Depending on browser window size, causing vertical scroll */
     background: url("../imgs/stars.jpg");
     background-repeat: no-repeat;
     background-size: cover;
