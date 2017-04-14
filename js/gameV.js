@@ -439,7 +439,7 @@ function update() {
     else if (cursors.down.isDown || wasd.down.isDown) {
         xwing.body.velocity.y = speed;
     }
-    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown) {
+    if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.leftButton.isDown) {
         if (alive) {
 
             fireBulletL();

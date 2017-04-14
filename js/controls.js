@@ -147,7 +147,7 @@ function update() {
   else if (cursors.down.isDown || wasd.down.isDown) {
     xwing.body.velocity.y = speed;
   }
-  if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.isDown) {
+  if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR) || game.input.activePointer.leftButton.isDown) {
     if (alive) {
       
       fireBulletL();
@@ -155,7 +155,7 @@ function update() {
     }
   }
   
-  // Pause game play by keypress of teh the P key
+  // Pause game play by keypress of the the P key
   window.onkeydown = function (event) {
     if (event.keyCode == 80) {
       game.paused = !game.paused;

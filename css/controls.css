@@ -1,6 +1,6 @@
 #container{
     margin: 0 auto;
-    width: 33%;
+    width: 100%;
 }
 #controlsModal{
     width: 100%;
@@ -22,4 +22,7 @@
 }
 .main_content #contact {
     width: 25%;
+}
+canvas {
+    margin: auto;
 }
