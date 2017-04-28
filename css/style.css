@@ -11,7 +11,7 @@ header{
 }
 
 .hidden{
-visibility: none;
+    visibility: none;
 }
 
 #background_slice{
@@ -64,11 +64,11 @@ visibility: none;
     height: 2.5em;
     color: #4D4D4D;
     padding-top: .7em;
- }
+}
 
 #navigation ul li:last-child{
     border-right: none;
- }
+}
 
 #navigation ul .menuItem:hover{
     background-color: #3c3c3c;
@@ -224,7 +224,7 @@ visibility: none;
 
 .volume{
     position: fixed;
-    bottom: 10px;
+    bottom: 20px;
     right: 50px;
     color: #ffffff;
 }
@@ -241,3 +241,22 @@ visibility: none;
     height: 198px;
 }
 
+#play_vol{
+    height: 225px;
+}
+
+#play_home {
+    position: fixed;
+    bottom: 9px;
+    right: 64px;
+    color: #000000;   
+    background: #f8bb00;
+    font-size: 1.5em;
+    padding: .50% 2.5%;
+    border-radius: 2em;
+}
+
+#play_home, #play_home a:hover, #play_home a:visited, #play_home a:active, #play_home a:link {
+    text-decoration: none;
+    color: #000000;   
+}
