@@ -68,3 +68,19 @@
 		display: none;
 	}
 }
+@media only screen and (min-width: 500px) and (max-width: 1199px){
+	#play_home {
+		right: 64px;
+	}
+	#play_vol{
+		height: 225px;
+	}
+}
+@media only screen and (min-width: 1199px) and (max-width: 1699px){
+	#play_home {
+		right: 55px;
+	}
+	#play_vol{
+		height: 225px;
+	}
+}
