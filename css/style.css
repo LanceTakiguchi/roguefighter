@@ -216,6 +216,8 @@ header{
     text-decoration: none;
     color: #eecd0a;
     animation: play 2s linear infinite;
+    width: 50%;
+    margin: auto;
 }
 
 @keyframes play {
