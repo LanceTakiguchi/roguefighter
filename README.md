@@ -34,7 +34,17 @@ As a team, engineer an online web browser game and devise an e-commerce business
 #### Initial boss gameplay wireframe
 <img src="../README_assets/rogue-fighter-boss-gameplay-wireframe.jpg"/>
 
-## Version Description
+## Version pv2.0
+* Date: 2017/04/27
+* Description: Minor UX & UI Changes.
+
+#### Fixes
+* Fix Google login functionality
+* Center Game Vertically
+* Link game page back to landing page
+* Controls page scrolling glitch
+
+## Version pv1.1 Description
 
 #### HTML & CSS
 * Contact: links [D: 1 Im: 1] - Redirect project resumes to main website's resume.
