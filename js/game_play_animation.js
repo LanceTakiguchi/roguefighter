@@ -62,3 +62,10 @@ function volumeOff(){
   //changes the sprite image
   $('.volume').toggleClass('volumeOff');
 }
+
+/**
+ * [play_home with a click, sends user back to landing/home page]
+ */
+function play_home(){
+  window.location.replace("index.html");
+}
