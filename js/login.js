@@ -5,7 +5,7 @@ function onSignIn(googleUser) {
   
   //when a user signs in initialize a GoogleAuth object. This is needed to call related methods
   var userObject = gapi.auth2.init({
-    client_id: '395407413314-ol7h22b6rhks9hucno3bncmuqo45v8ld.apps.googleusercontent.com'
+    client_id: '599542980784-6rt4imgebq0562ivoi4eu4aio9gv37hs.apps.googleusercontent.com'
   });
   //getAuthInstance provides a response object
   var authInstance = gapi.auth2.getAuthInstance();
