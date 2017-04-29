@@ -120,8 +120,15 @@ header{
 }
 
 /* login section of the menu */
-.login{
+#navigation .login{
     position: relative;
+    margin-left: 1em;
+    height: 1%; /* Helps with the height on a half HD screen of nav bar... */
+    padding-top: 0;
+}
+
+.playerItem.userName {
+    margin-left: 28px;
 }
 
 .hideClass{
@@ -130,6 +137,21 @@ header{
 
 .signOut{
     cursor: pointer;
+    background-color: #4285F4;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    line-height: 34px;
+}
+
+#navigation ul li a.signOut{
+    width: 120px;
+    height: 36px;
+    border: 1px solid transparent;
+}
+
+.signOut img{
+    width: 36px;
+    float: left;
 }
 
 /* tool tip that appears above the login */
@@ -181,9 +203,9 @@ header{
 
 #navigation .playerItem, #navigation .login{
     border-right: none;
-    padding: .75% 1% .75% 1%;
     font-family: 'Orbitron', sans-serif;
     color: #ffffff;
+    height: 1%;
 }
 
 #navigation .playerItem a {
