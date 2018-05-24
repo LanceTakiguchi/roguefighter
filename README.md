@@ -8,31 +8,17 @@ As a team, engineer an online web browser game and devise an e-commerce business
 - Design wireframes to conceive initial site design and to kickstart collaboration to identify project scope and gameplay goals
 - Build out front end application logic and UI, incorporating music, sounds, and animations to aid user interaction
 
-#### Screen capture of landing page
-<img src="../README_assets/rogue-fighter-landing-page.JPG"/>
+## Live Link
+* https://lancetakiguchi.github.io/roguefighter/
+## Portfolio
+* To be created
 
-#### Screen capture of about page
-<img src="../README_assets/rogue-fighter-about-page.jpg"/>
+#### Project Image to be updated
 
-#### Screen capture of game controls page
-<img src="../README_assets/rogue-fighter-controls-page.jpg"/>
-
-#### Screen capture of gameplay
-<img src="../README_assets/rogue-fighter-game-play.JPG"/>
-
-### Initial wireframes
-
-#### Initial landing page wireframe
-<img src="../README_assets/rogue-fighter-landing-wireframe.jpg"/>
-
-#### Initial about page wireframe
-<img src="../README_assets/rogue-fighter-credits-wireframe.jpg"/>
-
-#### Initial gameplay wireframe
-<img src="../README_assets/rogue-fighter-game-play-wireframe.jpg"/>
-
-#### Initial boss gameplay wireframe
-<img src="../README_assets/rogue-fighter-boss-gameplay-wireframe.jpg"/>
+## Changed to Github Pages
+* Date: 2018/05/23
+* Description: Changed project to be hosted on Github Pages, having deactivated my website, lancetakiguchi.com
+* Note: There a number of styling bugs that has occurred do to this in hosting. These are to be fixed in the future.
 
 ## Version pv2.0
 * Date: 2017/04/27
